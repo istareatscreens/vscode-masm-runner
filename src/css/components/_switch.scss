@@ -1,0 +1,68 @@
+.switch {
+  //appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: calc(#{$banner-height} - 0.5rem);
+  height: calc(#{$banner-height} - 0.5rem);
+  background-color: $surface;
+  box-shadow: $border-raised-outer, $border-raised-inner;
+  margin-left: 0.2rem;
+  outline: none;
+  font-size: 1rem;
+  color: $black-color;
+  margin-right: 0.2rem;
+
+  &:checked {
+    box-shadow: $border-sunken-outer, $border-sunken-inner;
+  }
+
+  &--theme-mode {
+    margin-left: 0.2rem;
+  }
+
+  &__container {
+    box-shadow: none;
+    margin-left: 0;
+  }
+
+  &__image {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    top: -3.04rem;
+    pointer-events: none;
+    padding: 0.3rem;
+    &--theme-mode {
+      margin-left: 0.2rem;
+    }
+  }
+  &__view {
+    &--zen {
+      margin-left: 0.2rem;
+      margin-top: -0.03rem;
+    }
+    &--editor {
+      margin-left: 0.2rem;
+      margin-top: 0.05rem;
+    }
+    &--cmd {
+      margin-left: 0.15rem;
+      margin-top: 0.01rem;
+    }
+
+    &--file-drawer {
+      left: 0.18rem;
+      margin-top: 0.05rem;
+    }
+  }
+
+  &--file-switch {
+    top: -3.15rem;
+    left: 0.1rem;
+  }
+
+  &--file-drawer {
+    margin-bottom: 0.1rem;
+  }
+}

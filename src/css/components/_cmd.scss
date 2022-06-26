@@ -1,0 +1,19 @@
+.bw-root,
+canvas,
+.emscripten-overlay {
+  width: 100vw;
+  height: 100vh;
+  border: 0px none;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.emscripten-overlay {
+  background-color: transparent;
+  z-index: 10;
+}
+
+.bw-html {
+  overflow: hidden;
+}

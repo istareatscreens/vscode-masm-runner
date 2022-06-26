@@ -1,0 +1,9 @@
+.checkbox {
+  content: "";
+  display: inline-block;
+  min-width: 1.3rem;
+  min-height: 1.3rem;
+  background: #fff;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+}

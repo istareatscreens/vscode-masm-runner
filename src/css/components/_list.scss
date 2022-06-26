@@ -1,0 +1,122 @@
+.file-drawer__list {
+  font-size: 1.4rem;
+  overflow: auto;
+  background: $button-highlight;
+  cursor: pointer;
+  &--dark {
+    background: black;
+  }
+  &__group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &--name {
+      padding-left: 0.4rem;
+      margin-left: 0.5rem;
+      margin-right: 0.25rem;
+    }
+
+    &--selected {
+      width: 100%;
+      height: 100%;
+      background-color: $selected-blue;
+      &--dark {
+        color: black;
+      }
+    }
+    &--dark {
+      color: silver;
+    }
+  }
+}
+
+ul.tree-view {
+  display: block;
+  box-shadow: $border-field;
+  padding: 0.5rem;
+  margin: 0.2rem;
+}
+ul.tree-view li {
+  list-style-type: none;
+}
+
+ul.tree-view a {
+  text-decoration: none;
+  color: #000;
+}
+
+ul.tree-view a:focus {
+  background-color: dialog-blue;
+  color: button-highlight;
+}
+/*
+ul.tree-view ul,
+ul.tree-view li {
+  //margin-top: 3px;
+}
+*/
+
+ul.tree-view ul {
+  margin-left: 16px;
+  padding-left: 16px;
+  /* Goes down too far */
+  border-left: 1px dotted #808080;
+}
+
+ul.tree-view ul > li {
+  position: relative;
+}
+ul.tree-view ul > li::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -16px;
+  top: 6px;
+  width: 12px;
+  border-bottom: 1px dotted #808080;
+}
+
+/* Cover the bottom of the left dotted border */
+ul.tree-view ul > li:last-child::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -20px;
+  top: 7px;
+  bottom: 0px;
+  width: 8px;
+  background: $button-highlight;
+}
+
+ul.tree-view details {
+  margin-top: 0;
+}
+
+ul.tree-view details[open] summary {
+  margin-bottom: 0;
+}
+
+ul.tree-view ul details > summary:before {
+  margin-left: -22px;
+  position: relative;
+  z-index: 1;
+}
+
+ul.tree-view details > summary:before {
+  text-align: center;
+  display: block;
+  float: left;
+  content: "+";
+  border: 1px solid #808080;
+  width: 8px;
+  height: 9px;
+  line-height: 8px;
+  margin-right: 5px;
+  padding-left: 1px;
+  background-color: #fff;
+}
+
+ul.tree-view details[open] > summary:before {
+  content: "-";
+}

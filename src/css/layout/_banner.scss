@@ -1,0 +1,40 @@
+.checkbox--selectAll {
+  margin-left: 0.5rem;
+}
+
+.banner {
+  &__file-drawer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* center items vertically, in this case */
+    align-items: center;
+    &__btn {
+      margin-left: 0.2rem;
+    }
+  }
+  &__main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* center items vertically, in this case */
+    align-items: center;
+    &__group {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      &--start {
+        margin-left: 0.2rem;
+      }
+      &--mid {
+        margin-left: 0.2rem;
+      }
+      &--end {
+        margin-right: 0.2rem;
+      }
+    }
+
+    &__btn {
+      margin-left: 0.2rem;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+.btn {
+  background: $surface;
+  box-shadow: $border-raised-outer, $border-raised-inner;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0;
+  // min-width: 75px;
+  // min-height: 23px;
+  padding: 0.3rem;
+  max-height: $banner-height;
+  width: calc(#{$banner-height} - 0.5rem);
+  height: calc(#{$banner-height} - 0.5rem);
+
+  &:not(:disabled):active {
+    box-shadow: $border-sunken-outer, $border-sunken-inner;
+    //padding: 2px 11px 0 13px;
+  }
+
+  @media (not(hover)) {
+    &:not(:disabled):hover {
+      box-shadow: $border-sunken-outer, $border-sunken-inner;
+    }
+  }
+
+  &:focus {
+    outline: 1px dotted #000000;
+    outline-offset: -4px;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &__img {
+    width: auto;
+    height: 100%;
+    padding-bottom: 0.05rem;
+  }
+
+  &--text {
+    width: fit-content;
+    min-width: 10%;
+    height: 2.5rem;
+  }
+
+  &--about {
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 0;
+  }
+
+  &--window {
+    &--first {
+      margin-right: 1rem;
+    }
+
+    &--image {
+      margin-left: 0.17rem !important;
+    }
+  }
+
+  &--createFile {
+    margin-top: 1rem;
+  }
+}

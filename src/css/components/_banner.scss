@@ -1,0 +1,37 @@
+.banner {
+  box-shadow: $border-window-outer, $border-window-inner;
+  background: $surface;
+  padding: 3px;
+  z-index: -10; //need cmd (iframe) to overlap banner
+  //Coverup top and side shadow
+  &__patch {
+    background: $surface;
+    z-index: -5;
+    width: 100vw;
+    height: 93%;
+  }
+
+  &__theme-mode {
+    margin-left: 0.2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: baseline;
+  }
+
+  &__file-drawer {
+    background-color: transparent;
+    z-index: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  &__main {
+    background-color: transparent;
+    z-index: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  &__btn {
+    padding-left: 2px;
+  }
+}

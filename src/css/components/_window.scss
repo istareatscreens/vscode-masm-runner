@@ -1,0 +1,115 @@
+.window {
+  box-shadow: $border-window-outer, $border-window-inner;
+  background: $surface;
+  padding: 3px;
+  z-index: 100;
+  &--about {
+    width: 30%;
+    text-align: center;
+    height: fit-content;
+  }
+
+  &-body {
+    margin: $element-spacing;
+    &--list {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+    &--element {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+}
+
+.title-bar {
+  background: linear-gradient(90deg, $dialog-blue, $dialog-blue-light);
+  padding: 0.3rem 0.2rem 0.3rem 0.3rem;
+  text-align: center;
+  height: 1.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__btn {
+    width: fit-content;
+    height: fit-content;
+  }
+  z-index: 102;
+}
+
+.title-bar.inactive {
+  background: linear-gradient(90deg, $dialog-gray, $dialog-gray-light);
+}
+
+.title-bar-text {
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0;
+  margin-right: 24px;
+}
+
+.title-bar-controls {
+  display: flex;
+}
+
+.title-bar-controls {
+  padding: 0;
+  display: block;
+  min-width: 16px;
+  min-height: 14px;
+}
+
+.title-bar-controls button:active {
+  padding: 0;
+}
+
+.title-bar-controls button:focus {
+  outline: none;
+}
+
+.title-bar-controls {
+  display: flex;
+}
+
+.external-buttons {
+  z-index: 103;
+  display: flex;
+  width: 100%;
+  height: 2rem;
+  justify-content: center;
+  align-items: center;
+  &--createFile {
+    height: 100%;
+  }
+}
+
+.title-bar-controls button {
+  padding: 0;
+  display: block;
+  min-width: 1.4rem;
+  min-height: 1.4rem;
+}
+
+.title-bar-controls button:active {
+  padding: 0;
+}
+
+.title-bar-controls button:focus {
+  outline: none;
+}
+
+.title-bar-controls button[aria-label="Close"] {
+  z-index: 103;
+  margin-left: 2px;
+  background-image: url("./close.svg");
+  background-repeat: no-repeat;
+  background-position: top 0.29rem left 0.22rem;
+}
+
+.title-bar-controls button[aria-label="Close"]:active {
+  background-position: top 0.3rem left 0.205rem;
+}

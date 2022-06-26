@@ -1,0 +1,42 @@
+.select-box {
+  //custom
+  width: min-content;
+  height: calc(#{$banner-height} - 0.5rem); //2.5rem
+  margin-left: 0.2rem;
+  color: #000;
+  scrollbar-color: black grey;
+
+  //theme
+  padding: 0.3rem 0.4rem;
+  border: none;
+  box-shadow: $border-field;
+  background-color: $button-highlight;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  padding-right: 3.2rem;
+  background-image: url("./button-down.svg");
+  background-size: 2rem;
+  -webkit-font-smoothing: none;
+  background-position: top 0.2rem right 0.2rem;
+  background-repeat: no-repeat;
+  border-radius: 0;
+  &:focus {
+    outline: none;
+    color: $button-highlight;
+    background-color: $dialog-blue;
+    & option {
+      color: #000;
+      background-color: #fff;
+    }
+    &:active {
+      background-image: url("./button-down-active.svg");
+    }
+  }
+}

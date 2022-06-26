@@ -1,0 +1,110 @@
+.app-layout {
+  display: grid;
+  grid-template:
+    "banner banner file_drawer_banner file_drawer_banner" $banner-height
+    "editor editor file_drawer file_drawer" $file-drawer-height
+    "editor editor cmd cmd" calc(60vh - #{$banner-height})
+    / 30vw 30vw 20vw 20vw;
+
+  @include respond(half-width) {
+    grid-template:
+      "banner banner file_drawer_banner file_drawer_banner" $banner-height
+      "editor editor file_drawer file_drawer" $file-drawer-height-half
+      "cmd cmd cmd cmd" calc(50vh - #{$banner-height})
+      / 35vw 35vw 15vw 15vw;
+  }
+
+  &--no-editor {
+    grid-template:
+      "banner banner file_drawer_banner file_drawer_banner" $banner-height
+      "cmd cmd file_drawer file_drawer" $file-drawer-height
+      "cmd cmd file_drawer file_drawer" calc(60vh - #{$banner-height})
+      / 30vw 30vw 20vw 20vw;
+
+    @include respond(half-width) {
+      grid-template:
+        "banner banner file_drawer_banner file_drawer_banner" $banner-height
+        "cmd cmd file_drawer file_drawer" $file-drawer-height-half
+        "cmd cmd file_drawer file_drawer" calc(50vh - #{$banner-height})
+        / 35vw 35vw 15vw 15vw;
+    }
+  }
+
+  &--no-cmd {
+    grid-template:
+      "banner banner file_drawer_banner file_drawer_banner" $banner-height
+      "editor editor file_drawer file_drawer" $file-drawer-height
+      "editor editor file_drawer file_drawer" calc(60vh - #{$banner-height})
+      / 30vw 30vw 20vw 20vw;
+
+    @include respond(half-width) {
+      grid-template:
+        "banner banner file_drawer_banner file_drawer_banner" $banner-height
+        "editor editor file_drawer file_drawer" $file-drawer-height-half
+        "editor editor file_drawer file_drawer" calc(50vh - #{$banner-height})
+        / 35vw 35vw 15vw 15vw;
+    }
+  }
+
+  &--no-file-drawer {
+    grid-template:
+      "banner banner cmd cmd" $banner-height
+      "editor editor cmd cmd" $file-drawer-height
+      "editor editor cmd cmd" calc(60vh - #{$banner-height})
+      / 30vw 30vw 20vw 20vw;
+
+    @include respond(half-width) {
+      grid-template:
+        "banner banner banner banner" $banner-height
+        "editor editor editor editor" $file-drawer-height-half
+        "cmd cmd cmd cmd" calc(50vh - #{$banner-height})
+        / 35vw 35vw 15vw 15vw;
+    }
+  }
+
+  &--only-editor {
+    grid-template:
+      "banner banner banner banner" $banner-height
+      "editor editor editor editor" $file-drawer-height
+      "editor editor editor editor" calc(60vh - #{$banner-height})
+      / 30vw 30vw 20vw 20vw;
+  }
+
+  &--only-cmd {
+    grid-template:
+      "banner banner banner banner" $banner-height
+      "cmd cmd cmd cmd" $file-drawer-height
+      "cmd cmd cmd cmd" calc(60vh - #{$banner-height})
+      / 30vw 30vw 20vw 20vw;
+  }
+}
+
+.banner__patch {
+  grid-row: 1 / 2;
+  grid-column: 1 / 5;
+}
+
+.cmd-iframe {
+  grid-area: cmd;
+}
+
+.banner {
+  grid-row: 1 / 2;
+  grid-column: 1 / 5;
+}
+
+.banner__main {
+  grid-area: banner;
+}
+
+.editor {
+  grid-area: editor;
+}
+
+.file-drawer__list {
+  grid-area: file_drawer;
+}
+
+.banner__file-drawer {
+  grid-area: file_drawer_banner;
+}

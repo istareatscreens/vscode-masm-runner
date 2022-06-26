@@ -1,0 +1,24 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  //defines 1rem
+  font-size: 62.5%;
+  background: $surface;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Liberation Mono", Arial;
+  font-weight: 400;
+  line-height: 1.7;
+  color: $black-color;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+}
