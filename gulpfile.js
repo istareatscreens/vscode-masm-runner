@@ -9,7 +9,7 @@ const { src, series, parallel, dest, watch } = require("gulp");
 const browserSync = require("browser-sync").create();
 const imagemin = require("gulp-imagemin");
 const webpack = require("webpack-stream");
-const sass = require("gulp-sass");
+const sass = require("gulp-sass")(require("sass"));
 const livereload = require("gulp-livereload");
 const htmlmin = require("gulp-htmlmin");
 const del = require("del");
@@ -142,7 +142,7 @@ function copyHtml() {
 function assetsTask() {
   return src([
     assetsPath + "assembler.zip",
-    assetsPath + "web/boxedwine.zip",
+    assetsPath + "electron/boxedwine.zip",
   ]).pipe(gulp.dest("public"));
 }
 
@@ -204,20 +204,6 @@ exports.electron = series(
     copyHtmlElectron,
     imgTaskElectron,
     fontTaskElectron
-  )
-);
-//BUILD Web Production
-exports.default = series(
-  parallel(
-    cleanTask,
-    jsTaskProd,
-    jsBoxedTask,
-    cssTask,
-    wasmTask,
-    assetsTask,
-    copyHtml,
-    imgTask,
-    fontTask
   )
 );
 

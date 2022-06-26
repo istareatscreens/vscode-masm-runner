@@ -4,7 +4,6 @@ const webpack = require("webpack");
 module.exports = {
   entry: {
     "index-bw": "./src/js/components/boxedwine/index-bw.jsx",
-    "index-editor": "./src/js/components/main/index-editor.jsx",
   },
   output: {
     filename: "[name].js",

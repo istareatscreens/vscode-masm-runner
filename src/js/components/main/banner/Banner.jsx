@@ -14,8 +14,8 @@ import about from "../../../../images/about.png";
 import About from "./about/About.jsx";
 import ViewControlGroup from "./viewcontrols/ViewControlGroup.jsx";
 import Dropdown from "./../../common/Dropdown.jsx";
-import ThemeControlGroup from "./themecontrols/ThemeControlGroup.jsx";
-import ThemeControlWindow from "./themecontrols/ThemeControlWindow.jsx";
+//import ThemeControlGroup from "./themecontrols/ThemeControlGroup.jsx";
+//import ThemeControlWindow from "./themecontrols/ThemeControlWindow.jsx";
 
 const Banner = function Banner({
   filename,
@@ -94,6 +94,7 @@ const Banner = function Banner({
       {aboutPageOpened && (
         <About closeAbout={() => setAboutPageOpened(false)} />
       )}
+      {/*
       {themeSettingsOpened && (
         <ThemeControlWindow
           setThemeSettingsOpened={setThemeSettingsOpened}
@@ -105,6 +106,7 @@ const Banner = function Banner({
           selectedNightTheme={selectedNightTheme}
         />
       )}
+      */}
       <div className={"banner__patch"} />
       <div className={"banner"} />
       <div className={"banner__main"}>
@@ -151,12 +153,14 @@ const Banner = function Banner({
             selected={selectedFont}
             value={selectedFont}
           />
+          {/*
           <ThemeControlGroup
             setThemeSettingsOpened={setThemeSettingsOpened}
             themeSettingsOpened={themeSettingsOpened}
             lightMode={lightMode}
             setLightMode={setLightMode}
           />
+          */}
           <ViewControlGroup
             className={"banner__main__group banner__main__group--mid"}
             refApp={refApp}
