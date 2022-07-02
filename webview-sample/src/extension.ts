@@ -14,14 +14,6 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("catCoding.doRefactor", () => {
-      if (CatCodingPanel.currentPanel) {
-        CatCodingPanel.currentPanel.doRefactor();
-      }
-    })
-  );
-
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
     vscode.window.registerWebviewPanelSerializer(CatCodingPanel.viewType, {
@@ -38,11 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
   }
 }
 
-function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
+function getWebviewOptions(extensionUri: vscode.Uri): any {
   return {
     // Enable javascript in the webview
     enableScripts: true,
-
+    retainContextWhenHidden: true,
     // And restrict the webview to only loading content from our extension's `media` directory.
     localResourceRoots: [vscode.Uri.joinPath(extensionUri, "media")],
   };
@@ -100,6 +92,7 @@ class CatCodingPanel {
     // This happens when the user closes the panel or when the panel is closed programmatically
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
+    /*
     // Update the content based on view changes
     this._panel.onDidChangeViewState(
       (e) => {
@@ -110,6 +103,7 @@ class CatCodingPanel {
       null,
       this._disposables
     );
+    */
 
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(
@@ -147,22 +141,7 @@ class CatCodingPanel {
 
   private _update() {
     const webview = this._panel.webview;
-
-    // Vary the webview's content based on where it is located in the editor.
-    switch (this._panel.viewColumn) {
-      case vscode.ViewColumn.Two:
-        this._updateForCat(webview, "Compiling Cat");
-        return;
-
-      case vscode.ViewColumn.Three:
-        this._updateForCat(webview, "Testing Cat");
-        return;
-
-      case vscode.ViewColumn.One:
-      default:
-        this._updateForCat(webview, "Coding Cat");
-        return;
-    }
+    this._updateForCat(webview, "Coding Cat");
   }
 
   private _updateForCat(webview: vscode.Webview, catName: keyof typeof cats) {
