@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import * as path from "path";
+import { basename, dirname, extname, join } from "path";
 
 const cats = {
   "Coding Cat": "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
@@ -28,6 +28,17 @@ export function activate(context: vscode.ExtensionContext) {
       },
     });
   }
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "catCoding.runCode",
+      (fileUri: vscode.Uri) => {
+        if (CatCodingPanel.currentPanel) {
+          CatCodingPanel.currentPanel.runCode(fileUri);
+        }
+      }
+    )
+  );
 }
 
 function getWebviewOptions(extensionUri: vscode.Uri): any {
@@ -80,6 +91,47 @@ class CatCodingPanel {
   public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     CatCodingPanel.currentPanel = new CatCodingPanel(panel, extensionUri);
   }
+  private _runFromExplorer: boolean | undefined;
+  private _document: vscode.TextDocument | undefined;
+
+  public async runCode(fileUri: vscode.Uri) {
+    this._runFromExplorer = this.checkIsRunFromExplorer(fileUri);
+    if (this._runFromExplorer) {
+      this._document = await vscode.workspace.openTextDocument(fileUri);
+    } else {
+      const editor = vscode.window.activeTextEditor;
+      if (editor) {
+        this._document = editor.document;
+      } else {
+        vscode.window.showInformationMessage("No code found or selected.");
+        return;
+      }
+    }
+
+    if (!this._document) {
+      return;
+    }
+
+    const fileExtension = extname(this._document.fileName);
+    const text = this._document.getText();
+    console.log(this._document);
+    console.log(fileExtension);
+    console.log(text);
+  }
+
+  private checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
+    const editor = vscode.window.activeTextEditor;
+    if (!fileUri || !fileUri.fsPath) {
+      return false;
+    }
+    if (!editor) {
+      return true;
+    }
+    if (fileUri.fsPath === editor.document.uri.fsPath) {
+      return false;
+    }
+    return true;
+  }
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
@@ -104,10 +156,11 @@ class CatCodingPanel {
       this._disposables
     );
     */
+
     vscode.window.onDidChangeTextEditorViewColumn(() =>
       this.updateChangedView()
     );
-    //vscode.window.onDidChangeWindowState(() => this.updateChangedView());
+    vscode.window.onDidChangeWindowState(() => this.updateChangedView());
     this._panel.onDidChangeViewState(() => this.updateChangedView());
 
     // Handle messages from the webview
@@ -132,7 +185,6 @@ class CatCodingPanel {
 
   // Layer div applies a layer so that the panel can be clicked again to allow typing in it
   public updateChangedView() {
-    console.log("HERE");
     this._postMessage("editor-selected", {});
   }
 
