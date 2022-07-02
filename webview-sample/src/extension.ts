@@ -104,6 +104,11 @@ class CatCodingPanel {
       this._disposables
     );
     */
+    vscode.window.onDidChangeTextEditorViewColumn(() =>
+      this.updateChangedView()
+    );
+    //vscode.window.onDidChangeWindowState(() => this.updateChangedView());
+    this._panel.onDidChangeViewState(() => this.updateChangedView());
 
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(
@@ -117,6 +122,18 @@ class CatCodingPanel {
       null,
       this._disposables
     );
+  }
+
+  private _postMessage(eventName: string, data: any) {
+    this._panel.webview.postMessage(
+      JSON.stringify({ eventName: eventName, data: data })
+    );
+  }
+
+  // Layer div applies a layer so that the panel can be clicked again to allow typing in it
+  public updateChangedView() {
+    console.log("HERE");
+    this._postMessage("editor-selected", {});
   }
 
   public doRefactor() {
