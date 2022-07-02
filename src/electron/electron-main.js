@@ -15,7 +15,7 @@ function createWindow() {
     },
   });
 
-  win.loadURL("file://" + __dirname + "/index.html");
+  win.loadURL("file://" + __dirname + "/boxedwine.html");
 
   //add update listener
   mainWindow.once("ready-to-show", () => {

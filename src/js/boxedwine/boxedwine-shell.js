@@ -18,8 +18,8 @@ let DEFAULT_BPP = 32;
 let DEFAULT_ROOT_ZIP_FILE = "boxedwine.zip";
 //params
 let Config = {};
-Config.locateRootBaseUrl = "";
-Config.locateAppBaseUrl = "";
+Config.locateRootBaseUrl = document.getElementById("baseUri").value;
+Config.locateAppBaseUrl = document.getElementById("baseUri").value;
 Config.locateOverlayBaseUrl = "";
 Config.urlParams = "";
 Config.storageMode = STORAGE_LOCAL_STORAGE;

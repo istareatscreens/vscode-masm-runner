@@ -9,13 +9,17 @@ module.exports = {
     filename: "[name].js",
   },
   devtool: "inline-source-map",
-  target: "web",
+  target: "node",
   module: {
     rules: [
       {
         test: /\.(tsx?|jsx?)$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.node$/,
+        loader: "node-loader",
       },
       {
         test: /\.(png|jpe?g|svg|gif)$/i,

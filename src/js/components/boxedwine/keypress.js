@@ -1,4 +1,4 @@
-export const keyCodes = {
+const keyCodes = {
   0: "48",
   1: "49",
   2: "50",

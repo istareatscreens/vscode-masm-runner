@@ -23,7 +23,7 @@ const htmlPath = "src/html/";
 const imagePath = "src/images/*";
 const jsBoxedPath = "src/js/boxedwine/**/*.js";
 
-const electronOutput = "build/";
+const electronOutput = "webview-sample/media/";
 const electronJS = "src/electron/*.js";
 
 //Electron
@@ -40,7 +40,7 @@ function iconTaskElectron() {
 
 function jsTaskElectron() {
   return src([jsPath, "!" + jsBoxedPath, "!node_modules"])
-    .pipe(webpack(require("./webpack.prod.js")))
+    .pipe(webpack(require("./webpack.dev.js")))
     .pipe(dest(electronOutput));
 }
 
@@ -60,7 +60,7 @@ function wasmTaskElectron() {
 }
 
 function copyHtmlElectron() {
-  return src([htmlPath + "boxedwine.html", htmlPath + "electron/index.html"])
+  return src([htmlPath + "boxedwine.html", htmlPath + "index.html"])
     .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
     .pipe(gulp.dest(electronOutput));
 }
@@ -134,7 +134,7 @@ function wasmTask() {
 }
 
 function copyHtml() {
-  return src([htmlPath + "boxedwine.html", htmlPath + "web/index.html"])
+  return src([htmlPath + "boxedwine.html", htmlPath + "index.html"])
     .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
     .pipe(gulp.dest("public"));
 }
