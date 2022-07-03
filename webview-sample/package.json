@@ -30,7 +30,12 @@
       },
       {
         "command": "catCoding.runCode",
-        "title": "Compile code",
+        "title": "Compile and run code",
+        "category": "Cat Coding"
+      },
+      {
+        "command": "catCoding.resetCMD",
+        "title": "Restart Command Prompt",
         "category": "Cat Coding"
       }
     ]

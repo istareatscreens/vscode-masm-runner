@@ -39,6 +39,17 @@ export function activate(context: vscode.ExtensionContext) {
       }
     )
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "catCoding.resetCMD",
+      (fileUri: vscode.Uri) => {
+        if (CatCodingPanel.currentPanel) {
+          CatCodingPanel.currentPanel.resetCMD();
+        }
+      }
+    )
+  );
 }
 
 function getWebviewOptions(extensionUri: vscode.Uri): any {
@@ -93,6 +104,10 @@ class CatCodingPanel {
   }
   private _runFromExplorer: boolean | undefined;
   private _document: vscode.TextDocument | undefined;
+
+  public async resetCMD() {
+    this._postMessage("reset");
+  }
 
   public async runCode(fileUri: vscode.Uri) {
     this._runFromExplorer = this.checkIsRunFromExplorer(fileUri);
@@ -232,7 +247,7 @@ class CatCodingPanel {
     });
   }
 
-  private _postMessage(eventName: string, data: any) {
+  private _postMessage(eventName: string, data: any = {}) {
     this._panel.webview.postMessage(
       JSON.stringify({ eventName: eventName, data: data })
     );
