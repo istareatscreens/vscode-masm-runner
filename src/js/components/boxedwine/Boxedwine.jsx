@@ -1,12 +1,17 @@
 import React, { useRef, useEffect } from "react";
-import { createMessageListner } from "../../utility/utilityFunctions.ts";
+import { createMessageListner } from "../../utility/utilityFunctions";
 import { keyCodes } from "./keypress.js";
+import FileSystem from "./FileSystem";
 
 function Boxedwine() {
   const canvas = useRef(null);
 
   useEffect(() => {
     createEventListeners();
+    const init = async () => {
+      await FileSystem.init();
+    };
+    init();
     return () => {
       removeEventListeners();
     };
@@ -19,6 +24,7 @@ function Boxedwine() {
     createCommandWriteListener();
     createCommandRunListener();
     createResetListener();
+    compileAndRun();
   };
 
   const removeEventListeners = () => {
@@ -28,6 +34,66 @@ function Boxedwine() {
     window.removeEventListener("write-command");
     window.removeEventListener("run-command");
     window.removeEventListener("zip-files");
+    window.removeEventListener("compile-and-run");
+  };
+
+  const compileAndRun = () => {
+    window.addEventListener("compile-and-run", ({ detail: data }) => {
+      const { filename, time } = data;
+      const text = convertIrvineImports(data.text);
+      FileSystem.createFile(filename, text, time);
+      // TODO: Remove substring by changing bat to not add .asm
+      convertStringToConsoleCommand(
+        `echo.>${filename} && assemble ${filename.substring(
+          0,
+          filename.length - 4
+        )}`
+      );
+    });
+  };
+
+  const convertIrvineImports = (text) => {
+    const irvineLib32Match = /^include.+irvine32(\.inc|)$/im;
+    const irvineLib64Match = /^include.+irvine64(\.inc|)$/im;
+    return text
+      .replace(irvineLib32Match, "INCLUDE D:/irvine/Irvine32.inc")
+      .replace(irvineLib64Match, "INCLUDE D:/irvine/Irvine64.inc");
+  };
+
+  //Send commands to console
+  const convertStringToConsoleCommand = (command) => {
+    const commandArray = [];
+    for (const char of command) {
+      switch (char) {
+        case ".":
+          commandArray.push("period");
+          break;
+        case ">":
+          commandArray.push("shift");
+          commandArray.push("period");
+          commandArray.push("/shift");
+          break;
+        case " ":
+          commandArray.push("spacebar"); //check for whitespace
+          break;
+        case "-":
+          commandArray.push("dash");
+        case "_":
+          commandArray.push("shift");
+          commandArray.push("dash");
+          commandArray.push("/shift");
+          break;
+        case "&":
+          commandArray.push("shift");
+          commandArray.push("7");
+          commandArray.push("/shift");
+
+        default:
+          commandArray.push(char);
+      }
+    }
+    commandArray.push("enter");
+    writeToConsole(commandArray);
   };
 
   const createZipListener = () => {
@@ -96,7 +162,7 @@ function Boxedwine() {
       //Check if upper case letter if so push down shift key and release it
       if (key.toLowerCase() != key.toUpperCase() && key == key.toUpperCase()) {
         {
-          const event = new KeyboardEvent("keydown", {
+          let event = new KeyboardEvent("keydown", {
             bubbles: true,
             cancelable: true,
             char: "shift",
@@ -128,7 +194,7 @@ function Boxedwine() {
         }
       } else {
         //source: https://stackoverflow.com/questions/35143695/how-can-i-simulate-a-keypress-in-javascript
-        const event = new KeyboardEvent(press, {
+        let event = new KeyboardEvent(press, {
           bubbles: true,
           cancelable: true,
           char: key.toUpperCase(),

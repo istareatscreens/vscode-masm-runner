@@ -63,66 +63,30 @@ export const generateRandomID = (): string => {
 //Wait for event and then time out
 //TODO use this with FileSystem operations to enusre proper handling of files
 //even when console is not accessible, or error has occured
-export const sleepUntil = async () => (
-  callback: () => any,
-  timeoutMs: number,
-  resolutionCallback: () => any = () => {},
-  rejectionCallback: () => any = () => {},
-  delayBetweenChecks: number = 20
-): Promise<unknown> => {
-  return new Promise((resolve, reject) => {
-    if (callback()) resolve(resolutionCallback());
-    const timeWas: number = new Date().getTime();
-    let wait = setInterval(function () {
-      if (callback()) {
-        clearInterval(wait);
-        resolve(resolutionCallback());
-      } else if (new Date().getTime() - timeWas > timeoutMs) {
-        // Timeout
-        clearInterval(wait);
-        reject(rejectionCallback());
-      }
-    }, delayBetweenChecks);
-  });
-};
-
-//Send commands to console
-export const writeCommandToCMD = (command: string): void => {
-  const commandArray = [];
-  for (const char of command) {
-    switch (char) {
-      case ".":
-        commandArray.push("period");
-        break;
-      case ">":
-        commandArray.push("shift");
-        commandArray.push("period");
-        commandArray.push("/shift");
-        break;
-      case " ":
-        commandArray.push("spacebar"); //check for whitespace
-        break;
-      case "-":
-        commandArray.push("dash");
-      case "_":
-        commandArray.push("shift");
-        commandArray.push("dash");
-        commandArray.push("/shift");
-        break;
-      case "&":
-        commandArray.push("shift");
-        commandArray.push("7");
-        commandArray.push("/shift");
-
-      default:
-        commandArray.push(char);
-    }
-  }
-  commandArray.push("enter");
-  postMessage("write-command", {
-    data: commandArray,
-  });
-};
+export const sleepUntil =
+  async () =>
+  (
+    callback: () => any,
+    timeoutMs: number,
+    resolutionCallback: () => any = () => {},
+    rejectionCallback: () => any = () => {},
+    delayBetweenChecks: number = 20
+  ): Promise<unknown> => {
+    return new Promise((resolve, reject) => {
+      if (callback()) resolve(resolutionCallback());
+      const timeWas: number = new Date().getTime();
+      let wait = setInterval(function () {
+        if (callback()) {
+          clearInterval(wait);
+          resolve(resolutionCallback());
+        } else if (new Date().getTime() - timeWas > timeoutMs) {
+          // Timeout
+          clearInterval(wait);
+          reject(rejectionCallback());
+        }
+      }, delayBetweenChecks);
+    });
+  };
 
 //Check if two arrays contain the same elements (unordered, no duplicate elements)
 export const checkIfEqualArraysNoDuplicateElements = (

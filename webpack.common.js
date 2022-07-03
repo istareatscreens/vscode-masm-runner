@@ -9,7 +9,7 @@ module.exports = {
     filename: "[name].js",
   },
   devtool: "inline-source-map",
-  target: "node",
+  target: "web",
   module: {
     rules: [
       {

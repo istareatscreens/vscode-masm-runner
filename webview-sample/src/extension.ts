@@ -108,15 +108,44 @@ class CatCodingPanel {
       }
     }
 
+    // Add check for extension
     if (!this._document) {
+      vscode.window.showInformationMessage("File not found");
       return;
     }
 
+    const filename = basename(this._document.fileName);
     const fileExtension = extname(this._document.fileName);
+    if (fileExtension != ".asm") {
+      vscode.window.showInformationMessage(
+        "Please make sure file has extension .asm"
+      );
+      return;
+    }
+
     const text = this._document.getText();
-    console.log(this._document);
-    console.log(fileExtension);
-    console.log(text);
+    this._postMessage("compile-and-run", {
+      data: {
+        filename: filename,
+        text: text,
+        time: new Date().getTime(),
+      },
+    });
+  }
+
+  private createFile(filename: string) {
+    this._writeCommandToCMD(`echo.>${filename}`);
+  }
+
+  private compileCode() {
+    const filename = this._document?.fileName;
+    if (!filename) {
+      return;
+    }
+
+    this._writeCommandToCMD(
+      `assemble ${filename.substring(0, filename.length - 4)}`
+    );
   }
 
   private checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
@@ -144,19 +173,6 @@ class CatCodingPanel {
     // This happens when the user closes the panel or when the panel is closed programmatically
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
-    /*
-    // Update the content based on view changes
-    this._panel.onDidChangeViewState(
-      (e) => {
-        if (this._panel.visible) {
-          this._update();
-        }
-      },
-      null,
-      this._disposables
-    );
-    */
-
     vscode.window.onDidChangeTextEditorViewColumn(() =>
       this.updateChangedView()
     );
@@ -175,6 +191,45 @@ class CatCodingPanel {
       null,
       this._disposables
     );
+  }
+
+  //Send commands to console
+  private _writeCommandToCMD(command: string): void {
+    const commandArray: string[] = [];
+    for (const char of command) {
+      switch (char) {
+        case ".":
+          commandArray.push("period");
+          break;
+        case ">":
+          commandArray.push("shift");
+          commandArray.push("period");
+          commandArray.push("/shift");
+          break;
+        case " ":
+          commandArray.push("spacebar"); //check for whitespace
+          break;
+        case "-":
+          commandArray.push("dash");
+        // eslint-disable-next-line no-fallthrough
+        case "_":
+          commandArray.push("shift");
+          commandArray.push("dash");
+          commandArray.push("/shift");
+          break;
+        case "&":
+          commandArray.push("shift");
+          commandArray.push("7");
+          commandArray.push("/shift");
+        // eslint-disable-next-line no-fallthrough
+        default:
+          commandArray.push(char);
+      }
+    }
+    commandArray.push("enter");
+    this._postMessage("write-command", {
+      data: commandArray,
+    });
   }
 
   private _postMessage(eventName: string, data: any) {

@@ -1,15 +1,15 @@
-import { Inode, fromBuffer } from "./filesystem/inode";
+import { Inode, fromBuffer } from "./inode";
 import { Buffer } from "buffer";
 import {
   generateRandomID,
   renameObjectKey,
   getFileExtension,
 } from "../../../utility/utilityFunctions.ts";
-import * as hf from "./filesystem/FSHelperFunctions.js";
+import * as hf from "./FSHelperFunctions.js";
 import { saveAs } from "file-saver";
 
 import { crlf } from "eol";
-import dataURItoBlob from "./filesystem/dataURItoBlob.js";
+import dataURItoBlob from "./dataURItoBlob.js";
 
 import {
   writeCommandToCMD,
@@ -103,7 +103,9 @@ export default class FileSystem {
 
   //reads file list
   static _readFileList() {
-    return JSON.parse(atob(hf.getFromLocalStorage(FileSystem.fileListKey)));
+    return JSON.parse(
+      window.atob(hf.getFromLocalStorage(FileSystem.fileListKey))
+    );
   }
 
   //Gets file list key
@@ -175,7 +177,7 @@ export default class FileSystem {
         data = data.split(",").pop(); //remove MIME
         let isEncoded = true;
         if (/.(asm|text|txt)$/.test(name)) {
-          data = crlf(atob(data)); //convert end of line (eol) to dos/win32 compatiable crlf
+          data = crlf(window.atob(data)); //convert end of line (eol) to dos/win32 compatiable crlf
           size = data.length;
           isEncoded = false;
         }
