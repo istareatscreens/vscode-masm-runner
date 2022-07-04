@@ -1,6 +1,6 @@
 {
   "name": "vscode-masm-x86-runner",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "description": "VSCode extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "main": "./build/electron-main.js",
   "scripts": {
