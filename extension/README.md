@@ -4,7 +4,7 @@ MASM x86 Runner is x86 MASM (Microsoft Macro Assembly Language) code compiler, l
 
 This app is made possible through the use of [JWlink and JWasm](https://github.com/JWasm) to compile x86/x64 MASM and a 32-bit wine terminal to execute x86 executable binaries using [Boxedwine](http://www.boxedwine.org/) emscripten port.
 
-Please note that this is still missing a lot of features and is far from perfect. Contributions are appreciated.
+Please note that this is still missing a lot of features and is far from perfect.
 
 # How To Use
 

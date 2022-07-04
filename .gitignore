@@ -7,6 +7,7 @@ build
 dist
 out
 *.tgz
+*.vsix
 #Ignore Ide files
 .vscode
 debug.log
