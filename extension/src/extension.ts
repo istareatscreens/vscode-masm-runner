@@ -332,7 +332,7 @@ class MasmRunnerPanel {
             style="margin-top: 0.5em; margin-left: auto; margin-right: auto"
           ></div>
         </figure>
-        <div class="emscripten" id="status">Downloading...</div>
+        <div class="emscripten" id="status">Loading...</div>
         <div class="emscripten">
           <progress value="0" max="100" id="progress"></progress>
         </div>
