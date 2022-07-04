@@ -1,0 +1,98 @@
+{
+  "name": "masm-x86-runner",
+  "displayName": "MASM x86 runner",
+  "description": "Extension for Compiling and running x86 Microsoft Macro Assembly Language (MASM)",
+  "icon": "images/icon.png",
+  "version": "0.1.0",
+  "publisher": "istareatscreens",
+  "homepage": "https://github.com/istareatscreens/vscode-masm-x86-runner",
+  "private": false,
+  "license": "MIT",
+  "keywords": [
+    "masm",
+    "assembly",
+    "x86",
+    "asm",
+    "microsoft assembly language"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/istareatscreens/vscode-masm-x86-runner"
+  },
+  "engines": {
+    "vscode": "^1.47.0"
+  },
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
+  "extensionKind": [
+    "ui"
+  ],
+  "markdown": "github",
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:masmRunner.start",
+    "onCommand:masmRunner.doRefactor",
+    "onWebviewPanel:masmRunner"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "masmRunner.start",
+        "title": "Start MASM runner CMD",
+        "category": "Masm Runner"
+      },
+      {
+        "command": "masmRunner.runCode",
+        "title": "Compile and run code",
+        "category": "Masm Runner"
+      },
+      {
+        "command": "masmRunner.resetCMD",
+        "title": "Restart Command Prompt",
+        "category": "Masm Runner"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "MASM",
+        "path": "./snippets.json"
+      }
+    ],
+    "languages": [
+      {
+        "id": "MASM",
+        "aliases": [
+          "MASM",
+          "masm",
+          "Microsft Macro Assembly"
+        ],
+        "extensions": [
+          ".asm",
+          ".ASM"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -w -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "@types/vscode": "^1.47.0",
+    "@types/vscode-webview": "^1.57.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "eslint": "^8.13.0",
+    "typescript": "^4.7.2"
+  }
+}

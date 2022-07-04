@@ -1,0 +1,22 @@
+{
+  "Generate MASM x86 template": {
+    "prefix": "masm-template",
+    "body": [
+      "INCLUDE Irvine32.inc",
+      "",
+      ".data                           ;data decleration",
+      "",
+      "",
+      ".code                           ;code decleration",
+      "",
+      "",
+      "main PROC                       ;main method starts",
+      "",
+      "",
+      "    exit                        ;Exit program",
+      "main ENDP",
+      "END main"
+    ],
+    "description": "MASM Program template"
+  }
+}

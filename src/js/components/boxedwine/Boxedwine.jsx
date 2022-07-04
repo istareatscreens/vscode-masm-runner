@@ -53,8 +53,8 @@ function Boxedwine() {
   };
 
   const convertIrvineImports = (text) => {
-    const irvineLib32Match = /^include.+irvine32(\.inc|)$/im;
-    const irvineLib64Match = /^include.+irvine64(\.inc|)$/im;
+    const irvineLib32Match = /include.+irvine32(\.inc|)/im;
+    const irvineLib64Match = /include.+irvine64(\.inc|)/im;
     return text
       .replace(irvineLib32Match, "INCLUDE D:/irvine/Irvine32.inc")
       .replace(irvineLib64Match, "INCLUDE D:/irvine/Irvine64.inc");
@@ -150,7 +150,6 @@ function Boxedwine() {
   //TODO: refactor this to remove repeated code
   const writeToConsole = (data) => {
     let press = "keydown";
-    //console.log(data);
     data.forEach((key) => {
       //check to see if you need symbols could be improved by making symbol list
       if (key == "/shift") {

@@ -1,14 +1,11 @@
 {
-  "name": "masm-x86-runner",
-  "version": "1.0.0",
+  "name": "vscode-masm-x86-runner",
+  "version": "0.1.0",
   "description": "VSCode extension for compiling and running x86 Microsoft Assembly Language (MASM)",
   "main": "./build/electron-main.js",
   "scripts": {
-    "dev": "gulp watch",
-    "build": "gulp electron",
-    "build-installer": "electron-builder",
-    "deploy": "electron-builder build -mwl --publish always",
-    "electron": "node_modules/electron/dist/electron.exe ."
+    "watch": "gulp watch",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -21,13 +18,11 @@
     "linker"
   ],
   "author": "istareatscreens",
-  "homepage": "https://github.com/istareatscreens/GeneticMazeSolver#readme",
+  "homepage": "https://github.com/istareatscreens/vscode-masm-x86-runner",
   "devDependencies": {
-    "@types/express": "^4.17.13",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "autoprefixer": "^10.4.7",
-    "axios": "^0.27.2",
     "babel-loader": "^8.2.5",
     "browser-sync": "^2.27.10",
     "css-loader": "^6.7.1",
@@ -55,62 +50,18 @@
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
-    "@types/ws": "^8.5.3",
     "async_hooks": "^1.0.0",
     "bufferutil": "^4.0.6",
     "canvas": "^2.9.3",
     "child_process": "^1.0.2",
     "eol": "^0.9.1",
-    "express": "^4.18.1",
     "ffmpeg-static": "^5.0.0",
     "file-saver": "^2.0.5",
-    "gulp-htmlmin": "^5.0.1",
-    "node-rtsp-stream": "^0.0.9",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "utf-8-validate": "^5.0.9",
-    "ws": "^8.8.0"
+    "utf-8-validate": "^5.0.9"
   },
   "overrides": {
     "graceful-fs": "^4.2.9"
-  },
-  "build": {
-    "appId": "com.isas.masm-x86-runner",
-    "productName": "MASM x86 Runner",
-    "extends": null,
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "icon.ico"
-    },
-    "files": [
-      "./build/*",
-      "package.json"
-    ],
-    "nsis": {
-      "uninstallDisplayName": "WASM MASM x86 Runner",
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    },
-    "mac": {
-      "artifactName": "${productName}-${version}-osx.${ext}",
-      "category": "public.app-category.productivity",
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "icon": "icon.icns"
-    },
-    "linux": {
-      "artifactName": "${productName}-${version}-${arch}-linux.${ext}",
-      "maintainer": "istareatscreens",
-      "target": [
-        "tar.gz",
-        "deb",
-        "rpm",
-        "pacman"
-      ]
-    }
   }
 }
