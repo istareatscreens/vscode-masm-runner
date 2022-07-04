@@ -1,6 +1,6 @@
 # MASM x86 Runner
 
-MASM x86 Runner is x86 Microsoft Assembly Language (MASM) code compiler, linker, runner extension for vscode that comes packaged with the [Irvine Library](http://asmirvine.com/) and runs on all OS.
+MASM x86 Runner is x86 MASM (Microsoft Macro Assembly Language) code compiler, linker, runner extension for vscode that comes packaged with the [Irvine Library](http://asmirvine.com/) and runs on all OS.
 
 This app is made possible through the use of [JWlink and JWasm](https://github.com/JWasm) to compile x86/x64 MASM and a 32-bit wine terminal to execute x86 executable binaries using [Boxedwine](http://www.boxedwine.org/) emscripten port.
 

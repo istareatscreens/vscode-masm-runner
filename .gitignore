@@ -11,6 +11,8 @@ out
 .vscode
 debug.log
 .vs
+compilation-stats.json
+yarn-error.log
 #Ignore text files (used for notes)
 *.txt
 *.txt.swp

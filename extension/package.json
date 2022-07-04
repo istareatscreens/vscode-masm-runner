@@ -1,7 +1,7 @@
 {
   "name": "masm-x86-runner",
   "displayName": "MASM x86 runner",
-  "description": "Extension for Compiling and running x86 Microsoft Macro Assembly Language (MASM)",
+  "description": "Extension for Compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
   "version": "0.1.0",
   "publisher": "istareatscreens",
