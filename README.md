@@ -38,7 +38,15 @@ Current snippets include:
 - masm-template - Generates standard template to write MASM x86 using Irvine32 library
   ![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-x86-runner/master/docs/snippet.gif)
 
-## For testing outside vscode:
+# Development
+
+For development simply run from both root project directory (to build webview assets) and extension directory (to build extension):
+
+`npm run watch`
+
+Launch a vscode window from the extension directory and use the Run and Debug menu to start an instance of vscode for debugging. Launch Developer Tools to debug and ctrl+r to reload on web view change.
+
+# For testing outside vscode:
 
 **WARNING the web version is ~50mb in size**.  
 The web version can be viewed [HERE](https://wasm-masm-x86-editor.netlify.app/) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
