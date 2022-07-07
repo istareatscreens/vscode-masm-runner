@@ -1,6 +1,6 @@
 {
-  "name": "vscode-masm-x86-runner",
-  "version": "0.3.0",
+  "name": "vscode-masm-runner",
+  "version": "0.3.5",
   "description": "VSCode extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "main": "./build/electron-main.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/istareatscreens/vscode-masm-x86-runner"
+    "url": "https://github.com/istareatscreens/vscode-masm-runner"
   },
   "keywords": [
     "MASM",
@@ -18,7 +18,7 @@
     "linker"
   ],
   "author": "istareatscreens",
-  "homepage": "https://github.com/istareatscreens/vscode-masm-x86-runner",
+  "homepage": "https://github.com/istareatscreens/vscode-masm-runner",
   "devDependencies": {
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
