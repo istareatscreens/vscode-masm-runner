@@ -89,7 +89,9 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
   const webViewRunning = MasmRunnerPanel.isRunning();
 
   if (isWindows && !webViewRunning) {
-    console.log("to implement run code from native terminal");
+    //runCodeNatively(document);
+    vscode.window.showInformationMessage("To be implemented");
+    return;
   }
 
   if (webViewRunning) {
@@ -113,6 +115,11 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
     return false;
   }
   return true;
+}
+
+async function runCodeNatively(document: vscode.TextDocument) {
+  const terminal = vscode.window.createTerminal();
+  terminal.sendText("echo 'Sent text immediately after creating'");
 }
 
 /**
