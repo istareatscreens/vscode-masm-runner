@@ -603,7 +603,7 @@ function buildFileSystem(writableStorage, isDropBox) {
                     logAndExit(e);
                   }
                   BrowserFS.FileSystem.ZipFS.Create(
-                    { zipData: new Buffer(contents) },
+                    { zipData: Buffer.from(contents) },
                     function (e3, zipfs) {
                       if (e3) {
                         logAndExit(e3);
@@ -644,7 +644,7 @@ function buildRemoteZipFile(zipFilename, zipFileCallback) {
     BrowserFS.FileSystem.ZipFS.Create(
       {
         name: Config.locateRootBaseUrl + zipFilename,
-        zipData: new Buffer(contents),
+        zipData: Buffer.from(contents),
       },
       function (e3, zipfs) {
         if (e3) {
@@ -669,7 +669,7 @@ function buildAppFileSystems(adapterCallback) {
   if (Config.appPayload.length > 0) {
     let contents = getBase64Data(Config.appPayload);
     BrowserFS.FileSystem.ZipFS.Create(
-      { zipData: new Buffer(contents) },
+      { zipData: Buffer.from(contents) },
       function (e4, additionalZipfs) {
         if (e4) {
           logAndExit(e4);
@@ -701,7 +701,7 @@ function buildAppFileSystems(adapterCallback) {
               logAndExit(e);
             }
             BrowserFS.FileSystem.ZipFS.Create(
-              { zipData: new Buffer(contents) },
+              { zipData: Buffer.from(contents) },
               function (e3, additionalZipfs) {
                 if (e3) {
                   logAndExit(e3);
@@ -731,7 +731,7 @@ function buildExtraFileSystems(Buffer, fsCallback) {
   if (Config.extraPayload.length > 0) {
     let contents = getBase64Data(Config.extraPayload);
     BrowserFS.FileSystem.ZipFS.Create(
-      { zipData: new Buffer(contents) },
+      { zipData: Buffer.from(contents) },
       function (e2, zipfs) {
         if (e2) {
           logAndExit(e2);
@@ -761,7 +761,7 @@ function buildExtraFileSystems(Buffer, fsCallback) {
                 logAndExit(e);
               }
               BrowserFS.FileSystem.ZipFS.Create(
-                { zipData: new Buffer(contents) },
+                { zipData: Buffer.from(contents) },
                 function (e3, zipfs) {
                   if (e3) {
                     logAndExit(e3);
@@ -803,7 +803,7 @@ function buildCDROMFileSystem(Buffer, fsCallback) {
               logAndExit(e);
             }
             BrowserFS.FileSystem.IsoFS.Create(
-              { data: new Buffer(contents) },
+              { data: Buffer.from(contents) },
               function (e3, cdromFS) {
                 if (e3) {
                   logAndExit(e3);
