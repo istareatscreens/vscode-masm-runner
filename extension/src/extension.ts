@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { basename, dirname, extname, join } from "path";
+import { platform } from "os";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -27,9 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "masmRunner.runCode",
       (fileUri: vscode.Uri) => {
-        if (MasmRunnerPanel.currentPanel) {
-          MasmRunnerPanel.currentPanel.runCode(fileUri);
-        }
+        runCode(fileUri);
       }
     )
   );
@@ -54,6 +53,66 @@ function getWebviewOptions(extensionUri: vscode.Uri): any {
     // And restrict the webview to only loading content from our extension's `media` directory.
     localResourceRoots: [vscode.Uri.joinPath(extensionUri, "media")],
   };
+}
+
+async function runCode(fileUri: vscode.Uri): Promise<void> {
+  const _runFromExplorer = checkIsRunFromExplorer(fileUri);
+  let document: undefined | vscode.TextDocument = undefined;
+  if (_runFromExplorer) {
+    document = await vscode.workspace.openTextDocument(fileUri);
+  } else {
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+      document = editor.document;
+    } else {
+      vscode.window.showInformationMessage("No code found or selected.");
+      return;
+    }
+  }
+
+  if (!document) {
+    vscode.window.showInformationMessage("File not found");
+    return;
+  }
+
+  const filename = basename(document.fileName);
+  const fileExtension = extname(document.fileName);
+
+  if (fileExtension != ".asm") {
+    vscode.window.showInformationMessage(
+      "Please make sure file has extension .asm"
+    );
+    return;
+  }
+
+  const isWindows = platform() !== "win32";
+  const webViewRunning = MasmRunnerPanel.isRunning();
+
+  if (isWindows && !webViewRunning) {
+    console.log("to implement run code from native terminal");
+  }
+
+  if (webViewRunning) {
+    MasmRunnerPanel.currentPanel?.runCode(document, filename);
+  }
+
+  vscode.window.showInformationMessage(
+    "Please run masmRunner.start command to compile/run code"
+  );
+}
+
+function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
+  const editor = vscode.window.activeTextEditor;
+  if (!fileUri || !fileUri.fsPath) {
+    return false;
+  }
+  if (!editor) {
+    return true;
+  }
+  if (fileUri.fsPath === editor.document.uri.fsPath) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -96,43 +155,13 @@ class MasmRunnerPanel {
   public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     MasmRunnerPanel.currentPanel = new MasmRunnerPanel(panel, extensionUri);
   }
-  private _runFromExplorer: boolean | undefined;
-  private _document: vscode.TextDocument | undefined;
 
   public async resetCMD() {
     this._postMessage("reset");
   }
 
-  public async runCode(fileUri: vscode.Uri) {
-    this._runFromExplorer = this.checkIsRunFromExplorer(fileUri);
-    if (this._runFromExplorer) {
-      this._document = await vscode.workspace.openTextDocument(fileUri);
-    } else {
-      const editor = vscode.window.activeTextEditor;
-      if (editor) {
-        this._document = editor.document;
-      } else {
-        vscode.window.showInformationMessage("No code found or selected.");
-        return;
-      }
-    }
-
-    // Add check for extension
-    if (!this._document) {
-      vscode.window.showInformationMessage("File not found");
-      return;
-    }
-
-    const filename = basename(this._document.fileName);
-    const fileExtension = extname(this._document.fileName);
-    if (fileExtension != ".asm") {
-      vscode.window.showInformationMessage(
-        "Please make sure file has extension .asm"
-      );
-      return;
-    }
-
-    const text = this._document.getText();
+  public runCode(document: vscode.TextDocument, filename: string): void {
+    const text = document.getText();
     this._postMessage("compile-and-run", {
       data: {
         filename: filename,
@@ -146,8 +175,8 @@ class MasmRunnerPanel {
     this._writeCommandToCMD(`echo.>${filename}`);
   }
 
-  private compileCode() {
-    const filename = this._document?.fileName;
+  private compileCode(document) {
+    const filename = document?.fileName;
     if (!filename) {
       return;
     }
@@ -155,20 +184,6 @@ class MasmRunnerPanel {
     this._writeCommandToCMD(
       `assemble ${filename.substring(0, filename.length - 4)}`
     );
-  }
-
-  private checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
-    const editor = vscode.window.activeTextEditor;
-    if (!fileUri || !fileUri.fsPath) {
-      return false;
-    }
-    if (!editor) {
-      return true;
-    }
-    if (fileUri.fsPath === editor.document.uri.fsPath) {
-      return false;
-    }
-    return true;
   }
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -256,6 +271,10 @@ class MasmRunnerPanel {
     // Send a message to the webview webview.
     // You can send any JSON serializable data.
     this._panel.webview.postMessage({ command: "refactor" });
+  }
+
+  public static isRunning() {
+    return MasmRunnerPanel.currentPanel !== undefined;
   }
 
   public dispose() {

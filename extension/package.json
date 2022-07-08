@@ -37,7 +37,7 @@
   ],
   "activationEvents": [
     "onCommand:masmRunner.start",
-    "onCommand:masmRunner.doRefactor",
+    "onCommand:masmRunner.runCode",
     "onWebviewPanel:masmRunner"
   ],
   "main": "./out/extension.js",

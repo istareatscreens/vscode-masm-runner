@@ -13,6 +13,7 @@ const livereload = require("gulp-livereload");
 const del = require("del");
 
 const assetsPath = "src/assets/";
+const readmePath = "README.md";
 const jsPath = "src/js/**/*.*";
 const cssPath = "src/css/**/*";
 const wasmPath = "src/wasm/*.wasm";
@@ -60,6 +61,10 @@ function assetsTask() {
   );
 }
 
+function readmeTask() {
+  return src(readmePath).pipe(gulp.dest("extension/"));
+}
+
 function imgTask() {
   //only using for favicon
   return src([imagePath + ".ico", "src/css/images/*"])
@@ -85,12 +90,14 @@ function watchTask() {
       jsTaskDev,
       jsBoxedTask,
       cssTask,
+      readmeTask,
       wasmTask,
       assetsTask,
       imgTask
     )
   );
   gulp.watch(jsPath).on("change", browserSync.reload);
+  gulp.watch(readmePath).on("change", browserSync.reload);
   gulp.watch(jsBoxedPath).on("change", browserSync.reload);
   gulp.watch(imagePath).on("change", browserSync.reload);
 }
@@ -100,6 +107,7 @@ exports.build = series(
   parallel(
     iconTask,
     cleanTask,
+    readmeTask,
     jsTask,
     jsBoxedTask,
     cssTask,

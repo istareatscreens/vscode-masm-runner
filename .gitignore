@@ -33,4 +33,6 @@ Mac
 electron-builder.yml
 electron-builder.yaml
 
+#Extension files
+extension/README.md
 media

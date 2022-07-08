@@ -17,14 +17,14 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 - Command: masm runner start
 - Description: Starts MASM CMD to allow compilation and running of code
 
-![start MASM CMD preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-x86-runner/master/docs/start.gif)
+![start MASM CMD preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start.gif)
 
 ### Compile and Run
 
 - Command: masm runner compile
 - Description: Runs code in current file
 
-![compile and run MASM code preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-x86-runner/master/docs/compile_and_run.gif)
+![compile and run MASM code preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/compile_and_run.gif)
 
 ### MASM Runner restart
 
@@ -36,7 +36,7 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 Current snippets include:
 
 - masm-template - Generates standard template to write MASM x86 using Irvine32 library
-  ![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-x86-runner/master/docs/snippet.gif)
+  ![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif)
 
 # Development
 
@@ -46,7 +46,11 @@ For development simply run from both root project directory (to build webview as
 
 Launch a vscode window from the extension directory and use the Run and Debug menu to start an instance of vscode for debugging. Launch Developer Tools to debug and ctrl+r to reload on web view change.
 
-# For testing outside vscode:
+# Contributing
+
+Short contriubting guide [HERE](https://githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/CONTRIBUTE.md)
+
+# Preview outside vscode:
 
 **WARNING the web version is ~50mb in size**.  
 The web version can be viewed [HERE](https://wasm-masm-x86-editor.netlify.app/) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
