@@ -40,7 +40,7 @@ Current snippets include:
 
 # Contributing
 
-For development and contributing see [HERE](https://githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/CONTRIBUTE.md)
+For development and contributing see [HERE](https://github.com/istareatscreens/vscode-masm-runner/blob/master/docs/CONTRIBUTING.md)
 
 # Preview outside vscode:
 
