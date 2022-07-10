@@ -1,11 +1,11 @@
 {
   "name": "vscode-masm-runner",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "VSCode extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "main": "./build/electron-main.js",
   "scripts": {
     "watch": "gulp watch",
-    "build": "gulp build"
+    "build": "gulp build && cd ./extension && npm run vscode:prepublish && vsce package"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,6 @@
     "gulp-imagemin": "^7.1.0",
     "gulp-livereload": "^4.0.2",
     "gulp-postcss": "^9.0.1",
-    "gulp-run": "^1.7.1",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-terser": "^2.1.0",

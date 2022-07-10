@@ -19,8 +19,10 @@ function Boxedwine() {
 
   const createEventListeners = () => {
     createZipListener();
-    createMessageListner(); //creates message listener to intercept messages from parent document and rethrow messages as events
-    createClickListener(); //creates a click listener to allow selection and operator of terminal when clicked on
+    //creates message listener to intercept messages from parent document and rethrow messages as events
+    createMessageListner();
+    //creates a click listener to allow selection and operator of terminal when clicked on
+    createClickListener();
     createCommandWriteListener();
     createCommandRunListener();
     createResetListener();

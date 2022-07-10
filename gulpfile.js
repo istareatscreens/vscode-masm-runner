@@ -105,8 +105,8 @@ function watchTask() {
 exports.watch = watchTask;
 exports.build = series(
   parallel(
-    iconTask,
     cleanTask,
+    iconTask,
     readmeTask,
     jsTask,
     jsBoxedTask,

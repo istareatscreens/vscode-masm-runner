@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-x86-runner",
   "private": false,

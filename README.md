@@ -38,17 +38,9 @@ Current snippets include:
 - masm-template - Generates standard template to write MASM x86 using Irvine32 library
   ![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif)
 
-# Development
-
-For development simply run from both root project directory (to build webview assets) and extension directory (to build extension):
-
-`npm run watch`
-
-Launch a vscode window from the extension directory and use the Run and Debug menu to start an instance of vscode for debugging. Launch Developer Tools to debug and ctrl+r to reload on web view change.
-
 # Contributing
 
-Short contriubting guide [HERE](https://githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/CONTRIBUTE.md)
+For development and contributing see [HERE](https://githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/CONTRIBUTE.md)
 
 # Preview outside vscode:
 
