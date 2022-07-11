@@ -2,7 +2,11 @@
 
 # Development
 
-For development simply run
+Please make sure you are using node version >16 and have gulp installed:
+
+`npm install -g gulp`
+
+To build the project development simply run
 
 `npm run watch`
 

@@ -5,7 +5,8 @@
   "main": "./build/electron-main.js",
   "scripts": {
     "watch": "gulp watch",
-    "build": "gulp build && cd ./extension && npm run vscode:prepublish && vsce package"
+    "build": "gulp build",
+    "package": "gulp build && cd ./extension && npm run vscode:prepublish && vsce package"
   },
   "repository": {
     "type": "git",
