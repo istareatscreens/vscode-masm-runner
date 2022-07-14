@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-x86-runner",
   "private": false,
@@ -78,7 +78,18 @@
           ".ASM"
         ]
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "MASM Runner",
+      "properties": {
+        "masmRunner.exportBinaries": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Export .exe and .obj from boxedwine webview on compile?"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -41,16 +41,65 @@ function Boxedwine() {
 
   const compileAndRun = () => {
     window.addEventListener("compile-and-run", ({ detail: data }) => {
-      const { filename, time } = data;
+      const { filename, time, filePath, exportBinaries } = data;
       const text = convertIrvineImports(data.text);
       FileSystem.createFile(filename, text, time);
       // TODO: Remove substring by changing bat to not add .asm
+      const baseName = filename.substring(0, filename.length - 4);
       convertStringToConsoleCommand(
-        `echo.>${filename} && assemble ${filename.substring(
-          0,
-          filename.length - 4
-        )}`
+        `echo.>${filename} && assemble ${baseName}`
       );
+
+      if (!exportBinaries) {
+        return;
+      }
+
+      outputBuildFiles(baseName, filePath);
+    });
+  };
+
+  const outputBuildFiles = (fileBaseName, filePath) => {
+    const getFileFromLocalStorage = (fileBaseName, extension) =>
+      sleepUntil(() => {
+        const filename = `${fileBaseName}.${extension}`;
+        const fileData = FileSystem.getFile(filename);
+        return fileData !== null
+          ? {
+              command: "save-file-to-disk",
+              filename: filename,
+              filePath: filePath,
+              fileData: fileData,
+            }
+          : false;
+      }, 60000);
+    const sendFileToExtension = (result) => window.vscode.postMessage(result);
+    getFileFromLocalStorage(fileBaseName, "obj")
+      .then((result) => sendFileToExtension(result))
+      .catch((e) => {
+        console.log(e);
+      });
+
+    getFileFromLocalStorage(fileBaseName, "exe")
+      .then((result) => sendFileToExtension(result))
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const sleepUntil = (callback, timeout) => {
+    return new Promise((resolve, reject) => {
+      const timeWas = new Date();
+      const wait = setInterval(function () {
+        const result = callback();
+        if (result) {
+          clearInterval(wait);
+          resolve(result);
+        } else if (new Date() - timeWas > timeout) {
+          // Timeout
+          clearInterval(wait);
+          return reject();
+        }
+      }, 300);
     });
   };
 

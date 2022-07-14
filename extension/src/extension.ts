@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { basename, dirname, extname, join } from "path";
 import { platform } from "os";
+import fs = require("fs");
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -96,6 +97,7 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
 
   if (webViewRunning) {
     MasmRunnerPanel.currentPanel?.runCode(document, filename);
+    return;
   }
 
   vscode.window.showInformationMessage(
@@ -120,6 +122,25 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
 async function runCodeNatively(document: vscode.TextDocument) {
   const terminal = vscode.window.createTerminal();
   terminal.sendText("echo 'Sent text immediately after creating'");
+}
+
+function writeFileToWorkspace(
+  filename: string,
+  fileData: string,
+  filePath: string
+) {
+  //const wsedit = new vscode.WorkspaceEdit();
+  //vscode.window.showInformationMessage(filePath.toString());
+  const newPath = vscode.Uri.file(filePath.slice(0, -3) + filename.slice(-3));
+  //wsedit.createFile(newPath, { overwrite: true, ignoreIfExists: false });
+  //vscode.workspace.applyEdit(wsedit);
+  fs.writeFile(newPath.fsPath, fileData, { encoding: "base64" }, (error) => {
+    if (error) {
+      console.log(
+        "Could not write to file: " + newPath.fsPath + ": " + error.message
+      );
+    }
+  });
 }
 
 /**
@@ -169,10 +190,19 @@ class MasmRunnerPanel {
 
   public runCode(document: vscode.TextDocument, filename: string): void {
     const text = document.getText();
+    const exportBinaries = vscode.workspace
+      .getConfiguration("masmRunner")
+      .get("exportBinaries");
+    const filePath =
+      vscode?.window?.activeTextEditor?.document?.uri?.fsPath ??
+      vscode?.workspace?.workspaceFolders?.[0]?.uri?.path ??
+      null;
     this._postMessage("compile-and-run", {
       data: {
         filename: filename,
         text: text,
+        filePath: filePath,
+        exportBinaries: exportBinaries,
         time: new Date().getTime(),
       },
     });
@@ -214,9 +244,17 @@ class MasmRunnerPanel {
     this._panel.webview.onDidReceiveMessage(
       (message) => {
         switch (message.command) {
-          case "alert":
-            vscode.window.showErrorMessage(message.text);
-            return;
+          case "save-file-to-disk":
+            if (!message.filePath) {
+              console.log("Invalid path could not save file");
+              break;
+            }
+            writeFileToWorkspace(
+              message.filename,
+              message.fileData,
+              message.filePath
+            );
+            break;
         }
       },
       null,
@@ -365,6 +403,9 @@ class MasmRunnerPanel {
     </div>
     <div id="bw-root"></div>
     <noscript> You need to enable JavaScript to run this app. </noscript>
+    <script>
+      window.vscode = acquireVsCodeApi();
+    </script>
     <script nounce="${getNonce()}" defer src="${indexBoxedWineUri}"></script>
     <script nounce="${getNonce()}" defer src="${boxedwineUri}"></script>
     <input type="hidden" id="baseUri" value="${baseUri}"> 

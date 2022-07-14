@@ -22,7 +22,11 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 ### Compile and Run
 
 - Command: masm runner compile
-- Description: Runs code in current file
+- Description: Runs code in current file and exports .obj and .exe files to file or workspace directory
+- Settings (via vscode options):
+  - masmRunner.exportBinaries
+    - Description: Export .exe and .obj from boxedwine webview on compile?
+    - Default Value: True
 
 ![compile and run MASM code preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/compile_and_run.gif)
 

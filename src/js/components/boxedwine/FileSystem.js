@@ -124,6 +124,17 @@ export default class FileSystem {
       hf.getFileMetaData(FileSystem._readFileList()[filename]).id
     );
   }
+
+  static getFile(filename) {
+    const fileList = FileSystem._readFileList();
+    const selectedFile = fileList?.[filename] ?? null;
+    if (!selectedFile) {
+      return null;
+    }
+    const key = hf.getFileMetaData(selectedFile).id;
+    return window.localStorage.getItem(key);
+  }
+
   /**
    * @description finds file in local storage and replaces its text
    * @param {string} fileName name of assembly file exlcuding the .asm filename suffix
