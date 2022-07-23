@@ -24,11 +24,11 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 - Command: masm runner compile
 - Description: 
       - Runs code in current file and exports .obj and .exe files to file or workspace directory,
-          this command compiles natively on all Windows based OS devices without the need to run "masm runner start".
-            Please note that the type of terminal needed to run this natively on windows must be powershell in vscode terminal, and if webview is running it will  
-              compile in webview ONLY,
-               once webview is closed it will compile again inside the native vscode terminal (might take a few seconds after running compile for the extension to 
-                 register webview is closed).
+        this command compiles natively on all Windows based OS devices without the need to run "masm runner start".
+        Please note that the type of terminal needed to run this natively on windows must be powershell in vscode terminal, and if webview is running it will  
+        compile in webview ONLY,
+        once webview is closed it will compile again inside the native vscode terminal (might take a few seconds after running compile for the extension to 
+        register webview is closed).
 
 - Settings (via vscode options): 
   - masmRunner.exportBinaries
