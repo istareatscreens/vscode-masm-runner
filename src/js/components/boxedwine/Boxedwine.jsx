@@ -212,6 +212,7 @@ function Boxedwine() {
   };
 
   const reset = (command = "cmd.bat") => {
+    setLoading(true);
     const callMain = () => {
       Module.pauseMainLoop();
       Module.restartBW();
