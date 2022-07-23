@@ -103,9 +103,8 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
   const isWindows = platform() !== "win32";
   const webViewRunning = MasmRunnerPanel.isRunning();
 
-  if (isWindows && !webViewRunning) {
-    //runCodeNatively(document);
-    vscode.window.showInformationMessage("To be implemented");
+  if (isWindows==false && !webViewRunning) {
+    runCodeNatively(document);
     return;
   }
 
@@ -134,8 +133,86 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
 }
 
 async function runCodeNatively(document: vscode.TextDocument) {
-  const terminal = vscode.window.createTerminal();
-  terminal.sendText("echo 'Sent text immediately after creating'");
+  //create a terminal called powershell
+  if(vscode.window.terminals.length < 1){
+    vscode.window.showInformationMessage(
+      "Please ensure that a powershell terminal is open in vscode"
+    );
+  }
+  const terminal = vscode.window.terminals[0]; //integrated terminal
+  //path to the irvine to extension directory
+  let path_link: string = __dirname.slice(0, __dirname.lastIndexOf("\\"));
+  terminal.sendText("echo 'test45'");
+  
+  //created the file paths
+  //uri file path
+  const native_uri_path = vscode.Uri.file("native\\");
+  //jwasm.exe
+  const JWASM_EXE = vscode.Uri.joinPath(native_uri_path, "JWASM", "JWASM.EXE");
+  //jwlink.exe
+  const JWLINK_EXE = vscode.Uri.joinPath(
+    native_uri_path,
+    "JWLINK",
+    "JWlink.exe"
+  );
+  //irvine lib path
+  const LIB_PATH = vscode.Uri.joinPath(native_uri_path, "irvine");
+  //irvine32.lib
+  const IRVINE32_PATH = vscode.Uri.joinPath(
+    native_uri_path,
+    "irvine",
+    "Irvine32.lib"
+  );
+  const IRVINE32_INC = vscode.Uri.joinPath(
+    native_uri_path,
+    "irvine",
+    "Irvine32.inc"
+  );
+  //kernel23.Lib
+  const KERNEL32_PATH = vscode.Uri.joinPath(
+    native_uri_path,
+    "irvine",
+    "Kernel32.Lib"
+  );
+  //User32.Lib
+  const USER32_PATH = vscode.Uri.joinPath(
+    native_uri_path,
+    "irvine",
+    "User32.Lib"
+  );
+  const irvineLib32Match = /include.+irvine32(\.inc|)/im;
+  let temp_file = document;
+  let new_path = vscode.Uri.file(
+    temp_file.fileName.slice(0, temp_file.fileName.length - 4) +
+      "t." +
+      temp_file.fileName.slice(-3)
+  );
+  let file_data = temp_file.getText();
+  file_data = file_data.replace(
+    irvineLib32Match,
+    "INCLUDE " + path_link + IRVINE32_INC.fsPath
+  );
+  fs.writeFile(new_path.fsPath, file_data, (error) => {
+    if (error) {
+      vscode.window.showInformationMessage("file could not be processed...");
+    }
+  });
+  //connect and run, post results in terminal
+  terminal.sendText(
+    `${path_link}${JWASM_EXE.fsPath} /Zd /coff ${
+      new_path.fsPath
+    } ; ${path_link}${
+      JWLINK_EXE.fsPath
+    } format windows pe LIBPATH ${path_link}${
+      LIB_PATH.fsPath
+    } LIBRARY ${path_link}${IRVINE32_PATH.fsPath} LIBRARY ${path_link}${
+      KERNEL32_PATH.fsPath
+    } LIBRARY ${path_link}${USER32_PATH.fsPath} file ${new_path.fsPath.slice(
+      0,
+      new_path.fsPath.length - 4
+    )}.obj ; ${new_path.fsPath.slice(0, new_path.fsPath.length - 4)}.exe`
+  );
+  //note: possibly have it instead of creating a new file replace it in the same file and change it back afterwards
 }
 
 function writeFileToWorkspace(
