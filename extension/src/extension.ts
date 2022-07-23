@@ -142,7 +142,6 @@ async function runCodeNatively(document: vscode.TextDocument) {
   const terminal = vscode.window.terminals[0]; //integrated terminal
   //path to the irvine to extension directory
   let path_link: string = __dirname.slice(0, __dirname.lastIndexOf("\\"));
-  terminal.sendText("echo 'test45'");
   
   //created the file paths
   //uri file path
