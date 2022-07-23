@@ -41,9 +41,7 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 - Description: Send file(s) to MASM Runner Webview
 - Context Menu: In File explorer you can right click files to send to webview
 - Settings (via vscode options):
-
   - masmRunner.enableContextMenus
-
     - Description: Enables context menu in Explorer (used to send files to boxedwine webview (cmd) - Default Value: True
     - Default Value: True
 
@@ -54,7 +52,8 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 Current snippets include:
 
 - masm-template - Generates standard template to write MASM x86 using Irvine32 library
-  ![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif)
+
+![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif)
 
 # Contributing
 

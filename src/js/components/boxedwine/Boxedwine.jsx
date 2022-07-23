@@ -411,14 +411,12 @@ function Boxedwine() {
         className={"emscripten"}
         id={"canvas"}
         ref={canvas}
-        style={{ visibility: loading ? "hidden" : "visible" }}
       />
       <div
         onClick={(event) => handleClick(event)}
         onContextMenu={(event) => handleClick(event)}
         id={"emscripten-overlay"}
         className={"emscripten-overlay"}
-        style={{ visibility: loading ? "hidden" : "visible" }}
       />
     </>
   );
