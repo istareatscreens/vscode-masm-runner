@@ -7871,6 +7871,7 @@ var GL = {
     var ctx = canvas.getContext("webgl", webGLContextAttributes);
     if (!ctx) return 0;
     var handle = GL.registerContext(ctx, webGLContextAttributes);
+    window.dispatchEvent(new Event("boxwine-loaded"));
     return handle;
   },
   registerContext: function (ctx, webGLContextAttributes) {

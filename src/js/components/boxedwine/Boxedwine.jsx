@@ -1,10 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { createMessageListner } from "../../utility/utilityFunctions";
 import { keyCodes } from "./keypress.js";
 import FileSystem from "./FileSystem";
+import { crlf } from "eol";
+import LoadingScreen from "./LoadingScreen.jsx";
 
 function Boxedwine() {
   const canvas = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     createEventListeners();
@@ -27,6 +30,8 @@ function Boxedwine() {
     createCommandRunListener();
     createResetListener();
     compileAndRun();
+    sendFiles();
+    boxwineLoaded();
   };
 
   const removeEventListeners = () => {
@@ -37,6 +42,49 @@ function Boxedwine() {
     window.removeEventListener("run-command");
     window.removeEventListener("zip-files");
     window.removeEventListener("compile-and-run");
+    window.removeEventListener("send-files");
+    window.removeEventListener("boxwine-loaded");
+  };
+
+  const boxwineLoaded = () => {
+    window.addEventListener("boxwine-loaded", (e) => {
+      setLoading(false);
+    });
+  };
+
+  const sendFiles = () => {
+    window.addEventListener("send-files", ({ detail: data }) => {
+      const createFileCommand = FileSystem.createDataFiles(
+        data.map(
+          ({ filename, fileExtension, fileData, fileMetaData, isBinary }) => {
+            const formatFileData = () => {
+              if (!isBinary) {
+                return fileExtension === ".asm"
+                  ? crlf(convertIrvineImports(fileData))
+                  : crlf(fileData);
+              }
+              return fileData;
+            };
+
+            const transformedFileData = formatFileData();
+
+            return {
+              filename,
+              fileData: transformedFileData,
+              lastModified: new Date(fileMetaData.mtime).getTime(),
+              fileSize: isBinary
+                ? fileMetaData.size
+                : transformedFileData.length,
+              isBinary,
+            };
+          }
+        )
+      );
+      if (createFileCommand != "") {
+        convertStringToConsoleCommand(createFileCommand);
+        return;
+      }
+    });
   };
 
   const compileAndRun = () => {
@@ -260,7 +308,6 @@ function Boxedwine() {
   //TODO Fix this in boxedwine as it is extremely buggy (causes memory out of bounds bug hard crash)
   const createCommandRunListener = () => {
     window.addEventListener("run-command", (event) => {
-      //console.log(event);
       if (Module.ProcessRun == undefined) {
         const timeout = () =>
           setTimeout(() => {
@@ -273,7 +320,6 @@ function Boxedwine() {
           });
         timeout();
       } else {
-        //console.log(event.detail);
         Module.ProcessRun.runCommand(event.detail);
       }
     });
@@ -359,17 +405,20 @@ function Boxedwine() {
 
   return (
     <>
+      {loading && <LoadingScreen />}
       <canvas
         onContextMenu={(event) => event.preventDefault()}
         className={"emscripten"}
         id={"canvas"}
         ref={canvas}
+        style={{ visibility: loading ? "hidden" : "visible" }}
       />
       <div
         onClick={(event) => handleClick(event)}
         onContextMenu={(event) => handleClick(event)}
         id={"emscripten-overlay"}
         className={"emscripten-overlay"}
+        style={{ visibility: loading ? "hidden" : "visible" }}
       />
     </>
   );

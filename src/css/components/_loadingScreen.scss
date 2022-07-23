@@ -1,0 +1,96 @@
+/* 
+Modified from https://codepen.io/duptitung
+https://codepen.io/duptitung/pen/XMVNyZ
+*/
+.loading-screen {
+  width: 100vw;
+  height: 100vh;
+  z-index: 9001;
+  background: #000;
+  font-family: "Press Start 2P", sans-serif;
+  color: #fff;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+  &__container {
+    width: 9.375rem;
+    height: 1.25rem;
+    border: 0.125rem solid #b2b2b2;
+    border-radius: 0.4375rem;
+    margin: 0 auto;
+    padding: 0.125rem 0.0625rem;
+    overflow: hidden;
+    font-size: 0;
+    margin-left: 8rem;
+    margin-top: 5rem;
+    &__box {
+      width: 0.5625rem;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        #2838c7 0%,
+        #5979ef 17%,
+        #869ef3 32%,
+        #869ef3 45%,
+        #5979ef 59%,
+        #2838c7 100%
+      );
+      display: inline-block;
+      margin-right: 0.25rem;
+      animation: loader 2s infinite;
+      animation-timing-function: linear;
+    }
+  }
+
+  &__logo {
+    width: 13.75rem;
+    margin: 3.125rem auto;
+  }
+  &__logo p {
+    margin: 0;
+    padding: 0;
+  }
+  &__top {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 2.4rem;
+  }
+  &__mid {
+    font-size: 3.2rem;
+    font-weight: 400;
+    line-height: 2.1rem;
+  }
+  &__mid span {
+    font-size: 1.8rem;
+    display: inline-block;
+    vertical-align: top;
+    color: #ff6821;
+    margin-top: -2.9rem;
+    margin-left: 19rem;
+  }
+  &__logo &__bottom {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 2.2rem;
+    margin-left: 0px;
+    margin-top: -1.9rem;
+  }
+}
+
+@keyframes loader {
+  0% {
+    transform: translate(-1.875rem);
+  }
+  100% {
+    transform: translate(9.375rem);
+  }
+}

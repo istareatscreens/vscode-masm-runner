@@ -57,6 +57,11 @@
         "command": "masmRunner.resetCMD",
         "title": "Restart Command Prompt",
         "category": "Masm Runner"
+      },
+      {
+        "command": "masmRunner.sendToMasmWebview",
+        "title": "Send file(s) to MASM Runner Webview",
+        "category": "Masm Runner"
       }
     ],
     "snippets": [
@@ -86,9 +91,23 @@
         "masmRunner.exportBinaries": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Export .exe and .obj from boxedwine webview on compile?"
+          "markdownDescription": "Export .exe and .obj from boxedwine webview (cmd) on compile?"
+        },
+        "masmRunner.enableContextMenus": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enables context menu in Explorer (used to send files to boxedwine webview (cmd)"
         }
       }
+    },
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "config.masmRunner.enableContextMenus",
+          "command": "masmRunner.sendToMasmWebview",
+          "group": "4_masmRunner"
+        }
+      ]
     }
   },
   "scripts": {

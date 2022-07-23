@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { basename, dirname, extname, join } from "path";
 import { platform } from "os";
 import fs = require("fs");
+import { isBinaryFile } from "isbinaryfile";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -17,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
         webviewPanel: vscode.WebviewPanel,
         state: any
       ) {
-        console.log(`Got state: ${state}`);
+        //console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
         webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
         MasmRunnerPanel.revive(webviewPanel, context.extensionUri);
@@ -30,6 +31,19 @@ export function activate(context: vscode.ExtensionContext) {
       "masmRunner.runCode",
       (fileUri: vscode.Uri) => {
         runCode(fileUri);
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "masmRunner.sendToMasmWebview",
+      async (...files) => {
+        if (MasmRunnerPanel.currentPanel) {
+          await MasmRunnerPanel.currentPanel.sendFile(files);
+        } else {
+          vscode.window.showInformationMessage("Webview not open");
+        }
       }
     )
   );
@@ -129,11 +143,7 @@ function writeFileToWorkspace(
   fileData: string,
   filePath: string
 ) {
-  //const wsedit = new vscode.WorkspaceEdit();
-  //vscode.window.showInformationMessage(filePath.toString());
   const newPath = vscode.Uri.file(filePath.slice(0, -3) + filename.slice(-3));
-  //wsedit.createFile(newPath, { overwrite: true, ignoreIfExists: false });
-  //vscode.workspace.applyEdit(wsedit);
   fs.writeFile(newPath.fsPath, fileData, { encoding: "base64" }, (error) => {
     if (error) {
       console.log(
@@ -141,6 +151,42 @@ function writeFileToWorkspace(
       );
     }
   });
+}
+
+async function readFile(filePath: string) {
+  const filename = basename(filePath);
+  const fileExtension = extname(filePath);
+  const fileBaseName = filename.substring(
+    0,
+    filename.length - fileExtension.length
+  );
+  return Promise.all([
+    filename,
+    fileExtension,
+    fileBaseName,
+    filePath,
+    fs.promises.readFile(filePath),
+    fs.promises.stat(filePath),
+    isBinaryFile(filePath),
+  ]).then(
+    ([
+      filename,
+      fileExtension,
+      fileBaseName,
+      filePath,
+      fileData,
+      fileMetaData,
+      isBinary,
+    ]) => ({
+      filename,
+      fileExtension,
+      fileBaseName,
+      filePath,
+      fileData,
+      fileMetaData,
+      isBinary,
+    })
+  );
 }
 
 /**
@@ -188,6 +234,39 @@ class MasmRunnerPanel {
     this._postMessage("reset");
   }
 
+  public async sendFile(...files: any[]) {
+    const [, fileList] = files[0];
+
+    if (fileList.length == 0) {
+      vscode.window.showInformationMessage("No files selected");
+      return;
+    }
+
+    Promise.all(
+      fileList
+        .filter((file) => file.scheme === "file")
+        .map((file) => readFile(file.fsPath))
+    )
+      .then((files) => {
+        this._postMessage(
+          "send-files",
+          files.map((file) => {
+            const fileData = file.isBinary
+              ? file.fileData.toString("base64")
+              : file.fileData.toString();
+
+            return Object.assign({}, file, {
+              fileData: fileData,
+              size: file.isBinary ? file.fileMetaData.size : fileData.length,
+            });
+          })
+        );
+      })
+      .catch((e) => {
+        vscode.window.showInformationMessage("Could not send file(s)");
+      });
+  }
+
   public runCode(document: vscode.TextDocument, filename: string): void {
     const text = document.getText();
     const exportBinaries = vscode.workspace
@@ -198,13 +277,11 @@ class MasmRunnerPanel {
       vscode?.workspace?.workspaceFolders?.[0]?.uri?.path ??
       null;
     this._postMessage("compile-and-run", {
-      data: {
-        filename: filename,
-        text: text,
-        filePath: filePath,
-        exportBinaries: exportBinaries,
-        time: new Date().getTime(),
-      },
+      filename: filename,
+      text: text,
+      filePath: filePath,
+      exportBinaries: exportBinaries,
+      time: new Date().getTime(),
     });
   }
 
@@ -297,13 +374,13 @@ class MasmRunnerPanel {
     }
     commandArray.push("enter");
     this._postMessage("write-command", {
-      data: commandArray,
+      commandArray,
     });
   }
 
   private _postMessage(eventName: string, data: any = {}) {
     this._panel.webview.postMessage(
-      JSON.stringify({ eventName: eventName, data: data })
+      JSON.stringify({ eventName: eventName, data: { data: data } })
     );
   }
 
