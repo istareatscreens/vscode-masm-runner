@@ -1,10 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { createMessageListner } from "../../utility/utilityFunctions";
 import { keyCodes } from "./keypress.js";
 import FileSystem from "./FileSystem";
+import { crlf } from "eol";
+import LoadingScreen from "./LoadingScreen.jsx";
 
 function Boxedwine() {
   const canvas = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     createEventListeners();
@@ -27,6 +30,8 @@ function Boxedwine() {
     createCommandRunListener();
     createResetListener();
     compileAndRun();
+    sendFiles();
+    boxwineLoaded();
   };
 
   const removeEventListeners = () => {
@@ -37,20 +42,112 @@ function Boxedwine() {
     window.removeEventListener("run-command");
     window.removeEventListener("zip-files");
     window.removeEventListener("compile-and-run");
+    window.removeEventListener("send-files");
+    window.removeEventListener("boxwine-loaded");
+  };
+
+  const boxwineLoaded = () => {
+    window.addEventListener("boxwine-loaded", (e) => {
+      setLoading(false);
+    });
+  };
+
+  const sendFiles = () => {
+    window.addEventListener("send-files", ({ detail: data }) => {
+      const createFileCommand = FileSystem.createDataFiles(
+        data.map(
+          ({ filename, fileExtension, fileData, fileMetaData, isBinary }) => {
+            const formatFileData = () => {
+              if (!isBinary) {
+                return fileExtension === ".asm"
+                  ? crlf(convertIrvineImports(fileData))
+                  : crlf(fileData);
+              }
+              return fileData;
+            };
+
+            const transformedFileData = formatFileData();
+
+            return {
+              filename,
+              fileData: transformedFileData,
+              lastModified: new Date(fileMetaData.mtime).getTime(),
+              fileSize: isBinary
+                ? fileMetaData.size
+                : transformedFileData.length,
+              isBinary,
+            };
+          }
+        )
+      );
+      if (createFileCommand != "") {
+        convertStringToConsoleCommand(createFileCommand);
+        return;
+      }
+    });
   };
 
   const compileAndRun = () => {
     window.addEventListener("compile-and-run", ({ detail: data }) => {
-      const { filename, time } = data;
+      const { filename, time, filePath, exportBinaries } = data;
       const text = convertIrvineImports(data.text);
       FileSystem.createFile(filename, text, time);
       // TODO: Remove substring by changing bat to not add .asm
+      const baseName = filename.substring(0, filename.length - 4);
       convertStringToConsoleCommand(
-        `echo.>${filename} && assemble ${filename.substring(
-          0,
-          filename.length - 4
-        )}`
+        `echo.>${filename} && assemble ${baseName}`
       );
+
+      if (!exportBinaries) {
+        return;
+      }
+
+      outputBuildFiles(baseName, filePath);
+    });
+  };
+
+  const outputBuildFiles = (fileBaseName, filePath) => {
+    const getFileFromLocalStorage = (fileBaseName, extension) =>
+      sleepUntil(() => {
+        const filename = `${fileBaseName}.${extension}`;
+        const fileData = FileSystem.getFile(filename);
+        return fileData !== null
+          ? {
+              command: "save-file-to-disk",
+              filename: filename,
+              filePath: filePath,
+              fileData: fileData,
+            }
+          : false;
+      }, 60000);
+    const sendFileToExtension = (result) => window.vscode.postMessage(result);
+    getFileFromLocalStorage(fileBaseName, "obj")
+      .then((result) => sendFileToExtension(result))
+      .catch((e) => {
+        console.log(e);
+      });
+
+    getFileFromLocalStorage(fileBaseName, "exe")
+      .then((result) => sendFileToExtension(result))
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const sleepUntil = (callback, timeout) => {
+    return new Promise((resolve, reject) => {
+      const timeWas = new Date();
+      const wait = setInterval(function () {
+        const result = callback();
+        if (result) {
+          clearInterval(wait);
+          resolve(result);
+        } else if (new Date() - timeWas > timeout) {
+          // Timeout
+          clearInterval(wait);
+          return reject();
+        }
+      }, 300);
     });
   };
 
@@ -115,6 +212,7 @@ function Boxedwine() {
   };
 
   const reset = (command = "cmd.bat") => {
+    setLoading(true);
     const callMain = () => {
       Module.pauseMainLoop();
       Module.restartBW();
@@ -211,7 +309,6 @@ function Boxedwine() {
   //TODO Fix this in boxedwine as it is extremely buggy (causes memory out of bounds bug hard crash)
   const createCommandRunListener = () => {
     window.addEventListener("run-command", (event) => {
-      //console.log(event);
       if (Module.ProcessRun == undefined) {
         const timeout = () =>
           setTimeout(() => {
@@ -224,7 +321,6 @@ function Boxedwine() {
           });
         timeout();
       } else {
-        //console.log(event.detail);
         Module.ProcessRun.runCommand(event.detail);
       }
     });
@@ -310,6 +406,7 @@ function Boxedwine() {
 
   return (
     <>
+      {loading && <LoadingScreen />}
       <canvas
         onContextMenu={(event) => event.preventDefault()}
         className={"emscripten"}

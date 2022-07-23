@@ -19,6 +19,7 @@ const cssPath = "src/css/**/*";
 const wasmPath = "src/wasm/*.wasm";
 const imagePath = "src/images/*";
 const jsBoxedPath = "src/js/boxedwine/**/*.js";
+const fontPath = "src/fonts/*";
 
 const output = "extension/media/";
 
@@ -80,6 +81,10 @@ function cssTask() {
     .pipe(dest(output));
 }
 
+function fontTask() {
+  return src(fontPath).pipe(browserSync.stream()).pipe(dest(output));
+}
+
 function watchTask() {
   livereload.listen();
   gulp.watch(
@@ -89,6 +94,7 @@ function watchTask() {
       iconTask,
       jsTaskDev,
       jsBoxedTask,
+      fontTask,
       cssTask,
       readmeTask,
       wasmTask,
@@ -105,10 +111,11 @@ function watchTask() {
 exports.watch = watchTask;
 exports.build = series(
   parallel(
-    cleanTask,
     iconTask,
     readmeTask,
+    cleanTask,
     jsTask,
+    fontTask,
     jsBoxedTask,
     cssTask,
     wasmTask,
