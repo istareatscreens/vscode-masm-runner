@@ -48,7 +48,7 @@ function Boxedwine() {
 
   const boxwineLoaded = () => {
     window.addEventListener("boxwine-loaded", (e) => {
-      //setLoading(false);
+      setLoading(false);
     });
   };
 

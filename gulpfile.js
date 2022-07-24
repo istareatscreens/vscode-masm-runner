@@ -11,6 +11,7 @@ const webpack = require("webpack-stream");
 const sass = require("gulp-sass")(require("sass"));
 const livereload = require("gulp-livereload");
 const del = require("del");
+const GulpPostCss = require("gulp-postcss");
 
 const assetsPath = "src/assets/";
 const readmePath = "README.md";
@@ -86,7 +87,6 @@ function fontTask() {
 }
 
 function watchTask() {
-  livereload.listen();
   gulp.watch(
     [cssPath, jsPath, jsBoxedPath, assetsPath],
     { interval: 1000 },

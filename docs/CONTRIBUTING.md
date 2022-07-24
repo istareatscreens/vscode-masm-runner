@@ -6,6 +6,10 @@
 
 `npm install -g gulp`
 
+- Ensure you run in project root and extension directory:
+
+`npm install`
+
 - This project uses git lfs so ensure you have it installed
 
 - To build the project development simply run:
