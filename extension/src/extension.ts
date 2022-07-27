@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { basename, dirname, extname, join } from "path";
 import { platform } from "os";
 import fs = require("fs");
+import { isBinaryFile } from "isbinaryfile";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -17,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
         webviewPanel: vscode.WebviewPanel,
         state: any
       ) {
-        console.log(`Got state: ${state}`);
+        //console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
         webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
         MasmRunnerPanel.revive(webviewPanel, context.extensionUri);
@@ -30,6 +31,19 @@ export function activate(context: vscode.ExtensionContext) {
       "masmRunner.runCode",
       (fileUri: vscode.Uri) => {
         runCode(fileUri);
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "masmRunner.sendToMasmWebview",
+      async (...files) => {
+        if (MasmRunnerPanel.currentPanel) {
+          await MasmRunnerPanel.currentPanel.sendFile(files);
+        } else {
+          vscode.window.showInformationMessage("Webview not open");
+        }
       }
     )
   );
@@ -86,12 +100,11 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
     return;
   }
 
-  const isWindows = platform() !== "win32";
+  const isWindows = platform() === "win32";
   const webViewRunning = MasmRunnerPanel.isRunning();
 
   if (isWindows && !webViewRunning) {
-    //runCodeNatively(document);
-    vscode.window.showInformationMessage("To be implemented");
+    runCodeNatively(document);
     return;
   }
 
@@ -104,7 +117,6 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
     "Please run masmRunner.start command to compile/run code"
   );
 }
-
 function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
   const editor = vscode.window.activeTextEditor;
   if (!fileUri || !fileUri.fsPath) {
@@ -120,8 +132,83 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
 }
 
 async function runCodeNatively(document: vscode.TextDocument) {
-  const terminal = vscode.window.createTerminal();
-  terminal.sendText("echo 'Sent text immediately after creating'");
+  //create a terminal
+  if (vscode.window.terminals.length < 1) {
+    vscode.window.createTerminal().show();
+    vscode.window.terminals[0].sendText(
+      `echo 'Welcome please run compile again!'`
+    );
+    return;
+  }
+  const terminal = vscode.window.terminals[0]; //integrated terminal
+  //path to the irvine to extension directory
+  const pathLink: string = __dirname.slice(0, __dirname.lastIndexOf("\\"));
+  //created the file paths
+
+  //uri file path
+  const nativeUriPath = "native\\";
+  const getPath = getPathBuilder(pathLink + "\\" + nativeUriPath);
+
+  //jwasm.exe
+  const jwasmExe = getPath(["JWASM", "JWASM.EXE"]).fsPath;
+
+  //jwlink.exe
+  const jWLinkExe = getPath(["JWLINK", "JWlink.exe"]).fsPath;
+
+  //irvine lib path
+  const libPath = getPath(["irvine"]).fsPath;
+
+  //irvine32.lib
+  const irvine32Path = getPath(["irvine", "Irvine32.lib"]).fsPath;
+
+  const irvine32Inc = getPath(["irvine", "Irvine32.inc"]).fsPath;
+
+  //kernel23.Lib
+  const kernel32Path = getPath(["irvine", "Kernel32.Lib"]).fsPath;
+
+  //User32.Lib
+  const user32Path = getPath(["irvine", "User32.Lib"]).fsPath;
+  //creates a new file based on the document the user is working on
+  const tempFile = document;
+  let newPath = vscode.Uri.file(
+    tempFile.fileName.slice(0, tempFile.fileName.length - 4) +
+      ".temp." +
+      tempFile.fileName.slice(-3)
+  );
+  //regex for matching and replacing
+  const irvineLib32Match = /include.+irvine32(\.inc|)/im;
+  let fileData = tempFile.getText();
+  fileData = fileData.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
+
+  //create the command variables
+  const masmCompileCommand = `${jwasmExe} /Zd /coff ${newPath.fsPath}`;
+  const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH ${libPath} LIBRARY ${irvine32Path} LIBRARY ${kernel32Path} LIBRARY ${user32Path} file ${newPath.fsPath.slice(
+    0,
+    newPath.fsPath.length - 4
+  )}.obj`;
+  const masmExecutable = `${newPath.fsPath.slice(
+    0,
+    newPath.fsPath.length - 4
+  )}.exe`;
+  const commandDelimiter = terminalTypeToDelimiter();
+  
+  //execute the commands
+  fs.promises
+    .writeFile(newPath.fsPath, fileData)
+    .then(() =>
+      terminal.sendText(
+        `${masmCompileCommand} ${commandDelimiter} ${masmLibraryLink} ${commandDelimiter} ${masmExecutable}`
+      )
+    );
+}
+//helper function for teminal link command
+function terminalTypeToDelimiter() {
+  return vscode.window.activeTerminal?.name == "powershell" ? ";" : "&&";
+}
+//path builder takes n amount of arguments as an array or a string
+function getPathBuilder(basePath: string) {
+  return (params: string[]) =>
+    vscode.Uri.joinPath(vscode.Uri.file(basePath), ...params);
 }
 
 function writeFileToWorkspace(
@@ -129,11 +216,7 @@ function writeFileToWorkspace(
   fileData: string,
   filePath: string
 ) {
-  //const wsedit = new vscode.WorkspaceEdit();
-  //vscode.window.showInformationMessage(filePath.toString());
   const newPath = vscode.Uri.file(filePath.slice(0, -3) + filename.slice(-3));
-  //wsedit.createFile(newPath, { overwrite: true, ignoreIfExists: false });
-  //vscode.workspace.applyEdit(wsedit);
   fs.writeFile(newPath.fsPath, fileData, { encoding: "base64" }, (error) => {
     if (error) {
       console.log(
@@ -141,6 +224,42 @@ function writeFileToWorkspace(
       );
     }
   });
+}
+
+async function readFile(filePath: string) {
+  const filename = basename(filePath);
+  const fileExtension = extname(filePath);
+  const fileBaseName = filename.substring(
+    0,
+    filename.length - fileExtension.length
+  );
+  return Promise.all([
+    filename,
+    fileExtension,
+    fileBaseName,
+    filePath,
+    fs.promises.readFile(filePath),
+    fs.promises.stat(filePath),
+    isBinaryFile(filePath),
+  ]).then(
+    ([
+      filename,
+      fileExtension,
+      fileBaseName,
+      filePath,
+      fileData,
+      fileMetaData,
+      isBinary,
+    ]) => ({
+      filename,
+      fileExtension,
+      fileBaseName,
+      filePath,
+      fileData,
+      fileMetaData,
+      isBinary,
+    })
+  );
 }
 
 /**
@@ -188,6 +307,39 @@ class MasmRunnerPanel {
     this._postMessage("reset");
   }
 
+  public async sendFile(...files: any[]) {
+    const [, fileList] = files[0];
+
+    if (fileList.length == 0) {
+      vscode.window.showInformationMessage("No files selected");
+      return;
+    }
+
+    Promise.all(
+      fileList
+        .filter((file) => file.scheme === "file")
+        .map((file) => readFile(file.fsPath))
+    )
+      .then((files) => {
+        this._postMessage(
+          "send-files",
+          files.map((file) => {
+            const fileData = file.isBinary
+              ? file.fileData.toString("base64")
+              : file.fileData.toString();
+
+            return Object.assign({}, file, {
+              fileData: fileData,
+              size: file.isBinary ? file.fileMetaData.size : fileData.length,
+            });
+          })
+        );
+      })
+      .catch((e) => {
+        vscode.window.showInformationMessage("Could not send file(s)");
+      });
+  }
+
   public runCode(document: vscode.TextDocument, filename: string): void {
     const text = document.getText();
     const exportBinaries = vscode.workspace
@@ -198,13 +350,11 @@ class MasmRunnerPanel {
       vscode?.workspace?.workspaceFolders?.[0]?.uri?.path ??
       null;
     this._postMessage("compile-and-run", {
-      data: {
-        filename: filename,
-        text: text,
-        filePath: filePath,
-        exportBinaries: exportBinaries,
-        time: new Date().getTime(),
-      },
+      filename: filename,
+      text: text,
+      filePath: filePath,
+      exportBinaries: exportBinaries,
+      time: new Date().getTime(),
     });
   }
 
@@ -297,13 +447,13 @@ class MasmRunnerPanel {
     }
     commandArray.push("enter");
     this._postMessage("write-command", {
-      data: commandArray,
+      commandArray,
     });
   }
 
   private _postMessage(eventName: string, data: any = {}) {
     this._panel.webview.postMessage(
-      JSON.stringify({ eventName: eventName, data: data })
+      JSON.stringify({ eventName: eventName, data: { data: data } })
     );
   }
 

@@ -35,7 +35,15 @@ const handleMessage = (event: MessageEvent) => {
       const { eventName, data } = <{ eventName: string; data: any }>(
         JSON.parse(event.data)
       );
-      window.dispatchEvent(new CustomEvent(eventName, { detail: data.data }));
+      window.dispatchEvent(
+        new CustomEvent(eventName, {
+          detail:
+            Array.isArray(data?.data ?? {}) ||
+            Object.keys(data?.data ?? {}).length
+              ? data.data
+              : null,
+        })
+      );
     } catch {}
   }
 };
