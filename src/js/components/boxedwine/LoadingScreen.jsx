@@ -7,21 +7,21 @@ https://codepen.io/duptitung/pen/XMVNyZ
 */
 const LoadingScreen = () => {
   return (
-    <div class="loading-screen">
-      <div class="loading">
-        <div class="loading__logo">
-          <div class="logo">
+    <div className="loading-screen">
+      <div className="loading">
+        <div className="loading__logo">
+          <div className="logo">
             <img className="logo__image" src={masmwatch} />
-            <p class="logo__top">MASM</p>
-            <p class="logo__mid">Runner</p>
-            <p class="logo__bottom">VSCode</p>
-            <span class="logo__x86">x86</span>
+            <p className="logo__top">MASM</p>
+            <p className="logo__mid">Runner</p>
+            <p className="logo__bottom">VSCode</p>
+            <span className="logo__x86">x86</span>
           </div>
         </div>
-        <div class="loading__container">
-          <div class="loading__container__box"></div>
-          <div class="loading__container__box"></div>
-          <div class="loading__container__box"></div>
+        <div className="loading__container">
+          <div className="loading__container__box"></div>
+          <div className="loading__container__box"></div>
+          <div className="loading__container__box"></div>
         </div>
       </div>
     </div>
