@@ -1,9 +1,9 @@
 {
   "name": "vscode-masm-runner",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "VSCode extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "scripts": {
-    "watch": "gulp watch",
+    "watch": "gulp build && gulp watch",
     "build": "gulp build",
     "package": "gulp build && cd ./extension && npm run vscode:prepublish && vsce package"
   },
@@ -56,7 +56,6 @@
     "child_process": "^1.0.2",
     "eol": "^0.9.1",
     "file-saver": "^2.0.5",
-    "isbinaryfile": "^5.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "utf-8-validate": "^5.0.9"

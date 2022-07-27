@@ -2,7 +2,7 @@
 @include font("Press Start", "./PressStart2P-Regular");
 
 body {
-  font-family: "Liberation Mono", "Arial";
+  font-family: "Liberation Mono", "Arial", "Press Start";
   font-weight: 400;
   line-height: 1.7;
   color: $black-color;

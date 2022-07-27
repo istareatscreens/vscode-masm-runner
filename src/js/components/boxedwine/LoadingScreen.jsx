@@ -1,4 +1,5 @@
 import React from "react";
+import masmwatch from "../../../images/masmwatch.png";
 
 /* 
 Modified from https://codepen.io/duptitung
@@ -9,11 +10,13 @@ const LoadingScreen = () => {
     <div className="loading-screen">
       <div className="loading">
         <div className="loading__logo">
-          <p className="loading__top">MASM</p>
-          <p className="loading__mid">
-            Runner<span>x86</span>
-          </p>
-          <p className="loading__bottom">VSCode</p>
+          <div className="logo">
+            <img className="logo__image" src={masmwatch} />
+            <p className="logo__top">MASM</p>
+            <p className="logo__mid">Runner</p>
+            <p className="logo__bottom">VSCode</p>
+            <span className="logo__x86">x86</span>
+          </div>
         </div>
         <div className="loading__container">
           <div className="loading__container__box"></div>
