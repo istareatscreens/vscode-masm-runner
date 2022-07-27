@@ -4,7 +4,7 @@ MASM Runner is x86 MASM (Microsoft Macro Assembly Language) code compiler, linke
 
 This app is made possible through the use of [JWlink and JWasm](https://github.com/JWasm) to compile x86/x64 MASM and a 32-bit wine terminal to execute x86 executable binaries using [Boxedwine](http://www.boxedwine.org/) emscripten port.
 
-Please note that this is still missing a lot of features and is far from perfect. Contributions are appreciated.
+Please note that this extension is far from perfect, contributions are appreciated.
 
 # How To Use
 
@@ -22,7 +22,11 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 ### Compile and Run
 
 - Command: masm runner compile
-- Description: Runs code in current file
+- Description: Runs code in current file and exports .obj and .exe files to file or workspace directory
+- Settings (via vscode options):
+  - masmRunner.exportBinaries
+    - Description: Export .exe and .obj from boxedwine webview on compile?
+    - Default Value: True
 
 ![compile and run MASM code preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/compile_and_run.gif)
 
@@ -31,24 +35,29 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 - Command: masm runner restart
 - Description: restarts MASM Runner CMD (If this does not work click the terminal and type ctrl+r or Command ⌘+r)
 
+### Send File(s) to Webview
+
+- Command: masm send file(s) to webview
+- Description: Send file(s) to MASM Runner Webview
+- Context Menu: In File explorer you can right click files to send to webview
+- Settings (via vscode options):
+  - masmRunner.enableContextMenus
+    - Description: Enables context menu in Explorer (used to send files to boxedwine webview (cmd) - Default Value: True
+    - Default Value: True
+
+![masm-send-files context-menu preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/send-files-preview.png)
+
 ### Snippets
 
 Current snippets include:
 
 - masm-template - Generates standard template to write MASM x86 using Irvine32 library
-  ![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif)
 
-# Development
-
-For development simply run from both root project directory (to build webview assets) and extension directory (to build extension):
-
-`npm run watch`
-
-Launch a vscode window from the extension directory and use the Run and Debug menu to start an instance of vscode for debugging. Launch Developer Tools to debug and ctrl+r to reload on web view change.
+![masm-template snippet preview](https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif)
 
 # Contributing
 
-Short contriubting guide [HERE](https://githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/CONTRIBUTE.md)
+For development and contributing see [HERE](https://github.com/istareatscreens/vscode-masm-runner/blob/master/docs/CONTRIBUTING.md)
 
 # Preview outside vscode:
 

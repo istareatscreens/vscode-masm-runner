@@ -1,0 +1,130 @@
+// https://codepen.io/istareatscreens/pen/mdxwYxM?editors=1100
+.loading-screen {
+  width: 100vw;
+  height: 100vh;
+  z-index: 9001;
+  background: #000;
+  font-family: "Press Start", sans-serif;
+  color: #fff;
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  &__container {
+    border: 0.125rem solid #b2b2b2;
+    border-radius: 0.4375rem;
+    font-size: 0;
+    height: 1.25rem;
+    overflow: hidden;
+    padding: 0.125rem 0.0625rem;
+    width: 9.375rem;
+    &__box {
+      width: 0.5625rem;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        #2838c7 0%,
+        #5979ef 17%,
+        #869ef3 32%,
+        #869ef3 45%,
+        #5979ef 59%,
+        #2838c7 100%
+      );
+      display: inline-block;
+      margin-right: 0.25rem;
+      animation: loader 2s infinite;
+      animation-timing-function: linear;
+    }
+  }
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  margin-top: -6.5rem;
+
+  &__top {
+    transform: scale(0.5, 1);
+    margin: 0;
+    padding: 0;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 2.6rem;
+    position: relative;
+    right: 2.87rem;
+    top: 1.65rem;
+  }
+  &__mid {
+    //transform: scale(.8,1);
+    text-align: left;
+    transform: scale(0.8, 1);
+    margin: 0;
+    padding: 0;
+    font-size: 3.2rem;
+    font-weight: 400;
+    //line-height: 2.1rem;
+    position: relative;
+  }
+
+  &__x86 {
+    content: "x86";
+    font-size: 2rem;
+    transform: scale(0.5, 1);
+    position: relative;
+    color: #ff6821;
+    bottom: 8.8rem;
+    left: 17.2rem;
+    width: 0rem;
+    height: 0rem;
+    /* width: 0rem; */
+    display: block;
+  }
+
+  &__bottom {
+    font-size: 2rem;
+    font-weight: 400;
+    //line-height: 2.1rem;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    transform: scale(0.5, 1);
+    right: 2.87rem;
+    bottom: 2rem;
+  }
+
+  &__image {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    /* transform: scale(0.2,0.2); */
+    z-index: -1;
+    width: 13rem;
+    height: auto;
+    left: 4.2rem;
+    top: 4.8rem;
+  }
+}
+
+@keyframes loader {
+  0% {
+    transform: translate(-2.7rem);
+  }
+  100% {
+    transform: translate(10rem);
+  }
+}

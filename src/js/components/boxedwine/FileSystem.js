@@ -8,7 +8,6 @@ import {
 import * as hf from "./filesystem/FSHelperFunctions.js";
 import { saveAs } from "file-saver";
 
-import { crlf } from "eol";
 import dataURItoBlob from "./filesystem/dataURItoBlob.js";
 
 const mimeType = (fileExtension) => {
@@ -124,6 +123,17 @@ export default class FileSystem {
       hf.getFileMetaData(FileSystem._readFileList()[filename]).id
     );
   }
+
+  static getFile(filename) {
+    const fileList = FileSystem._readFileList();
+    const selectedFile = fileList?.[filename] ?? null;
+    if (!selectedFile) {
+      return null;
+    }
+    const key = hf.getFileMetaData(selectedFile).id;
+    return window.localStorage.getItem(key);
+  }
+
   /**
    * @description finds file in local storage and replaces its text
    * @param {string} fileName name of assembly file exlcuding the .asm filename suffix
@@ -160,31 +170,20 @@ export default class FileSystem {
   }
 
   //TODO change INCLUDE Irvine import to correct one
-  static createDataFile(files, callback) {
-    console.log("in create DATA FILE");
-    console.log(files);
-
-    const command = files
+  static createDataFiles(files) {
+    return files
       .map((file) => {
-        const { fileMetaData, data } = file;
-        const { name, size, type, lastModified } = fileMetaData;
-        data = data.split(",").pop(); //remove MIME
-        let isEncoded = true;
-        if (/.(asm|text|txt)$/.test(name)) {
-          data = crlf(window.atob(data)); //convert end of line (eol) to dos/win32 compatiable crlf
-          size = data.length;
-          isEncoded = false;
-        }
+        let { filename, fileData, lastModified, fileSize, isBinary } = file;
+        let isEncoded = isBinary;
 
-        const isDuplicate = name in FileSystem._readFileList();
+        const isDuplicate = filename in FileSystem._readFileList();
 
         FileSystem.createFile(
-          name,
-          data,
+          filename,
+          fileData,
           lastModified,
-          true,
           isEncoded,
-          size,
+          fileSize,
           isDuplicate
         );
 
@@ -192,16 +191,9 @@ export default class FileSystem {
           return "";
         }
 
-        return ` echo.>${name} &`;
+        return ` echo.>${filename} &`;
       })
       .join("");
-
-    /* depreciate this possibly
-    if (!command == "") {
-      writeCommandToCMD(command);
-    }
-    */
-    callback(); //refresh code if file is already selected
   }
 
   static createAssemblyFile(filename, isInitial = false) {
@@ -230,12 +222,13 @@ export default class FileSystem {
     filename,
     data,
     time,
-    shouldWriteCommand = false,
     dataIsEncoded = false,
     size = 0,
-    isDuplicate = false // depreciate this
+    isDuplicate = null
   ) {
-    isDuplicate = filename in FileSystem._readFileList();
+    if (isDuplicate === null) {
+      isDuplicate = filename in FileSystem._readFileList();
+    }
     //console.log({ CreatedFile: filename, data: data });
     let fileList = FileSystem._readFileList();
 
@@ -244,15 +237,6 @@ export default class FileSystem {
       ? hf.getFileMetaData(fileList[filename]).id
       : generateRandomID();
     const fileID = isDuplicate ? fileList[filename] : generateRandomID();
-
-    /*
-    console.log({ isDuplicate, id, fileID });
-    if (isDuplicate)
-      console.log({
-        id: window.localStorage.getItem(id),
-        fileID: window.localStorage.getItem(fileID),
-      });
-      */
 
     //Delete old keys if duplicate
     if (isDuplicate) {
