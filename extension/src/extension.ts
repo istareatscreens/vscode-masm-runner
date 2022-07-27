@@ -100,12 +100,11 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
     return;
   }
 
-  const isWindows = platform() !== "win32";
+  const isWindows = platform() === "win32";
   const webViewRunning = MasmRunnerPanel.isRunning();
 
   if (isWindows && !webViewRunning) {
-    //runCodeNatively(document);
-    vscode.window.showInformationMessage("To be implemented");
+    runCodeNatively(document);
     return;
   }
 
@@ -118,7 +117,6 @@ async function runCode(fileUri: vscode.Uri): Promise<void> {
     "Please run masmRunner.start command to compile/run code"
   );
 }
-
 function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
   const editor = vscode.window.activeTextEditor;
   if (!fileUri || !fileUri.fsPath) {
@@ -134,8 +132,83 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
 }
 
 async function runCodeNatively(document: vscode.TextDocument) {
-  const terminal = vscode.window.createTerminal();
-  terminal.sendText("echo 'Sent text immediately after creating'");
+  //create a terminal
+  if (vscode.window.terminals.length < 1) {
+    vscode.window.createTerminal().show();
+    vscode.window.terminals[0].sendText(
+      `echo 'Welcome please run compile again!'`
+    );
+    return;
+  }
+  const terminal = vscode.window.terminals[0]; //integrated terminal
+  //path to the irvine to extension directory
+  const pathLink: string = __dirname.slice(0, __dirname.lastIndexOf("\\"));
+  //created the file paths
+
+  //uri file path
+  const nativeUriPath = "native\\";
+  const getPath = getPathBuilder(pathLink + "\\" + nativeUriPath);
+
+  //jwasm.exe
+  const jwasmExe = getPath(["JWASM", "JWASM.EXE"]).fsPath;
+
+  //jwlink.exe
+  const jWLinkExe = getPath(["JWLINK", "JWlink.exe"]).fsPath;
+
+  //irvine lib path
+  const libPath = getPath(["irvine"]).fsPath;
+
+  //irvine32.lib
+  const irvine32Path = getPath(["irvine", "Irvine32.lib"]).fsPath;
+
+  const irvine32Inc = getPath(["irvine", "Irvine32.inc"]).fsPath;
+
+  //kernel23.Lib
+  const kernel32Path = getPath(["irvine", "Kernel32.Lib"]).fsPath;
+
+  //User32.Lib
+  const user32Path = getPath(["irvine", "User32.Lib"]).fsPath;
+  //creates a new file based on the document the user is working on
+  const tempFile = document;
+  let newPath = vscode.Uri.file(
+    tempFile.fileName.slice(0, tempFile.fileName.length - 4) +
+      ".temp." +
+      tempFile.fileName.slice(-3)
+  );
+  //regex for matching and replacing
+  const irvineLib32Match = /include.+irvine32(\.inc|)/im;
+  let fileData = tempFile.getText();
+  fileData = fileData.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
+
+  //create the command variables
+  const masmCompileCommand = `${jwasmExe} /Zd /coff ${newPath.fsPath}`;
+  const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH ${libPath} LIBRARY ${irvine32Path} LIBRARY ${kernel32Path} LIBRARY ${user32Path} file ${newPath.fsPath.slice(
+    0,
+    newPath.fsPath.length - 4
+  )}.obj`;
+  const masmExecutable = `${newPath.fsPath.slice(
+    0,
+    newPath.fsPath.length - 4
+  )}.exe`;
+  const commandDelimiter = terminalTypeToDelimiter();
+  
+  //execute the commands
+  fs.promises
+    .writeFile(newPath.fsPath, fileData)
+    .then(() =>
+      terminal.sendText(
+        `${masmCompileCommand} ${commandDelimiter} ${masmLibraryLink} ${commandDelimiter} ${masmExecutable}`
+      )
+    );
+}
+//helper function for teminal link command
+function terminalTypeToDelimiter() {
+  return vscode.window.activeTerminal?.name == "powershell" ? ";" : "&&";
+}
+//path builder takes n amount of arguments as an array or a string
+function getPathBuilder(basePath: string) {
+  return (params: string[]) =>
+    vscode.Uri.joinPath(vscode.Uri.file(basePath), ...params);
 }
 
 function writeFileToWorkspace(
