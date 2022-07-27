@@ -212,6 +212,8 @@ function Boxedwine() {
   };
 
   const reset = (command = "cmd.bat") => {
+    setLoading(true);
+    // TODO: Figure out how to clear canvas here
     const callMain = () => {
       Module.pauseMainLoop();
       Module.restartBW();
