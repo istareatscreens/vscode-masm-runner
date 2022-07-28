@@ -48,6 +48,6 @@ Please use the following branch naming scheme:
 - Discussion regarding boxedwine setup/issues:
   https://github.com/danoon2/Boxedwine/discussions/60
 
-  # Contact
+# Contact
 
-  Feel free to join this [discord server](https://discord.gg/EN7937W2) if you are interested in contributing and need help or have any issues.
+Feel free to join this [discord server](https://discord.gg/EN7937W2) if you are interested in contributing and need help or have any issues.
