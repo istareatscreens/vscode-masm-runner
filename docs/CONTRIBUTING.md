@@ -25,7 +25,7 @@ from the following directories
 
 Uninstall MASM Runner from marketplace before testing as it will conflict with your development version.
 
-Open an instance of vscode from `vscode-masm-runner/extension/` directory and go to Run and Debug and click the green play button with `Run Extension` selected.
+In vscode go to `File->Add Folder to Workspace..` and navigate to the `vscode-masm-runner/extension/` directory, you should then navigate to Run and Debug and click the green play button with `Run Extension` selected.
 
 For developer console for webview simply search for `>developer tools` in code navigation (ctrl+p or command+p)
 
@@ -47,3 +47,7 @@ Please use the following branch naming scheme:
 
 - Discussion regarding boxedwine setup/issues:
   https://github.com/danoon2/Boxedwine/discussions/60
+
+  # Contact
+
+  Feel free to join this [discord server](https://discord.gg/EN7937W2) if you are interested in contributing and need help or have any issues.

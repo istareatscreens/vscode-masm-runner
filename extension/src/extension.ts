@@ -131,84 +131,173 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
   return true;
 }
 
+function sleepUntil(callback, timeout) {
+  return new Promise((resolve, reject) => {
+    const timeWas = new Date().getTime();
+    const wait = setInterval(function () {
+      const result = callback();
+      if (result) {
+        clearInterval(wait);
+        resolve(result);
+      } else if (new Date().getTime() - timeWas > timeout) {
+        // Timeout
+        clearInterval(wait);
+        return reject();
+      }
+    }, 300);
+  });
+}
+
+async function getVscodeTerminal(name = "") {
+  const numberOfTerminals = vscode.window.terminals.length;
+  try {
+    const terminal = vscode.window.createTerminal(name);
+    await sleepUntil(
+      () => vscode.window.terminals.length === numberOfTerminals + 1,
+      10000
+    );
+    return terminal;
+  } catch (e) {
+    vscode.window.showInformationMessage("No vscode terminal found");
+    return null;
+  }
+}
+
 async function runCodeNatively(document: vscode.TextDocument) {
-  //create a terminal
-  if (vscode.window.terminals.length < 1) {
-    vscode.window.createTerminal().show();
-    vscode.window.terminals[0].sendText(
-      `echo 'Welcome please run compile again!'`
+  const currentTerminalType = getTerminalType();
+  const isGitBash = currentTerminalType === "Git Bash";
+  if (
+    !(
+      currentTerminalType === "Command Prompt" ||
+      currentTerminalType === "PowerShell" ||
+      isGitBash
+    )
+  ) {
+    vscode.window.showInformationMessage(
+      "Your current default terminal is unsupported please change your default terminal to use MASM Runner extension"
     );
     return;
   }
-  const terminal = vscode.window.terminals[0]; //integrated terminal
+
+  const terminalName = "MASM Runner";
+  const terminal =
+    vscode.window.terminals.find(({ name }) => terminalName === name) ??
+    (await getVscodeTerminal(terminalName));
+
+  if (!terminal) {
+    vscode.window.showInformationMessage(
+      "An error occured unable to acquire terminal"
+    );
+    return;
+  }
+
+  terminal.show();
+
   //path to the irvine to extension directory
   const pathLink: string = __dirname.slice(0, __dirname.lastIndexOf("\\"));
-  //created the file paths
 
-  //uri file path
   const nativeUriPath = "native\\";
   const getPath = getPathBuilder(pathLink + "\\" + nativeUriPath);
 
-  //jwasm.exe
-  const jwasmExe = getPath(["JWASM", "JWASM.EXE"]).fsPath;
+  const jwasmExe = doubleQuoteSpacedDirectories(
+    getPath(["JWASM", "JWASM.EXE"])
+  ).replaceAll("\\", `${isGitBash ? "/" : "\\"}`);
 
-  //jwlink.exe
-  const jWLinkExe = getPath(["JWLINK", "JWlink.exe"]).fsPath;
+  const jWLinkExe = doubleQuoteSpacedDirectories(
+    getPath(["JWLINK", "JWlink.exe"])
+  ).replaceAll("\\", `${isGitBash ? "/" : "\\"}`);
 
   //irvine lib path
-  const libPath = getPath(["irvine"]).fsPath;
+  const libPath = getPath(["irvine"]);
 
-  //irvine32.lib
-  const irvine32Path = getPath(["irvine", "Irvine32.lib"]).fsPath;
+  const irvine32Path = getPath(["irvine", "Irvine32.lib"]);
 
-  const irvine32Inc = getPath(["irvine", "Irvine32.inc"]).fsPath;
+  const irvine32Inc = getPath(["irvine", "Irvine32.inc"]);
 
-  //kernel23.Lib
-  const kernel32Path = getPath(["irvine", "Kernel32.Lib"]).fsPath;
+  const kernel32Path = getPath(["irvine", "Kernel32.Lib"]);
 
-  //User32.Lib
-  const user32Path = getPath(["irvine", "User32.Lib"]).fsPath;
+  const user32Path = getPath(["irvine", "User32.Lib"]);
+
   //creates a new file based on the document the user is working on
   const tempFile = document;
-  let newPath = vscode.Uri.file(
+
+  const newPath = vscode.Uri.file(
     tempFile.fileName.slice(0, tempFile.fileName.length - 4) +
       ".temp." +
       tempFile.fileName.slice(-3)
   );
-  //regex for matching and replacing
+
+  // replace irvine path library to native one to allow simple Irvine include statment in asm file
   const irvineLib32Match = /include.+irvine32(\.inc|)/im;
+
   let fileData = tempFile.getText();
   fileData = fileData.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
+  const filename = basename(newPath.fsPath).slice(
+    0,
+    -extname(newPath.fsPath).length
+  );
 
-  //create the command variables
-  const masmCompileCommand = `${jwasmExe} /Zd /coff ${newPath.fsPath}`;
-  const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH ${libPath} LIBRARY ${irvine32Path} LIBRARY ${kernel32Path} LIBRARY ${user32Path} file ${newPath.fsPath.slice(
+  // create the command variables
+  const currentDirectory = newPath.fsPath.slice(
     0,
-    newPath.fsPath.length - 4
-  )}.obj`;
-  const masmExecutable = `${newPath.fsPath.slice(
-    0,
-    newPath.fsPath.length - 4
-  )}.exe`;
-  const commandDelimiter = terminalTypeToDelimiter();
-  
-  //execute the commands
-  fs.promises
+    -basename(newPath.fsPath).length
+  );
+
+  // constructing terminal commands
+  const commandDelimiter = getTerminalDelimiter(currentTerminalType ?? "");
+  const masmCompilerFlags = "/Zd /coff".replaceAll(
+    "/",
+    `${isGitBash ? "//" : "/"}`
+  );
+  const masmCompileCommand = `${jwasmExe} ${masmCompilerFlags} "${
+    currentDirectory + filename
+  }.asm"`;
+  const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" file "${
+    currentDirectory + filename
+  }.obj"`;
+  const masmExecutable = `${
+    doubleQuoteSpacedDirectories(currentDirectory).replaceAll(
+      "\\",
+      `${isGitBash ? "/" : "\\"}`
+    ) + filename
+  }.exe`;
+  await fs.promises
     .writeFile(newPath.fsPath, fileData)
     .then(() =>
       terminal.sendText(
         `${masmCompileCommand} ${commandDelimiter} ${masmLibraryLink} ${commandDelimiter} ${masmExecutable}`
       )
     );
+  // TODO: Clean up and rename files
 }
-//helper function for teminal link command
-function terminalTypeToDelimiter() {
-  return vscode.window.activeTerminal?.name == "powershell" ? ";" : "&&";
+
+function doubleQuoteSpacedDirectories(path: string) {
+  const [drive, ...delineatedDirectory] = path.split("\\");
+  return `${drive}\\${delineatedDirectory
+    .map((directory) => (/\s/.test(directory) ? `"${directory}"` : directory))
+    .join("\\")}`;
 }
-//path builder takes n amount of arguments as an array or a string
+
+function getTerminalDelimiter(terminalName: string): string {
+  return (
+    {
+      PowerShell: ";",
+    }?.[terminalName] ?? "&&"
+  );
+}
+
+function getTerminalType(): string | null {
+  const defaultTerminalType = <string | undefined | null>(
+    vscode.workspace
+      .getConfiguration()
+      .get("terminal.integrated.defaultProfile.windows")
+  );
+  return defaultTerminalType ?? "PowerShell";
+}
+
 function getPathBuilder(basePath: string) {
   return (params: string[]) =>
-    vscode.Uri.joinPath(vscode.Uri.file(basePath), ...params);
+    vscode.Uri.joinPath(vscode.Uri.file(basePath), ...params).fsPath;
 }
 
 function writeFileToWorkspace(
