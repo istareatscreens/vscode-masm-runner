@@ -153,10 +153,7 @@ function Boxedwine() {
 
   const convertIrvineImports = (text) => {
     const irvineLib32Match = /include.+irvine32(\.inc|)/im;
-    const irvineLib64Match = /include.+irvine64(\.inc|)/im;
-    return text
-      .replace(irvineLib32Match, "INCLUDE D:/irvine/Irvine32.inc")
-      .replace(irvineLib64Match, "INCLUDE D:/irvine/Irvine64.inc");
+    return text.replace(irvineLib32Match, "INCLUDE D:/irvine/Irvine32.inc");
   };
 
   //Send commands to console

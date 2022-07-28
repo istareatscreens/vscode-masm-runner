@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running x86 MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-x86-runner",
   "private": false,
@@ -96,7 +96,7 @@
         "masmRunner.enableContextMenus": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enables context menu in Explorer (used to send files to boxedwine webview (cmd)"
+          "markdownDescription": "Enables context menu in Explorer (used to send files to boxedwine webview (cmd))"
         }
       }
     },
