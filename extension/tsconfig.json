@@ -6,7 +6,6 @@
     "outDir": "out",
     "sourceMap": true,
     "allowJs": true,
-    "noImplicitAny": false,
     "strict": true,
     "rootDir": "src"
   },
