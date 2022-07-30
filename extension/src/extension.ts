@@ -3,6 +3,7 @@ import { basename, dirname, extname, join } from "path";
 import { platform } from "os";
 import fs = require("fs");
 import { isBinaryFile } from "isbinaryfile";
+import { FileData, FileProfile, Merge, WorkspaceFileList } from "./types";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -16,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewPanelSerializer(MasmRunnerPanel.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
-        state: any
+        _state: any
       ) {
         //console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
@@ -40,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
       "masmRunner.sendToMasmWebview",
       async (...files) => {
         if (MasmRunnerPanel.currentPanel) {
-          await MasmRunnerPanel.currentPanel.sendFile(files);
+          await MasmRunnerPanel.currentPanel.sendFile(<WorkspaceFileList>files);
         } else {
           vscode.window.showInformationMessage("Webview not open");
         }
@@ -49,18 +50,17 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "masmRunner.resetCMD",
-      (fileUri: vscode.Uri) => {
-        if (MasmRunnerPanel.currentPanel) {
-          MasmRunnerPanel.currentPanel.resetCMD();
-        }
+    vscode.commands.registerCommand("masmRunner.resetCMD", () => {
+      if (MasmRunnerPanel.currentPanel) {
+        MasmRunnerPanel.currentPanel.resetCMD();
       }
-    )
+    })
   );
 }
 
-function getWebviewOptions(extensionUri: vscode.Uri): any {
+function getWebviewOptions(
+  extensionUri: vscode.Uri
+): Merge<vscode.WebviewOptions, { retainContextWhenHidden: boolean }> {
   return {
     // Enable javascript in the webview
     enableScripts: true,
@@ -131,7 +131,7 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
   return true;
 }
 
-function sleepUntil(callback, timeout) {
+function sleepUntil(callback: () => any, timeout: number): Promise<any> {
   return new Promise((resolve, reject) => {
     const timeWas = new Date().getTime();
     const wait = setInterval(function () {
@@ -148,7 +148,7 @@ function sleepUntil(callback, timeout) {
   });
 }
 
-async function getVscodeTerminal(name = "") {
+async function getVscodeTerminal(name = ""): Promise<vscode.Terminal | null> {
   const numberOfTerminals = vscode.window.terminals.length;
   try {
     const terminal = vscode.window.createTerminal(name);
@@ -315,7 +315,7 @@ function writeFileToWorkspace(
   });
 }
 
-async function readFile(filePath: string) {
+async function readFile(filePath: string): Promise<FileProfile> {
   const filename = basename(filePath);
   const fileExtension = extname(filePath);
   const fileBaseName = filename.substring(
@@ -396,8 +396,8 @@ class MasmRunnerPanel {
     this._postMessage("reset");
   }
 
-  public async sendFile(...files: any[]) {
-    const [, fileList] = files[0];
+  public async sendFile(files: WorkspaceFileList): Promise<void> {
+    const [, fileList] = files;
 
     if (fileList.length == 0) {
       vscode.window.showInformationMessage("No files selected");
@@ -406,8 +406,8 @@ class MasmRunnerPanel {
 
     Promise.all(
       fileList
-        .filter((file) => file.scheme === "file")
-        .map((file) => readFile(file.fsPath))
+        .filter((file: FileData) => file.scheme === "file")
+        .map((file: FileData) => readFile(file.fsPath))
     )
       .then((files) => {
         this._postMessage(
@@ -424,7 +424,7 @@ class MasmRunnerPanel {
           })
         );
       })
-      .catch((e) => {
+      .catch((_e) => {
         vscode.window.showInformationMessage("Could not send file(s)");
       });
   }
@@ -451,7 +451,7 @@ class MasmRunnerPanel {
     this._writeCommandToCMD(`echo.>${filename}`);
   }
 
-  private compileCode(document) {
+  private compileCode(document: vscode.TextDocument) {
     const filename = document?.fileName;
     if (!filename) {
       return;
@@ -540,28 +540,28 @@ class MasmRunnerPanel {
     });
   }
 
-  private _postMessage(eventName: string, data: any = {}) {
+  private _postMessage(eventName: string, data: any = {}): void {
     this._panel.webview.postMessage(
       JSON.stringify({ eventName: eventName, data: { data: data } })
     );
   }
 
   // Layer div applies a layer so that the panel can be clicked again to allow typing in it
-  public updateChangedView() {
+  public updateChangedView(): void {
     this._postMessage("editor-selected", {});
   }
 
-  public doRefactor() {
+  public doRefactor(): void {
     // Send a message to the webview webview.
     // You can send any JSON serializable data.
     this._panel.webview.postMessage({ command: "refactor" });
   }
 
-  public static isRunning() {
+  public static isRunning(): boolean {
     return MasmRunnerPanel.currentPanel !== undefined;
   }
 
-  public dispose() {
+  public dispose(): void {
     MasmRunnerPanel.currentPanel = undefined;
 
     // Clean up our resources
@@ -575,47 +575,22 @@ class MasmRunnerPanel {
     }
   }
 
-  private _update() {
+  private _update(): void {
     const webview = this._panel.webview;
     this._panel.title = "Masm x86 Runner CMD";
     this._panel.webview.html = this._getHtmlForWebview(webview);
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview) {
-    // Local path to main script run in the webview
+  private _getHtmlForWebview(webview: vscode.Webview): string {
+    const getWebviewPath = (pathParameters: string[]) =>
+      webview.asWebviewUri(
+        vscode.Uri.joinPath(this._extensionUri, ...pathParameters)
+      );
 
-    const stylesPathMainPath = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "style.css"
-    );
-
-    const boxedwineIndexPathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "index-bw.js"
-    );
-
-    const boxedwinePathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "boxedwine.js"
-    );
-    const baseUriPathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "/"
-    );
-
-    // And the uri we use to load this script in the webview
-    const boxedwineUri = webview.asWebviewUri(boxedwinePathOnDisk);
-    const indexBoxedWineUri = webview.asWebviewUri(boxedwineIndexPathOnDisk);
-    const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-    const baseUri = webview.asWebviewUri(baseUriPathOnDisk);
-
-    // Uri to load styles into webview
-
-    // Use a nonce to only allow specific scripts to be run
+    const boxedwineUri = getWebviewPath(["media", "boxedwine.js"]);
+    const indexBoxedWineUri = getWebviewPath(["media", "index-bw.js"]);
+    const stylesMainUri = getWebviewPath(["media", "style.css"]);
+    const baseUri = getWebviewPath(["media"]);
 
     return `<!DOCTYPE html>
 			<html lang="en">
@@ -653,7 +628,7 @@ class MasmRunnerPanel {
   }
 }
 
-function getNonce() {
+function getNonce(): string {
   let text = "";
   const possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
