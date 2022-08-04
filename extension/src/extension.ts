@@ -3,6 +3,7 @@ import { basename, dirname, extname, join } from "path";
 import { platform } from "os";
 import fs = require("fs");
 import { isBinaryFile } from "isbinaryfile";
+import { FileData, FileProfile, Merge, WorkspaceFileList } from "./types";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -16,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewPanelSerializer(MasmRunnerPanel.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
-        state: any
+        _state: any
       ) {
         //console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
@@ -40,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
       "masmRunner.sendToMasmWebview",
       async (...files) => {
         if (MasmRunnerPanel.currentPanel) {
-          await MasmRunnerPanel.currentPanel.sendFile(files);
+          await MasmRunnerPanel.currentPanel.sendFile(<WorkspaceFileList>files);
         } else {
           vscode.window.showInformationMessage("Webview not open");
         }
@@ -49,18 +50,17 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "masmRunner.resetCMD",
-      (fileUri: vscode.Uri) => {
-        if (MasmRunnerPanel.currentPanel) {
-          MasmRunnerPanel.currentPanel.resetCMD();
-        }
+    vscode.commands.registerCommand("masmRunner.resetCMD", () => {
+      if (MasmRunnerPanel.currentPanel) {
+        MasmRunnerPanel.currentPanel.resetCMD();
       }
-    )
+    })
   );
 }
 
-function getWebviewOptions(extensionUri: vscode.Uri): any {
+function getWebviewOptions(
+  extensionUri: vscode.Uri
+): Merge<vscode.WebviewOptions, { retainContextWhenHidden: boolean }> {
   return {
     // Enable javascript in the webview
     enableScripts: true,
@@ -131,7 +131,7 @@ function checkIsRunFromExplorer(fileUri: vscode.Uri): boolean {
   return true;
 }
 
-function sleepUntil(callback, timeout) {
+function sleepUntil(callback: () => any, timeout: number): Promise<any> {
   return new Promise((resolve, reject) => {
     const timeWas = new Date().getTime();
     const wait = setInterval(function () {
@@ -148,7 +148,7 @@ function sleepUntil(callback, timeout) {
   });
 }
 
-async function getVscodeTerminal(name = "") {
+async function getVscodeTerminal(name = ""): Promise<vscode.Terminal | null> {
   const numberOfTerminals = vscode.window.terminals.length;
   try {
     const terminal = vscode.window.createTerminal(name);
@@ -165,12 +165,11 @@ async function getVscodeTerminal(name = "") {
 
 async function runCodeNatively(document: vscode.TextDocument) {
   const currentTerminalType = getTerminalType();
-  const isGitBash = currentTerminalType === "Git Bash";
+  const isCMD = currentTerminalType === "Command Prompt";
   if (
     !(
-      currentTerminalType === "Command Prompt" ||
-      currentTerminalType === "PowerShell" ||
-      isGitBash
+      isCMD ||
+      currentTerminalType === "PowerShell"
     )
   ) {
     vscode.window.showInformationMessage(
@@ -190,7 +189,6 @@ async function runCodeNatively(document: vscode.TextDocument) {
     );
     return;
   }
-
   terminal.show();
 
   //path to the irvine to extension directory
@@ -201,11 +199,11 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   const jwasmExe = doubleQuoteSpacedDirectories(
     getPath(["JWASM", "JWASM.EXE"])
-  ).replaceAll("\\", `${isGitBash ? "/" : "\\"}`);
+  );
 
   const jWLinkExe = doubleQuoteSpacedDirectories(
     getPath(["JWLINK", "JWlink.exe"])
-  ).replaceAll("\\", `${isGitBash ? "/" : "\\"}`);
+  );
 
   //irvine lib path
   const libPath = getPath(["irvine"]);
@@ -218,57 +216,97 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   const user32Path = getPath(["irvine", "User32.Lib"]);
 
-  //creates a new file based on the document the user is working on
-  const tempFile = document;
+  const currentDirectory = document.uri.fsPath.slice(
+    0,
+    document.uri.fsPath.length - basename(document.fileName).length
+  );
+
+  const baseFilename = basename(document.fileName)
+    .slice(0, -extname(document.fileName).length)
+    .replaceAll(/\s/g, "_");
+  const tempBaseFilename = (
+    basename(document.fileName).slice(0, -extname(document.fileName).length) +
+    ".temp"
+  ).replaceAll(/\s/g, "_");
+  const extension = [".asm", ".obj", ".exe"];
 
   const newPath = vscode.Uri.file(
-    tempFile.fileName.slice(0, tempFile.fileName.length - 4) +
-      ".temp." +
-      tempFile.fileName.slice(-3)
+    currentDirectory + tempBaseFilename + extension[0]
   );
 
   // replace irvine path library to native one to allow simple Irvine include statment in asm file
   const irvineLib32Match = /include.+irvine32(\.inc|)/im;
 
-  let fileData = tempFile.getText();
-  fileData = fileData.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
-  const filename = basename(newPath.fsPath).slice(
-    0,
-    -extname(newPath.fsPath).length
-  );
+  const fileData = document
+    .getText()
+    .replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
+  const filename = baseFilename;
 
   // create the command variables
-  const currentDirectory = newPath.fsPath.slice(
-    0,
-    -basename(newPath.fsPath).length
-  );
+
+  const orignalFilename = filename;
+  const tempFilename = tempBaseFilename;
 
   // constructing terminal commands
-  const commandDelimiter = getTerminalDelimiter(currentTerminalType ?? "");
-  const masmCompilerFlags = "/Zd /coff".replaceAll(
-    "/",
-    `${isGitBash ? "//" : "/"}`
-  );
+  const masmCompilerFlags = "/Zd /coff";
+
   const masmCompileCommand = `${jwasmExe} ${masmCompilerFlags} "${
-    currentDirectory + filename
+    currentDirectory + tempFilename
   }.asm"`;
+
   const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" file "${
-    currentDirectory + filename
-  }.obj"`;
+    currentDirectory + orignalFilename + extension[1]
+  }"`;
+
   const masmExecutable = `${
-    doubleQuoteSpacedDirectories(currentDirectory).replaceAll(
-      "\\",
-      `${isGitBash ? "/" : "\\"}`
-    ) + filename
-  }.exe`;
+    doubleQuoteSpacedDirectories(currentDirectory) + filename + extension[2]
+  }`;
+
+  //creates the replacement files
+
+  const terminalRemove = isCMD ? "del" : "rm";
+  const terminalRename = isCMD ? "rename" : "mv";
+  const commandDelimiter = getTerminalDelimiter(currentTerminalType ?? "");
+  const commandOr = getTerminalOr(currentTerminalType ?? "");
+  const commandAnd = getTerminalAnd(currentTerminalType ?? "");
+  const rmObjCheck = removeFile(
+    currentDirectory + baseFilename + extension[1],
+    currentTerminalType
+  );
+  const rmExeCheck = removeFile(
+    currentDirectory + baseFilename + extension[2],
+    currentTerminalType
+  );
+  const terminalFalse = isCMD ? "goto :EOF" : "false";
+  const terminalGoto = isCMD
+    ? `${commandOr} ("${terminalFalse}"))`
+    : `${commandAnd} ("${terminalFalse}")) ${commandOr} (echo "An error has occured")`;
+  const objFile = `${terminalRename} ${
+    currentDirectory + tempFilename + extension[1]
+  }`;
+  const ChangeFileTo = orignalFilename + extension[1];
+  const masmCheck = `((${masmCompileCommand}) ${commandAnd} (${terminalRemove} ${
+    currentDirectory + tempBaseFilename + extension[0]
+  })`;
+
   await fs.promises
     .writeFile(newPath.fsPath, fileData)
-    .then(() =>
-      terminal.sendText(
-        `${masmCompileCommand} ${commandDelimiter} ${masmLibraryLink} ${commandDelimiter} ${masmExecutable}`
-      )
+    .then(() => terminal.sendText(`${masmCheck} ${terminalGoto}`))
+    .then(() => terminal.sendText(`${rmObjCheck}`))
+    .then(() => terminal.sendText(`${rmExeCheck}`))
+    .then(() => terminal.sendText(`${objFile} ${ChangeFileTo}`))
+    .then(() => terminal.sendText(`${masmLibraryLink}`))
+    .then(() => terminal.sendText(`${masmExecutable}`));
+  // TODO: fix file having space issue
+}
+
+function removeFile(file: string, terminalType: string) {
+  if (fs.existsSync(file)) {
+    return (
+      { "Command Prompt": `del ${file} ` }?.[terminalType] ?? `rm ${file} `
     );
-  // TODO: Clean up and rename files
+  }
+  return "";
 }
 
 function doubleQuoteSpacedDirectories(path: string) {
@@ -276,6 +314,14 @@ function doubleQuoteSpacedDirectories(path: string) {
   return `${drive}\\${delineatedDirectory
     .map((directory) => (/\s/.test(directory) ? `"${directory}"` : directory))
     .join("\\")}`;
+}
+
+function getTerminalOr(terminalName: string): string {
+  return { PowerShell: "-or" }?.[terminalName] ?? "||";
+}
+
+function getTerminalAnd(terminalName: string): string {
+  return { PowerShell: "-and" }?.[terminalName] ?? "&&";
 }
 
 function getTerminalDelimiter(terminalName: string): string {
@@ -315,7 +361,7 @@ function writeFileToWorkspace(
   });
 }
 
-async function readFile(filePath: string) {
+async function readFile(filePath: string): Promise<FileProfile> {
   const filename = basename(filePath);
   const fileExtension = extname(filePath);
   const fileBaseName = filename.substring(
@@ -396,8 +442,8 @@ class MasmRunnerPanel {
     this._postMessage("reset");
   }
 
-  public async sendFile(...files: any[]) {
-    const [, fileList] = files[0];
+  public async sendFile(files: WorkspaceFileList): Promise<void> {
+    const [, fileList] = files;
 
     if (fileList.length == 0) {
       vscode.window.showInformationMessage("No files selected");
@@ -406,8 +452,8 @@ class MasmRunnerPanel {
 
     Promise.all(
       fileList
-        .filter((file) => file.scheme === "file")
-        .map((file) => readFile(file.fsPath))
+        .filter((file: FileData) => file.scheme === "file")
+        .map((file: FileData) => readFile(file.fsPath))
     )
       .then((files) => {
         this._postMessage(
@@ -424,7 +470,7 @@ class MasmRunnerPanel {
           })
         );
       })
-      .catch((e) => {
+      .catch((_e) => {
         vscode.window.showInformationMessage("Could not send file(s)");
       });
   }
@@ -451,7 +497,7 @@ class MasmRunnerPanel {
     this._writeCommandToCMD(`echo.>${filename}`);
   }
 
-  private compileCode(document) {
+  private compileCode(document: vscode.TextDocument) {
     const filename = document?.fileName;
     if (!filename) {
       return;
@@ -540,28 +586,28 @@ class MasmRunnerPanel {
     });
   }
 
-  private _postMessage(eventName: string, data: any = {}) {
+  private _postMessage(eventName: string, data: any = {}): void {
     this._panel.webview.postMessage(
       JSON.stringify({ eventName: eventName, data: { data: data } })
     );
   }
 
   // Layer div applies a layer so that the panel can be clicked again to allow typing in it
-  public updateChangedView() {
+  public updateChangedView(): void {
     this._postMessage("editor-selected", {});
   }
 
-  public doRefactor() {
+  public doRefactor(): void {
     // Send a message to the webview webview.
     // You can send any JSON serializable data.
     this._panel.webview.postMessage({ command: "refactor" });
   }
 
-  public static isRunning() {
+  public static isRunning(): boolean {
     return MasmRunnerPanel.currentPanel !== undefined;
   }
 
-  public dispose() {
+  public dispose(): void {
     MasmRunnerPanel.currentPanel = undefined;
 
     // Clean up our resources
@@ -575,47 +621,22 @@ class MasmRunnerPanel {
     }
   }
 
-  private _update() {
+  private _update(): void {
     const webview = this._panel.webview;
     this._panel.title = "Masm x86 Runner CMD";
     this._panel.webview.html = this._getHtmlForWebview(webview);
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview) {
-    // Local path to main script run in the webview
+  private _getHtmlForWebview(webview: vscode.Webview): string {
+    const getWebviewPath = (pathParameters: string[]) =>
+      webview.asWebviewUri(
+        vscode.Uri.joinPath(this._extensionUri, ...pathParameters)
+      );
 
-    const stylesPathMainPath = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "style.css"
-    );
-
-    const boxedwineIndexPathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "index-bw.js"
-    );
-
-    const boxedwinePathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "boxedwine.js"
-    );
-    const baseUriPathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "/"
-    );
-
-    // And the uri we use to load this script in the webview
-    const boxedwineUri = webview.asWebviewUri(boxedwinePathOnDisk);
-    const indexBoxedWineUri = webview.asWebviewUri(boxedwineIndexPathOnDisk);
-    const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-    const baseUri = webview.asWebviewUri(baseUriPathOnDisk);
-
-    // Uri to load styles into webview
-
-    // Use a nonce to only allow specific scripts to be run
+    const boxedwineUri = getWebviewPath(["media", "boxedwine.js"]);
+    const indexBoxedWineUri = getWebviewPath(["media", "index-bw.js"]);
+    const stylesMainUri = getWebviewPath(["media", "style.css"]);
+    const baseUri = getWebviewPath(["media"]);
 
     return `<!DOCTYPE html>
 			<html lang="en">
@@ -653,7 +674,7 @@ class MasmRunnerPanel {
   }
 }
 
-function getNonce() {
+function getNonce(): string {
   let text = "";
   const possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

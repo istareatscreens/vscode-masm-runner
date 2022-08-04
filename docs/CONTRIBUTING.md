@@ -25,7 +25,7 @@ from the following directories
 
 Uninstall MASM Runner from marketplace before testing as it will conflict with your development version.
 
-In vscode go to `File->Add Folder to Workspace..` and navigate to the `vscode-masm-runner/extension/` directory, you should then navigate to Run and Debug and click the green play button with `Run Extension` selected.
+In vscode go to `File->Open Workspace From File...` and navigate to the `vscode-masm-runner/vscode-masm-runner.code-workspace`, you should then be able to navigate to Run and Debug and click the green play button with `Run Extension` selected.
 
 For developer console for webview simply search for `>developer tools` in code navigation (ctrl+p or command+p)
 
