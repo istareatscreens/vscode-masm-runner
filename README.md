@@ -26,7 +26,7 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 
 - Command: masm runner compile
 - Description: Runs code in current file and exports .obj and .exe files to file or workspace directory. Runs code in current file and exports .obj and .exe files to file or workspace directory. When executed this command will either compile/link and run the code:
-  - In the native vscode terminal (Windows Only) running PowerShell, Command Prompt or Git Bash. Note if the webview is open native compiling will NOT occur - supports running x86/x64 (32-bit and 64-bit) MASM.
+  - In the native vscode terminal (Windows Only) running PowerShell or Command Prompt. Note if the webview is open native compiling will NOT occur - supports running x86/x64 (32-bit and 64-bit) MASM.
   - In the webview - supports running x86 (32-bit) MASM.
     Please note if the webview is running (you ran masm runner start) it will compile/link and run in the webview.
 - Settings (via vscode options):
@@ -40,7 +40,7 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 <figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Native VSCode Terminal</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/native-compile-and-run.gif"></figure>
 &nbsp;
 
-### Other Commands and Features
+### Other Commands and Features 
 
 ### MASM Runner restart
 

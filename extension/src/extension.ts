@@ -165,12 +165,11 @@ async function getVscodeTerminal(name = ""): Promise<vscode.Terminal | null> {
 
 async function runCodeNatively(document: vscode.TextDocument) {
   const currentTerminalType = getTerminalType();
-  const isGitBash = currentTerminalType === "Git Bash";
+  const isCMD = currentTerminalType === "Command Prompt";
   if (
     !(
-      currentTerminalType === "Command Prompt" ||
-      currentTerminalType === "PowerShell" ||
-      isGitBash
+      isCMD ||
+      currentTerminalType === "PowerShell"
     )
   ) {
     vscode.window.showInformationMessage(
@@ -190,7 +189,6 @@ async function runCodeNatively(document: vscode.TextDocument) {
     );
     return;
   }
-
   terminal.show();
 
   //path to the irvine to extension directory
@@ -201,11 +199,11 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   const jwasmExe = doubleQuoteSpacedDirectories(
     getPath(["JWASM", "JWASM.EXE"])
-  ).replaceAll("\\", `${isGitBash ? "/" : "\\"}`);
+  );
 
   const jWLinkExe = doubleQuoteSpacedDirectories(
     getPath(["JWLINK", "JWlink.exe"])
-  ).replaceAll("\\", `${isGitBash ? "/" : "\\"}`);
+  );
 
   //irvine lib path
   const libPath = getPath(["irvine"]);
@@ -218,57 +216,97 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   const user32Path = getPath(["irvine", "User32.Lib"]);
 
-  //creates a new file based on the document the user is working on
-  const tempFile = document;
+  const currentDirectory = document.uri.fsPath.slice(
+    0,
+    document.uri.fsPath.length - basename(document.fileName).length
+  );
+
+  const baseFilename = basename(document.fileName)
+    .slice(0, -extname(document.fileName).length)
+    .replaceAll(/\s/g, "_");
+  const tempBaseFilename = (
+    basename(document.fileName).slice(0, -extname(document.fileName).length) +
+    ".temp"
+  ).replaceAll(/\s/g, "_");
+  const extension = [".asm", ".obj", ".exe"];
 
   const newPath = vscode.Uri.file(
-    tempFile.fileName.slice(0, tempFile.fileName.length - 4) +
-      ".temp." +
-      tempFile.fileName.slice(-3)
+    currentDirectory + tempBaseFilename + extension[0]
   );
 
   // replace irvine path library to native one to allow simple Irvine include statment in asm file
   const irvineLib32Match = /include.+irvine32(\.inc|)/im;
 
-  let fileData = tempFile.getText();
-  fileData = fileData.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
-  const filename = basename(newPath.fsPath).slice(
-    0,
-    -extname(newPath.fsPath).length
-  );
+  const fileData = document
+    .getText()
+    .replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
+  const filename = baseFilename;
 
   // create the command variables
-  const currentDirectory = newPath.fsPath.slice(
-    0,
-    -basename(newPath.fsPath).length
-  );
+
+  const orignalFilename = filename;
+  const tempFilename = tempBaseFilename;
 
   // constructing terminal commands
-  const commandDelimiter = getTerminalDelimiter(currentTerminalType ?? "");
-  const masmCompilerFlags = "/Zd /coff".replaceAll(
-    "/",
-    `${isGitBash ? "//" : "/"}`
-  );
+  const masmCompilerFlags = "/Zd /coff";
+
   const masmCompileCommand = `${jwasmExe} ${masmCompilerFlags} "${
-    currentDirectory + filename
+    currentDirectory + tempFilename
   }.asm"`;
+
   const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" file "${
-    currentDirectory + filename
-  }.obj"`;
+    currentDirectory + orignalFilename + extension[1]
+  }"`;
+
   const masmExecutable = `${
-    doubleQuoteSpacedDirectories(currentDirectory).replaceAll(
-      "\\",
-      `${isGitBash ? "/" : "\\"}`
-    ) + filename
-  }.exe`;
+    doubleQuoteSpacedDirectories(currentDirectory) + filename + extension[2]
+  }`;
+
+  //creates the replacement files
+
+  const terminalRemove = isCMD ? "del" : "rm";
+  const terminalRename = isCMD ? "rename" : "mv";
+  const commandDelimiter = getTerminalDelimiter(currentTerminalType ?? "");
+  const commandOr = getTerminalOr(currentTerminalType ?? "");
+  const commandAnd = getTerminalAnd(currentTerminalType ?? "");
+  const rmObjCheck = removeFile(
+    currentDirectory + baseFilename + extension[1],
+    currentTerminalType
+  );
+  const rmExeCheck = removeFile(
+    currentDirectory + baseFilename + extension[2],
+    currentTerminalType
+  );
+  const terminalFalse = isCMD ? "goto :EOF" : "false";
+  const terminalGoto = isCMD
+    ? `${commandOr} ("${terminalFalse}"))`
+    : `${commandAnd} ("${terminalFalse}")) ${commandOr} (echo "An error has occured")`;
+  const objFile = `${terminalRename} ${
+    currentDirectory + tempFilename + extension[1]
+  }`;
+  const ChangeFileTo = orignalFilename + extension[1];
+  const masmCheck = `((${masmCompileCommand}) ${commandAnd} (${terminalRemove} ${
+    currentDirectory + tempBaseFilename + extension[0]
+  })`;
+
   await fs.promises
     .writeFile(newPath.fsPath, fileData)
-    .then(() =>
-      terminal.sendText(
-        `${masmCompileCommand} ${commandDelimiter} ${masmLibraryLink} ${commandDelimiter} ${masmExecutable}`
-      )
+    .then(() => terminal.sendText(`${masmCheck} ${terminalGoto}`))
+    .then(() => terminal.sendText(`${rmObjCheck}`))
+    .then(() => terminal.sendText(`${rmExeCheck}`))
+    .then(() => terminal.sendText(`${objFile} ${ChangeFileTo}`))
+    .then(() => terminal.sendText(`${masmLibraryLink}`))
+    .then(() => terminal.sendText(`${masmExecutable}`));
+  // TODO: fix file having space issue
+}
+
+function removeFile(file: string, terminalType: string) {
+  if (fs.existsSync(file)) {
+    return (
+      { "Command Prompt": `del ${file} ` }?.[terminalType] ?? `rm ${file} `
     );
-  // TODO: Clean up and rename files
+  }
+  return "";
 }
 
 function doubleQuoteSpacedDirectories(path: string) {
@@ -276,6 +314,14 @@ function doubleQuoteSpacedDirectories(path: string) {
   return `${drive}\\${delineatedDirectory
     .map((directory) => (/\s/.test(directory) ? `"${directory}"` : directory))
     .join("\\")}`;
+}
+
+function getTerminalOr(terminalName: string): string {
+  return { PowerShell: "-or" }?.[terminalName] ?? "||";
+}
+
+function getTerminalAnd(terminalName: string): string {
+  return { PowerShell: "-and" }?.[terminalName] ?? "&&";
 }
 
 function getTerminalDelimiter(terminalName: string): string {
