@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-runner",
   "private": false,
@@ -97,6 +97,31 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Enables context menu in Explorer (used to send files to boxedwine webview (cmd))"
+        },
+        "masmRunner.addCustomCompilerArgumentsAtStart": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Adds custom JWASM compiler arguments at start of command (native only)"
+        },
+        "masmRunner.addCustomCompilerArgumentsAtEnd": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Adds custom JWASM compiler arguments at end of command (native only)"
+        },
+        "masmRunner.addCustomLinkArgumentsAtStart": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Adds custom JWLINK compiler arguments at start of command (native only)"
+        },
+        "masmRunner.addCustomLinkArgumentsLibrary": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Adds custom JWLINK compiler arguments after library arguments (native only)"
+        },
+        "masmRunner.addCustomLinkArgumentsAtEnd": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Adds custom JWLINK compiler arguments at end of command (native only)"
         }
       }
     },
