@@ -193,6 +193,27 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   terminal.show();
 
+  const customCompileArguments = {
+    start: vscode.workspace
+      .getConfiguration("masmRunner")
+      .get("addCustomCompilerArgumentsAtStart"),
+    end:  vscode.workspace
+      .getConfiguration("masmRunner")
+      .get("addCustomCompilerArgumentsAtEnd"),
+  };
+
+  const customLinkArguments = {
+    start: vscode.workspace
+      .getConfiguration("masmRunner")
+      .get("addCustomLinkArgumentsAtStart"),
+    library: vscode.workspace
+      .getConfiguration("masmRunner")
+      .get("addCustomLinkArgumentsLibrary"),
+    end:  vscode.workspace
+      .getConfiguration("masmRunner")
+      .get("addCustomLinkArgumentsAtEnd"),
+  };
+
   //path to the irvine to extension directory
   const pathLink: string = __dirname.slice(0, __dirname.lastIndexOf("\\"));
 
@@ -249,12 +270,12 @@ async function runCodeNatively(document: vscode.TextDocument) {
     "/",
     `${isGitBash ? "//" : "/"}`
   );
-  const masmCompileCommand = `${jwasmExe} ${masmCompilerFlags} "${
-    currentDirectory + filename
-  }.asm"`;
-  const masmLibraryLink = `${jWLinkExe} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" file "${
-    currentDirectory + filename
-  }.obj"`;
+  const masmCompileCommand = `${jwasmExe} ${customCompileArguments.start} ${masmCompilerFlags} "${
+    currentDirectory + filename 
+  }.asm" ${customCompileArguments.end}`;
+  const masmLibraryLink = `${jWLinkExe} ${customLinkArguments.start} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" ${customLinkArguments.library} file "${
+    currentDirectory + filename 
+  }.obj" ${customLinkArguments.end}`;
   const masmExecutable = `${
     doubleQuoteSpacedDirectories(currentDirectory).replaceAll(
       "\\",
