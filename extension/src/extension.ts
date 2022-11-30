@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 import { basename, dirname, extname, join } from "path";
+import { doubleQuoteSpacedDirectories } from "./helperFunctions";
+import { handleIncludes } from "./handleIncludes";
 import { platform } from "os";
 import fs = require("fs");
 import { isBinaryFile } from "isbinaryfile";
@@ -197,7 +199,7 @@ async function runCodeNatively(document: vscode.TextDocument) {
     start: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomCompilerArgumentsAtStart"),
-    end:  vscode.workspace
+    end: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomCompilerArgumentsAtEnd"),
   };
@@ -209,7 +211,7 @@ async function runCodeNatively(document: vscode.TextDocument) {
     library: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomLinkArgumentsLibrary"),
-    end:  vscode.workspace
+    end: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomLinkArgumentsAtEnd"),
   };
@@ -240,19 +242,20 @@ async function runCodeNatively(document: vscode.TextDocument) {
   const user32Path = getPath(["irvine", "User32.Lib"]);
 
   //creates a new file based on the document the user is working on
-  const tempFile = document;
-
   const newPath = vscode.Uri.file(
-    tempFile.fileName.slice(0, tempFile.fileName.length - 4) +
+    document.fileName.slice(0, document.fileName.length - 4) +
       ".temp." +
-      tempFile.fileName.slice(-3)
+      document.fileName.slice(-3)
   );
 
+  await handleIncludes(document, irvine32Inc);
   // replace irvine path library to native one to allow simple Irvine include statment in asm file
+  // moved
   const irvineLib32Match = /include.+irvine32(\.inc|)/im;
-
-  let fileData = tempFile.getText();
+  let fileData = document.getText();
   fileData = fileData.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
+  // end moved
+
   const filename = basename(newPath.fsPath).slice(
     0,
     -extname(newPath.fsPath).length
@@ -270,12 +273,16 @@ async function runCodeNatively(document: vscode.TextDocument) {
     "/",
     `${isGitBash ? "//" : "/"}`
   );
-  const masmCompileCommand = `${jwasmExe} ${customCompileArguments.start} ${masmCompilerFlags} "${
-    currentDirectory + filename 
-  }.asm" ${customCompileArguments.end}`;
-  const masmLibraryLink = `${jWLinkExe} ${customLinkArguments.start} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" ${customLinkArguments.library} file "${
-    currentDirectory + filename 
-  }.obj" ${customLinkArguments.end}`;
+  const masmCompileCommand = `${jwasmExe} ${
+    customCompileArguments.start
+  } ${masmCompilerFlags} "${currentDirectory + filename}.asm" ${
+    customCompileArguments.end
+  }`;
+  const masmLibraryLink = `${jWLinkExe} ${
+    customLinkArguments.start
+  } format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" ${
+    customLinkArguments.library
+  } file "${currentDirectory + filename}.obj" ${customLinkArguments.end}`;
   const masmExecutable = `${
     doubleQuoteSpacedDirectories(currentDirectory).replaceAll(
       "\\",
@@ -290,13 +297,6 @@ async function runCodeNatively(document: vscode.TextDocument) {
       )
     );
   // TODO: Clean up and rename files
-}
-
-function doubleQuoteSpacedDirectories(path: string) {
-  const [drive, ...delineatedDirectory] = path.split("\\");
-  return `${drive}\\${delineatedDirectory
-    .map((directory) => (/\s/.test(directory) ? `"${directory}"` : directory))
-    .join("\\")}`;
 }
 
 function getTerminalDelimiter(terminalName: string): string {
