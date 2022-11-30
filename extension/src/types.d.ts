@@ -25,3 +25,9 @@ type FileProfile = {
   fileMetaData: fs.Stats;
   isBinary: boolean;
 };
+
+export type WorkSpaceFileData = {
+  workSpaceFolders: string[];
+  incFiles: string[];
+  asmFiles: string[];
+};
