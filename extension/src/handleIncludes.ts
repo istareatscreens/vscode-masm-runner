@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { ASM_EXTENSION, INC_EXTENSION } from "./constants";
 import { basename, dirname, extname, join } from "path";
 import nodeDir = require("node-dir");
-import { doubleQuoteSpacedDirectories, replaceIrvine } from "./helperFunctions";
+import { doubleQuoteSpacedDirectories } from "./helperFunctions";
 import { WorkspaceFolder } from "vscode";
 import { WorkSpaceFileData } from "./types";
 
@@ -11,6 +11,11 @@ export const handleIncludes = async (
   irvine32Inc: string
 ) => {
   if (document === undefined) {
+    return;
+  }
+
+  const includeStatements = getIncludeStatements(document.getText());
+  if (includeStatements.length === 0) {
     return;
   }
 
@@ -54,4 +59,16 @@ const getWorkspaceFiles = async (
         extname(file) === ASM_EXTENSION && basename(file) !== mainDocumentName
     ),
   };
+};
+
+const getIncludeStatements = (document: string) => {
+  const includeMatch = /(^([^\S\r\n\d]+|^)include([^\S\r\n])([^\s\n\r]+))/gim;
+  return [...document.matchAll(includeMatch)].map(
+    (match: string[]) => match[0]
+  );
+};
+
+const replaceIrvine = (document: string, irvine32Inc: string) => {
+  const irvineLib32Match = /include.+irvine32(\.inc|)/im;
+  return document.replace(irvineLib32Match, "INCLUDE " + irvine32Inc);
 };
