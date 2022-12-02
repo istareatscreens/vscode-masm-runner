@@ -26,8 +26,10 @@ type FileProfile = {
   isBinary: boolean;
 };
 
+export type BasenamePathMap = { [basename: string]: string };
+
 export type WorkSpaceFileData = {
   workSpaceFolders: string[];
-  incFiles: string[];
-  asmFiles: string[];
+  incFiles: BasenamePathMap[];
+  asmFiles: BasenamePathMap[];
 };
