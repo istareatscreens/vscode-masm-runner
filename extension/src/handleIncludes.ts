@@ -6,9 +6,18 @@ import { doubleQuoteSpacedDirectories } from "./helperFunctions";
 import { WorkspaceFolder } from "vscode";
 import { BasenamePathMap, WorkSpaceFileData } from "./types";
 
+/*
+- Create build directory
+- Writes files to new build directory
+Returns: { 
+Main file
+List of files to include
+}
+*/
 export const handleIncludes = async (
   document: undefined | vscode.TextDocument,
-  irvine32Inc: string
+  irvine32Inc: string,
+  fileListToInclude: Record<string, string[] | []> | Record<string, never> = {}
 ) => {
   if (document === undefined) {
     return;
@@ -19,12 +28,11 @@ export const handleIncludes = async (
     return;
   }
 
-  const newDocumentText = replaceIrvine(document.getText(), irvine32Inc);
-
   if (
     vscode.workspace.workspaceFolders === undefined ||
     vscode.workspace.workspaceFolders.length === 0
   ) {
+    const newDocumentText = replaceIrvine(document.getText(), irvine32Inc);
     return;
   }
 
@@ -32,23 +40,47 @@ export const handleIncludes = async (
     basename(document.fileName)
   );
 
+  // No linking required assumption .asm files cannot be included
   if (incFiles.length === 0) {
     return;
   }
+
+  // TODO: Add creation of custom directory
+  const buildDirectory = workSpaceFolders[0];
+
+  await Promise.all(
+    Array.from(includeStatements.values()).map(async (fileUri) => {
+      const [newFileUri, protos] = await readAndReplaceIncludes(
+        fileUri.uri,
+        incFiles,
+        asmFiles,
+        buildDirectory,
+        fileListToInclude
+      );
+      if (newFileUri) {
+        fileListToInclude[newFileUri as string] = [];
+      }
+    })
+  );
+
+  return;
 };
 
 const readAndReplaceIncludes = async (
   fileUri: string,
   incFiles: BasenamePathMap[],
   asmFiles: BasenamePathMap[],
-  workSpaceFolder: string
+  workSpaceFolder: string,
+  fileListToInclude: Record<string, string[] | []>
 ) => {
   const uri = vscode.Uri.parse(fileUri);
   const document = await vscode.workspace.openTextDocument(uri);
   const includeStatements = getIncludeStatements(document.getText());
   if (includeStatements.length === 0) {
-    return;
+    return [null, null];
   }
+
+  return ["trash", []];
 };
 
 const getWorkspaceFiles = async (
