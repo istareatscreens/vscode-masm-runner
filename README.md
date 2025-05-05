@@ -21,8 +21,14 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 
 - Command: masm runner start
 - Description: Starts MASM CMD to allow compilation and running of code
+- Start Webview Via Hotkey:
+  - Windows/Linux: `Ctrl + Alt + m`
+  - Mac: `⌘ Command + alt + m`
 
-<figure><figcaption align = "center"><b>Starting Webview</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start.gif"></figure>
+<figure><figcaption align = "center"><b>Starting Webview Via Command</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start.gif"></figure>
+&nbsp;
+
+<figure><figcaption align = "center"><b>Starting Webview Via Command</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start-masm-via-button.gif"></figure>
 &nbsp;
 
 ### Compile and Run
@@ -36,11 +42,23 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
   - masmRunner.exportBinaries
     - Description: Export .exe and .obj from boxedwine webview on compile?
     - Default Value: True
+- Running Code via Hotkey:
+  - Windows/Linux: `Ctrl + alt + n`
+  - Mac: `⌘ Command + Alt + n`
 
-<figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Webview</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/compile-and-run.gif"></figure>
+<figure><figcaption align ="center"><b>Running Code Via Context Menu</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/run-code-via-context-menu.jpg"></figure>
 &nbsp;
 
-<figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Native VSCode Terminal</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/native-compile-and-run.gif"></figure>
+<figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Webview Via Command</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/compile-and-run.gif"></figure>
+&nbsp;
+
+<figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Webview Via Button</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start-masm-webview-run-code-via-button.gif"></figure>
+&nbsp;
+
+<figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Native VSCode Terminal Via Command</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/native-compile-and-run.gif"></figure>
+&nbsp;
+
+<figure><figcaption align ="center"><b>Running/Compiling/Linking x86 MASM Code in Native VSCode Terminal Via Button</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start-masm-native-run-code-via-button.gif"></figure>
 &nbsp;
 
 ### Other Commands and Features
@@ -49,6 +67,7 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 
 - Command: masm runner restart
 - Description: restarts MASM Runner webview (If this does not work click the terminal and type ctrl+r or Command ⌘+r)
+- Button is available in Menu next to run code and launch MASM webview button <img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/restart-button.jpg">
 
 ### Send File(s) to Webview
 
