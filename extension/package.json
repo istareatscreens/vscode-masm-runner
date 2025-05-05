@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-runner",
   "private": false,
@@ -46,22 +46,38 @@
       {
         "command": "masmRunner.start",
         "title": "Start MASM runner CMD",
-        "category": "Masm Runner"
+        "category": "Masm Runner",
+        "icon": "$(browser)"
       },
       {
         "command": "masmRunner.runCode",
-        "title": "Compile and run code",
-        "category": "Masm Runner"
+        "title": "Compile and run MASM code",
+        "category": "Masm Runner",
+        "icon": "$(play)"
       },
       {
         "command": "masmRunner.resetCMD",
-        "title": "Restart Command Prompt",
-        "category": "Masm Runner"
+        "title": "Restart MASM Command Prompt",
+        "category": "Masm Runner",
+        "icon": "$(debug-restart)"
       },
       {
         "command": "masmRunner.sendToMasmWebview",
         "title": "Send file(s) to MASM Runner Webview",
         "category": "Masm Runner"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "masmRunner.runCode",
+        "key": "ctrl+alt+n",
+        "mac": "cmd+alt+n",
+        "when": "resourceExtname == .asm"
+      },
+      {
+        "command": "masmRunner.start",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m"
       }
     ],
     "snippets": [
@@ -131,6 +147,26 @@
           "when": "config.masmRunner.enableContextMenus",
           "command": "masmRunner.sendToMasmWebview",
           "group": "4_masmRunner"
+        },
+        {
+          "when": "resourceExtname == '.asm'",
+          "command": "masmRunner.runCode",
+          "group": "4_masmRunner"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "masmRunner.runCode",
+          "when": "resourceExtname == .asm",
+          "group": "navigation@1"
+        },
+        {
+          "command": "masmRunner.start",
+          "group": "navigation@2"
+        },
+        {
+          "command": "masmRunner.resetCMD",
+          "group": "navigation@3"
         }
       ]
     }
