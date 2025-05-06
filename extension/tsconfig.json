@@ -7,17 +7,7 @@
     "sourceMap": true,
     "allowJs": true,
     "strict": true,
-    "rootDir": "src",
-    "skipLibCheck": true
+    "rootDir": "src"
   },
-  "exclude": [
-    "node_modules",
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts",
-    "out",
-    "media",
-    ".vscode-test"
-  ]
+  "exclude": ["node_modules", "out", "media", ".vscode-test"]
 }
