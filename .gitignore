@@ -8,6 +8,7 @@ dist
 out
 *.tgz
 *.vsix
+!legacy/*.vsix
 #Ignore Ide files
 .vscode
 debug.log
