@@ -1,6 +1,6 @@
 {
   "name": "vscode-masm-runner",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "VSCode extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "scripts": {
     "watch": "gulp build && gulp watch",
