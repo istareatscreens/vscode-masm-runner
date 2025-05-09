@@ -33,12 +33,18 @@ function iconTask() {
 function jsTask() {
   return src([jsPath, "!" + jsBoxedPath, "!node_modules"])
     .pipe(webpack(require("./webpack.prod.js")))
+    .on("data", function (file) {
+      console.log(file.path); // Log each processed file
+    })
     .pipe(dest(output));
 }
 
 function jsTaskDev() {
   return src([jsPath, "!" + jsBoxedPath, "!node_modules"])
     .pipe(webpack(require("./webpack.dev.js")))
+    .on("data", function (file) {
+      console.log(file.path); // Log each processed file
+    })
     .pipe(dest(output));
 }
 

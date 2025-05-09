@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { createMessageListner } from "../../utility/utilityFunctions";
 import { keyCodes } from "./keypress.js";
 import FileSystem from "./FileSystem";
+import anyAscii from "any-ascii";
 import { crlf } from "eol";
 import LoadingScreen from "./LoadingScreen.jsx";
 
@@ -26,6 +27,9 @@ function Boxedwine() {
     createMessageListner();
     //creates a click listener to allow selection and operator of terminal when clicked on
     createClickListener();
+    createErrorBoxedWineListener();
+    createClearCacheListener();
+    pushMessageToVSCodeListener();
     createCommandWriteListener();
     createCommandRunListener();
     createResetListener();
@@ -35,10 +39,13 @@ function Boxedwine() {
   };
 
   const removeEventListeners = () => {
+    window.removeEventListener("push-vscode-message");
+    window.removeEventListener("error-loading");
     window.removeEventListener("editor-selected");
     window.removeEventListener("build-code");
     window.removeEventListener("reset");
     window.removeEventListener("write-command");
+    window.removeEventListener("clear-cache");
     window.removeEventListener("run-command");
     window.removeEventListener("zip-files");
     window.removeEventListener("compile-and-run");
@@ -60,7 +67,7 @@ function Boxedwine() {
             const formatFileData = () => {
               if (!isBinary) {
                 return fileExtension === ".asm"
-                  ? crlf(convertIrvineImports(fileData))
+                  ? preProcessText(fileData)
                   : crlf(fileData);
               }
               return fileData;
@@ -87,10 +94,14 @@ function Boxedwine() {
     });
   };
 
+  const createClearCacheListener = () =>
+    addEventListener("clear-cache", () => window.localStorage.clear());
+
   const compileAndRun = () => {
     window.addEventListener("compile-and-run", ({ detail: data }) => {
       const { filename, time, filePath, exportBinaries } = data;
-      const text = convertIrvineImports(data.text);
+      const text = preProcessText(data.text);
+
       FileSystem.createFile(filename, text, time);
       // TODO: Remove substring by changing bat to not add .asm
       const baseName = filename.substring(0, filename.length - 4);
@@ -151,10 +162,16 @@ function Boxedwine() {
     });
   };
 
+  const preProcessText = (text) =>
+    crlf(anyAscii(removeUnicode(convertIrvineImports(text))));
+
   const convertIrvineImports = (text) => {
     const irvineLib32Match = /include.+irvine32(\.inc|)/im;
     return text.replace(irvineLib32Match, "INCLUDE D:/irvine/Irvine32.inc");
   };
+
+  const removeUnicode = (text) =>
+    text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   //Send commands to console
   const convertStringToConsoleCommand = (command) => {
@@ -190,6 +207,42 @@ function Boxedwine() {
     }
     commandArray.push("enter");
     writeToConsole(commandArray);
+  };
+
+  const criticalErrorMessages = {
+    "Can't recognize 'cmd.bat' as an internal or external command, or batch script.\r": true,
+    "FS.trackingDelegate error on read file:": true,
+  };
+
+  const createErrorBoxedWineListener = () => {
+    window.addEventListener("error-loading", ({ detail: data }) => {
+      if (!(criticalErrorMessages[data.message] ?? false)) {
+        return;
+      }
+      clearCacheAndRestart();
+    });
+  };
+
+  const pushMessageToVSCodeListener = () => {
+    window.addEventListener("push-message-to-vscode", ({ detail: message }) =>
+      pushMessageToVSCode(message)
+    );
+  };
+
+  const clearCacheAndRestart = () => {
+    localStorage.clear();
+    reset();
+  };
+
+  const pushMessageToVSCode = (message) => {
+    window.vscode.postMessage({
+      command: "push-message-to-vscode",
+      messageType: "error",
+      message:
+        (message ??
+          "Error occured please see troubleshooting guide in documentation if errors continue ") +
+        "please see: [Troubleshooting Guide](https://github.com/istareatscreens/vscode-masm-runner/blob/master/README.md#webview-trouble-shooting)",
+    });
   };
 
   const createZipListener = () => {

@@ -56,6 +56,14 @@ export function activate(context: vscode.ExtensionContext) {
       }
     })
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("masmRunner.resetCMDCache", () => {
+      if (MasmRunnerPanel.currentPanel) {
+        MasmRunnerPanel.currentPanel.resetCMDCache();
+      }
+    })
+  );
 }
 
 function getWebviewOptions(
@@ -197,7 +205,7 @@ async function runCodeNatively(document: vscode.TextDocument) {
     start: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomCompilerArgumentsAtStart"),
-    end:  vscode.workspace
+    end: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomCompilerArgumentsAtEnd"),
   };
@@ -209,7 +217,7 @@ async function runCodeNatively(document: vscode.TextDocument) {
     library: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomLinkArgumentsLibrary"),
-    end:  vscode.workspace
+    end: vscode.workspace
       .getConfiguration("masmRunner")
       .get("addCustomLinkArgumentsAtEnd"),
   };
@@ -270,12 +278,16 @@ async function runCodeNatively(document: vscode.TextDocument) {
     "/",
     `${isGitBash ? "//" : "/"}`
   );
-  const masmCompileCommand = `${jwasmExe} ${customCompileArguments.start} ${masmCompilerFlags} "${
-    currentDirectory + filename 
-  }.asm" ${customCompileArguments.end}`;
-  const masmLibraryLink = `${jWLinkExe} ${customLinkArguments.start} format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" ${customLinkArguments.library} file "${
-    currentDirectory + filename 
-  }.obj" ${customLinkArguments.end}`;
+  const masmCompileCommand = `${jwasmExe} ${
+    customCompileArguments.start
+  } ${masmCompilerFlags} "${currentDirectory + filename}.asm" ${
+    customCompileArguments.end
+  }`;
+  const masmLibraryLink = `${jWLinkExe} ${
+    customLinkArguments.start
+  } format windows pe LIBPATH "${libPath}" LIBRARY "${irvine32Path}" LIBRARY "${kernel32Path}" LIBRARY "${user32Path}" ${
+    customLinkArguments.library
+  } file "${currentDirectory + filename}.obj" ${customLinkArguments.end}`;
   const masmExecutable = `${
     doubleQuoteSpacedDirectories(currentDirectory).replaceAll(
       "\\",
@@ -417,6 +429,10 @@ class MasmRunnerPanel {
     this._postMessage("reset");
   }
 
+  public async resetCMDCache() {
+    this._postMessage("clear-cache");
+  }
+
   public async sendFile(files: WorkspaceFileList): Promise<void> {
     const [, fileList] = files;
 
@@ -452,6 +468,7 @@ class MasmRunnerPanel {
 
   public runCode(document: vscode.TextDocument, filename: string): void {
     const text = document.getText();
+
     const exportBinaries = vscode.workspace
       .getConfiguration("masmRunner")
       .get("exportBinaries");
@@ -487,12 +504,40 @@ class MasmRunnerPanel {
     this._panel = panel;
     this._extensionUri = extensionUri;
 
+    vscode.commands.executeCommand(
+      "setContext",
+      "masmRunner.webviewActive",
+      true
+    );
+
+    // Listen for view state changes so reset button can be shown when webview is active
+    this._panel.onDidChangeViewState((e) => {
+      vscode.commands.executeCommand(
+        "setContext",
+        "masmRunner.webviewActive",
+        e.webviewPanel.visible
+      );
+    });
+
+    this._panel.onDidDispose(
+      () => {
+        // Listen for view state changes so reset button can be removed when webview is not active
+        vscode.commands.executeCommand(
+          "setContext",
+          "masmRunner.webviewActive",
+          false
+        );
+        MasmRunnerPanel.currentPanel = undefined;
+
+        // Listen for when the panel is disposed
+        // This happens when the user closes the panel or when the panel is closed programmatically
+        this.dispose();
+      },
+      null,
+      this._disposables
+    );
     // Set the webview's initial html content
     this._update();
-
-    // Listen for when the panel is disposed
-    // This happens when the user closes the panel or when the panel is closed programmatically
-    this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
     vscode.window.onDidChangeTextEditorViewColumn(() =>
       this.updateChangedView()
@@ -513,6 +558,12 @@ class MasmRunnerPanel {
               message.filename,
               message.fileData,
               message.filePath
+            );
+            break;
+          case "push-message-to-vscode":
+            vscode.window.showErrorMessage(
+              message?.message ??
+                "There should be a message here the developer made a mistake"
             );
             break;
         }

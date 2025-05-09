@@ -16,7 +16,7 @@
     //padding: 2px 11px 0 13px;
   }
 
-  @media (not(hover)) {
+  @media (hover: none) {
     &:not(:disabled):hover {
       box-shadow: $border-sunken-outer, $border-sunken-inner;
     }

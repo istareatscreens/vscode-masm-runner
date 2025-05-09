@@ -96,9 +96,21 @@ export default class FileSystem {
 
   //reads file list
   static _readFileList() {
-    return JSON.parse(
-      window.atob(hf.getFromLocalStorage(FileSystem.fileListKey))
-    );
+    try {
+      return JSON.parse(
+        window.atob(hf.getFromLocalStorage(FileSystem.fileListKey))
+      );
+    } catch {
+      window.localStorage.clear();
+      window.dispatchEvent(
+        new CustomEvent("push-message-to-vscode", {
+          detail: {
+            message:
+              "File system has become corrupted please close and reopen the masm webview if issues persist please ",
+          },
+        })
+      );
+    }
   }
 
   //Gets file list key
@@ -158,10 +170,7 @@ export default class FileSystem {
     let fileList = FileSystem._readFileList();
     //rename file in list
 
-    console.log({ filename, newFileName });
-    console.log(fileList);
     fileList = renameObjectKey(fileList, filename, newFileName);
-    console.log(fileList);
     hf.setInLocalStorage(
       FileSystem.fileListKey,
       JSON.stringify(fileList),

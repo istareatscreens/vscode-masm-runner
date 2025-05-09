@@ -99,3 +99,32 @@ For development and contributing see [HERE](https://github.com/istareatscreens/v
 
 **WARNING the web version is ~50mb in size**.  
 The web version can be viewed [HERE](https://wasm-masm-x86-editor.netlify.app/) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
+
+# Trouble Shooting
+
+## Webview
+
+If you have issues with the MASM webview please reset cache by doing the following:
+
+### Manual
+
+1. Open the MASM Webview
+2. By pressing Ctrl+Shift+p on windows or Command ⌘+shift+p on mac open the command box
+3. Type the following into the command box: ">Developer: Open Webview Developer Tools
+4. Navigate to Application tab in 'Develop Tools' window
+5. Go to Local Storage on the left menu verticle menu and expand it
+6. Delete all key value pairs from the list from one of the sub menu items for Local Storage
+7. Close the MASM WebView and reopen it
+
+### Command
+
+Alternatively:
+
+1. Open MASM Webview
+2. By pressing Ctrl+Shift+p on windows or Command ⌘+shift+p on mac open the command box
+3. Type the following into the command box: ">masmRunner.resetCMDCache"
+4. Close the MASM Webview
+5. Reopen the MASM Webview, Cache should be cleared and everything should work
+
+<figure><figcaption align = "center"><b>MasmRunner.resetCMDCache example use</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/masm-webview-clear-cache.gif"></figure>
+&nbsp;

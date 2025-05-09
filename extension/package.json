@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-runner",
   "private": false,
@@ -64,6 +64,11 @@
       {
         "command": "masmRunner.sendToMasmWebview",
         "title": "Send file(s) to MASM Runner Webview",
+        "category": "Masm Runner"
+      },
+      {
+        "command": "masmRunner.resetCMDCache",
+        "title": "Resets local MASM Command Prompt Cache, please fully close WebView after executing",
         "category": "Masm Runner"
       }
     ],
@@ -162,10 +167,12 @@
         },
         {
           "command": "masmRunner.start",
+          "when": "resourceExtname == .asm",
           "group": "navigation@2"
         },
         {
           "command": "masmRunner.resetCMD",
+          "when": "resourceExtname == .asm || resourceExtname == .exe || masmRunner.webviewActive",
           "group": "navigation@3"
         }
       ]

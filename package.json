@@ -1,6 +1,6 @@
 {
   "name": "vscode-masm-runner",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "VSCode extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "scripts": {
     "watch": "gulp build && gulp watch",
@@ -46,13 +46,15 @@
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",
     "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^6.0.1",
     "webpack-merge": "^5.8.0",
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
+    "any-ascii": "^0.3.2",
     "async_hooks": "^1.0.0",
     "bufferutil": "^4.0.6",
-    "canvas": "^2.9.3",
+    "canvas": "^3.1.0",
     "child_process": "^1.0.2",
     "eol": "^0.9.1",
     "file-saver": "^2.0.5",

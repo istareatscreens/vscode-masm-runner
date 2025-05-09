@@ -1,3 +1,5 @@
+import { eventNames } from "process";
+
 //Remove and add scripts for react
 export const removeScript = (scriptToremove: string): void => {
   let allsuspects = <HTMLCollectionOf<HTMLScriptElement>>(
@@ -27,24 +29,36 @@ export const createMessageListner = () => {
   window.addEventListener("message", handleMessage, true);
 };
 
+export function isValidJSON(string: string): boolean {
+  try {
+    JSON.parse(string);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 const handleMessage = (event: MessageEvent) => {
   //prevent acting on boxedwine execution code
   if (event.data != "zero-timeout-message" && event.data != "") {
     //prevent errors thrown for boxedwine events
     try {
       const { eventName, data } = <{ eventName: string; data: any }>(
-        JSON.parse(event.data)
+        (typeof event.data === "string" && isValidJSON(event.data)
+          ? JSON.parse(event.data)
+          : event.data)
       );
+
       window.dispatchEvent(
         new CustomEvent(eventName, {
           detail:
             Array.isArray(data?.data ?? {}) ||
             Object.keys(data?.data ?? {}).length
-              ? data.data
+              ? data?.data ?? data
               : null,
         })
       );
-    } catch {}
+    } catch (e) {}
   }
 };
 

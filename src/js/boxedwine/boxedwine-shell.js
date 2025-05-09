@@ -1356,19 +1356,14 @@ var Module = {
   postRun: [],
   print: (function () {
     var element = document.getElementById("output");
-    //if (element) element.value = ""; // clear browser cache
+
+    // Likely a cache fail event in the plugin
     return function (text) {
       text = Array.prototype.slice.call(arguments).join(" ");
-      // These replacements are necessary if you render to raw HTML
-      //text = text.replace(/&/g, "&amp;");
-      //text = text.replace(/</g, "&lt;");
-      //text = text.replace(/>/g, "&gt;");
-      //text = text.replace('\n', '<br>', 'g');
-      console.log(text);
-      //if (element) {
-      //  element.value += text + "\n";
-      //  element.scrollTop = element.scrollHeight; // focus on bottom
-      //}
+      window.postMessage({
+        eventName: "error-loading",
+        data: { data: { message: text } },
+      });
     };
   })(),
   printErr: function (text) {
@@ -1388,7 +1383,12 @@ var Module = {
           recordedFiles.push(filePath);
         }
       } else {
-        console.error(text);
+        window.postMessage({
+          eventName: "critical-error",
+          data: {
+            data: { message: "FS.trackingDelegate error on read file:" },
+          },
+        });
       }
     }
   },
