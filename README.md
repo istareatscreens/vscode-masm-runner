@@ -100,7 +100,7 @@ For development and contributing see [HERE](https://github.com/istareatscreens/v
 **WARNING the web version is ~50mb in size**.  
 The web version can be viewed [HERE](https://wasm-masm-x86-editor.netlify.app/) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
 
-# Trouble Shooting
+# Troubleshooting
 
 ## Webview
 

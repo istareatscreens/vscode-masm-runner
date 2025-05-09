@@ -241,7 +241,7 @@ function Boxedwine() {
       message:
         (message ??
           "Error occured please see troubleshooting guide in documentation if errors continue ") +
-        "please see: [Troubleshooting Guide](https://github.com/istareatscreens/vscode-masm-runner/blob/master/README.md#webview-trouble-shooting)",
+        "please see: [Troubleshooting Guide](https://github.com/istareatscreens/vscode-masm-runner/blob/master/README.md#troubleshooting)",
     });
   };
 
