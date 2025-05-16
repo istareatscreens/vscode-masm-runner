@@ -2,17 +2,14 @@
 
 # Development
 
-- Please make sure you are using node version >16 and have gulp installed:
-
-`npm install -g gulp`
-
+- Please make sure you are using node version >20
 - Ensure you run in project root and extension directory:
 
 `npm install`
 
 - This project uses git lfs so ensure you have it installed
 
-- To build the project development simply run:
+- To build the project development simply run in project root and extension directory:
 
 `npm run watch`
 
