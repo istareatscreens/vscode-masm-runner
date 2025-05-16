@@ -1269,6 +1269,13 @@ function setDirectDrawRenderer(val) {
 }
 function getEmulatorParams() {
   var params = ["-root", "/root/base"];
+
+  // Add admin/root priviledges
+  params.push("-uid");
+  params.push("0");
+  params.push("-euid");
+  params.push("0");
+
   params.push("-mount_drive");
   params.push(Config.appDirPrefix);
   params.push("d");

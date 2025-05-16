@@ -270,6 +270,10 @@ function Boxedwine() {
       window.callMain([
         "-root",
         "/root/base",
+        "-uid",
+        "0",
+        "-euid",
+        "0",
         "-mount_drive",
         "/root/files/",
         "d",

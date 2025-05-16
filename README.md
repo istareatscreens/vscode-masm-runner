@@ -28,7 +28,7 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 <figure><figcaption align = "center"><b>Starting Webview Via Command</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start.gif"></figure>
 &nbsp;
 
-<figure><figcaption align = "center"><b>Starting Webview Via Command</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start-masm-via-button.gif"></figure>
+<figure><figcaption align = "center"><b>Starting Webview Via Button</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/start-masm-via-button.gif"></figure>
 &nbsp;
 
 ### Compile and Run
