@@ -98,7 +98,7 @@ For development and contributing see [HERE](https://github.com/istareatscreens/v
 # Preview outside vscode:
 
 **WARNING the web version is ~50mb in size**.  
-The web version can be viewed [HERE](https://wasm-masm-x86-editor.netlify.app/) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
+The web version can be viewed [masm.isas.dev](https://masm.isas.dev) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
 
 # Troubleshooting
 
