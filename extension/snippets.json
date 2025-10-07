@@ -18,5 +18,35 @@
       "END main"
     ],
     "description": "MASM Program template"
+  },
+  "Generate Irvine32.inc" : {
+    "prefix": "i-irvine32",
+    "body": [
+      "INCLUDE Irvine32.inc from irvine library"
+    ]
+  },
+  "Generate Include Macros.inc" : {
+    "prefix": "i-macros",
+    "body": [
+      "INCLUDE Macros.inc from irvine library"
+    ]
+  },
+  "Generate Include SmallWin.inc" : {
+    "prefix": "i-smallwin",
+    "body": [
+      "INCLUDE SmallWin.inc from irvine library"
+    ]
+  },
+  "Generate Include VirtualKeys.inc" : {
+    "prefix": "i-virtualkeys",
+    "body": [
+      "INCLUDE VirtualKeys.inc from irvine library"
+    ]
+  },
+  "Generate Include GraphWin.inc" : {
+    "prefix": "i-graphwin",
+    "body": [
+      "INCLUDE GraphWin.inc from irvine library"
+    ]
   }
 }

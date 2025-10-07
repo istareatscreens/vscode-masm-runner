@@ -1,0 +1,346 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Microsoft Macro Assembler (MASM)",
+  "scopeName": "source.asm.masm",
+  "fileTypes": ["asm", "inc"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#procedures" },
+    { "include": "#labels" },
+    { "include": "#constants" },
+    { "include": "#predefined-symbols" },
+    { "include": "#directives" },
+    { "include": "#instructions" },
+    { "include": "#registers" },
+    { "include": "#operators" },
+    { "include": "#data-types" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.semicolon.masm",
+          "match": ";.*$"
+        },
+        {
+          "name": "comment.block.masm",
+          "begin": "(?i)\\bCOMMENT\\s+(\\S)",
+          "end": "\\1"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.masm",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "match": "\"\"", "name": "constant.character.escape.masm" }
+          ]
+        },
+        {
+          "name": "string.quoted.single.masm",
+          "begin": "'",
+          "end": "'"
+        },
+        {
+          "name": "string.quoted.angle.masm",
+          "begin": "<",
+          "end": ">"
+        }
+      ]
+    },
+    "procedures": {
+      "patterns": [
+        {
+          "match": "^\\s*([a-zA-Z_@?$][a-zA-Z0-9_@?$]*)\\s+(?i:(PROC))\\b",
+          "captures": {
+            "1": { "name": "entity.name.function.masm" },
+            "2": { "name": "storage.type.function.masm" }
+          }
+        },
+        {
+          "match": "^\\s*([a-zA-Z_@?$][a-zA-Z0-9_@?$]*)\\s+(?i:(ENDP))\\b",
+          "captures": {
+            "1": { "name": "entity.name.function.masm" },
+            "2": { "name": "storage.type.function.masm" }
+          }
+        },
+        {
+          "match": "^\\s*([a-zA-Z_@?$][a-zA-Z0-9_@?$]*)\\s+(?i:(PROTO))\\b",
+          "captures": {
+            "1": { "name": "entity.name.function.masm" },
+            "2": { "name": "storage.type.function.masm" }
+          }
+        }
+      ]
+    },
+    "labels": {
+      "patterns": [
+        {
+          "match": "^\\s*([a-zA-Z_@?$][a-zA-Z0-9_@?$]*):",
+          "captures": {
+            "1": { "name": "entity.name.label.masm" }
+          }
+        },
+        {
+          "match": "^\\s*(@@):",
+          "captures": {
+            "1": { "name": "entity.name.label.anonymous.masm" }
+          }
+        },
+        {
+          "name": "constant.language.label-reference.masm",
+          "match": "@[BF]\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.masm",
+          "match": "\\b\\d+\\.\\d+([eE][+-]?\\d+)?\\b"
+        },
+        {
+          "name": "constant.numeric.hex.masm",
+          "match": "\\b0[xX][0-9A-Fa-f]+\\b"
+        },
+        {
+          "name": "constant.numeric.hex.masm",
+          "match": "\\b[0-9][0-9A-Fa-f]*[Hh]\\b"
+        },
+        {
+          "name": "constant.numeric.binary.masm",
+          "match": "\\b[01]+[bByY]\\b"
+        },
+        {
+          "name": "constant.numeric.octal.masm",
+          "match": "\\b[0-7]+[oOqQ]\\b"
+        },
+        {
+          "name": "constant.numeric.decimal.masm",
+          "match": "\\b\\d+[dDtT]?\\b"
+        },
+        {
+          "name": "constant.language.masm",
+          "match": "(?i)\\b(TRUE|FALSE)\\b"
+        },
+        {
+          "name": "constant.language.uninitialized.masm",
+          "match": "\\?"
+        }
+      ]
+    },
+    "predefined-symbols": {
+      "patterns": [
+        {
+          "name": "variable.language.predefined.masm",
+          "match": "(?i)@(Date|Time|Cpu|Environ|Interface|Version|FileCur|FileName|Line|CatStr|InStr|SizeStr|SubStr|code|CodeSize|CurSeg|data|DataSize|fardata|fardata\\?|Model|stack|WordSize)\\b"
+        },
+        {
+          "name": "variable.language.location.masm",
+          "match": "\\$"
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "name": "keyword.directive.processor.masm",
+          "match": "(?i)\\.(386|386P|387|486|486P|586|586P|686|686P|8086|8087|NO87|K3D|MMX|XMM)\\b"
+        },
+        {
+          "name": "keyword.directive.segment.simplified.masm",
+          "match": "(?i)\\.(CODE|DATA|DATA\\?|CONST|FARDATA|FARDATA\\?|STACK|MODEL|ALPHA|DOSSEG|SEQ|STARTUP)\\b"
+        },
+        {
+          "name": "keyword.control.directive.flow.masm",
+          "match": "(?i)\\.(IF|ELSE|ELSEIF|ENDIF|WHILE|ENDW|REPEAT|UNTIL|UNTILCXZ|BREAK|CONTINUE|EXIT)\\b"
+        },
+        {
+          "name": "keyword.directive.error.masm",
+          "match": "(?i)\\.(ERR|ERR1|ERR2|ERRB|ERRNB|ERRDEF|ERRNDEF|ERRDIF|ERRDIFI|ERRE|ERRIDN|ERRIDNI|ERRNZ)\\b"
+        },
+        {
+          "name": "keyword.directive.listing.masm",
+          "match": "(?i)\\.(LIST|NOLIST|XLIST|LISTALL|LISTIF|NOLISTIF|LFCOND|SFCOND|TFCOND|LISTMACRO|NOLISTMACRO|LISTMACROALL|LALL|SALL|XALL|CREF|XCREF|NOCREF)\\b"
+        },
+        {
+          "name": "keyword.directive.x64.masm",
+          "match": "(?i)\\.(ALLOCSTACK|ENDPROLOG|PUSHFRAME|PUSHREG|SAVEREG|SAVEXMM128|SETFRAME)\\b"
+        },
+        {
+          "name": "keyword.directive.misc.masm",
+          "match": "(?i)\\.(RADIX|SAFESEH|FPO|TYPE)\\b"
+        },
+        {
+          "name": "keyword.control.conditional.masm",
+          "match": "(?i)\\b(IF|IF1|IF2|IFE|IFB|IFNB|IFDEF|IFNDEF|IFDIF|IFDIFI|IFIDN|IFIDNI|ELSE|ELSEIF|ELSEIF1|ELSEIF2|ELSEIFB|ELSEIFNB|ELSEIFDEF|ELSEIFNDEF|ELSEIFDIF|ELSEIFDIFI|ELSEIFE|ELSEIFIDN|ELSEIFIDNI|ENDIF)\\b"
+        },
+        {
+          "name": "keyword.directive.macro.masm",
+          "match": "(?i)\\b(MACRO|ENDM|EXITM|GOTO|LOCAL|PURGE|FOR|FORC|IRP|IRPC|REPEAT|REPT|WHILE)\\b"
+        },
+        {
+          "name": "keyword.directive.procedure.masm",
+          "match": "(?i)\\b(INVOKE|USES|LOCAL)\\b"
+        },
+        {
+          "name": "keyword.directive.segment.masm",
+          "match": "(?i)\\b(SEGMENT|ENDS|GROUP|ASSUME|END|NAME|DOSSEG)\\b"
+        },
+        {
+          "name": "keyword.directive.scope.masm",
+          "match": "(?i)\\b(PUBLIC|EXTERN|EXTERNDEF|EXTRN|COMM|INCLUDELIB)\\b"
+        },
+        {
+          "name": "keyword.directive.struct.masm",
+          "match": "(?i)\\b(STRUCT|STRUC|UNION|RECORD|TYPEDEF|ENDS)\\b"
+        },
+        {
+          "name": "keyword.directive.data.masm",
+          "match": "(?i)\\b(LABEL|ORG|ALIGN|EVEN)\\b"
+        },
+        {
+          "name": "keyword.directive.equate.masm",
+          "match": "(?i)\\b(EQU|TEXTEQU)\\b"
+        },
+        {
+          "name": "keyword.operator.assignment.masm",
+          "match": "="
+        },
+        {
+          "name": "keyword.directive.string.masm",
+          "match": "(?i)\\b(CATSTR|INSTR|SIZESTR|SUBSTR)\\b"
+        },
+        {
+          "name": "keyword.directive.misc.masm",
+          "match": "(?i)\\b(INCLUDE|ECHO|TITLE|SUBTITLE|SUBTTL|PAGE|OPTION|ALIAS|COMMENT)\\b"
+        },
+        {
+          "name": "keyword.directive.context.masm",
+          "match": "(?i)\\b(PUSHCONTEXT|POPCONTEXT)\\b"
+        },
+        {
+          "name": "keyword.directive.masm",
+          "match": "%OUT\\b"
+        }
+      ]
+    },
+    "instructions": {
+      "patterns": [
+        {
+          "name": "keyword.control.instruction-prefix.masm",
+          "match": "(?i)\\b(REP|REPE|REPZ|REPNE|REPNZ|LOCK|XACQUIRE|XRELEASE)\\b"
+        },
+        {
+          "name": "keyword.mnemonic.general.masm",
+          "match": "(?i)\\b(AAA|AAD|AAM|AAS|ADC|ADD|AND|ARPL|BOUND|BSF|BSR|BSWAP|BT|BTC|BTR|BTS|CALL|CBW|CDQ|CDQE|CLC|CLD|CLI|CLTS|CMC|CMOVA|CMOVAE|CMOVB|CMOVBE|CMOVC|CMOVE|CMOVG|CMOVGE|CMOVL|CMOVLE|CMOVNA|CMOVNAE|CMOVNB|CMOVNBE|CMOVNC|CMOVNE|CMOVNG|CMOVNGE|CMOVNL|CMOVNLE|CMOVNO|CMOVNP|CMOVNS|CMOVNZ|CMOVO|CMOVP|CMOVPE|CMOVPO|CMOVS|CMOVZ|CMP|CMPS|CMPSB|CMPSD|CMPSQ|CMPSW|CMPXCHG|CMPXCHG8B|CMPXCHG16B|CPUID|CQO|CWD|CWDE|DAA|DAS|DEC|DIV|ENTER|HLT|IDIV|IMUL|IN|INC|INS|INSB|INSD|INSW|INT|INT3|INTO|INVD|INVLPG|IRET|IRETD|IRETQ|JA|JAE|JB|JBE|JC|JCXZ|JE|JECXZ|JG|JGE|JL|JLE|JMP|JNA|JNAE|JNB|JNBE|JNC|JNE|JNG|JNGE|JNL|JNLE|JNO|JNP|JNS|JNZ|JO|JP|JPE|JPO|JRCXZ|JS|JZ|LAHF|LAR|LDS|LEA|LEAVE|LES|LFS|LGDT|LGS|LIDT|LLDT|LMSW|LODS|LODSB|LODSD|LODSQ|LODSW|LOOP|LOOPE|LOOPNE|LOOPNZ|LOOPZ|LSL|LSS|LTR|MOV|MOVS|MOVSB|MOVSD|MOVSQ|MOVSW|MOVSX|MOVSXD|MOVZX|MUL|NEG|NOP|NOT|OR|OUT|OUTS|OUTSB|OUTSD|OUTSW|POP|POPA|POPAD|POPF|POPFD|POPFQ|PUSH|PUSHA|PUSHAD|PUSHF|PUSHFD|PUSHFQ|RCL|RCR|RDMSR|RDPMC|RDTSC|RDTSCP|RET|RETF|RETN|ROL|ROR|RSM|SAHF|SAL|SAR|SBB|SCAS|SCASB|SCASD|SCASQ|SCASW|SETA|SETAE|SETB|SETBE|SETC|SETE|SETG|SETGE|SETL|SETLE|SETNA|SETNAE|SETNB|SETNBE|SETNC|SETNE|SETNG|SETNGE|SETNL|SETNLE|SETNO|SETNP|SETNS|SETNZ|SETO|SETP|SETPE|SETPO|SETS|SETZ|SGDT|SHL|SHLD|SHR|SHRD|SIDT|SLDT|SMSW|STC|STD|STI|STOS|STOSB|STOSD|STOSQ|STOSW|STR|SUB|TEST|UD2|VERR|VERW|WAIT|WBINVD|WRMSR|XADD|XCHG|XLAT|XLATB|XOR)\\b"
+        },
+        {
+          "name": "keyword.mnemonic.fpu.masm",
+          "match": "(?i)\\b(F2XM1|FABS|FADD|FADDP|FBLD|FBSTP|FCHS|FCLEX|FCOM|FCOMP|FCOMPP|FCOS|FDECSTP|FDIV|FDIVP|FDIVR|FDIVRP|FFREE|FIADD|FICOM|FICOMP|FIDIV|FIDIVR|FILD|FIMUL|FINCSTP|FINIT|FIST|FISTP|FISUB|FISUBR|FLD|FLD1|FLDCW|FLDENV|FLDL2E|FLDL2T|FLDLG2|FLDLN2|FLDPI|FLDZ|FMUL|FMULP|FNCLEX|FNINIT|FNOP|FNSAVE|FNSTCW|FNSTENV|FNSTSW|FPATAN|FPREM|FPREM1|FPTAN|FRNDINT|FRSTOR|FSAVE|FSCALE|FSIN|FSINCOS|FSQRT|FST|FSTCW|FSTENV|FSTP|FSTSW|FSUB|FSUBP|FSUBR|FSUBRP|FTST|FUCOM|FUCOMP|FUCOMPP|FWAIT|FXAM|FXCH|FXTRACT|FYL2X|FYL2XP1)\\b"
+        },
+        {
+          "name": "keyword.mnemonic.simd.masm",
+          "match": "(?i)\\b(ADDPD|ADDPS|ADDSD|ADDSS|ADDSUBPD|ADDSUBPS|ANDNPD|ANDNPS|ANDPD|ANDPS|BLENDPD|BLENDPS|BLENDVPD|BLENDVPS|CMPPD|CMPPS|CMPSD|CMPSS|COMISD|COMISS|CVTDQ2PD|CVTDQ2PS|CVTPD2DQ|CVTPD2PI|CVTPD2PS|CVTPI2PD|CVTPI2PS|CVTPS2DQ|CVTPS2PD|CVTPS2PI|CVTSD2SI|CVTSD2SS|CVTSI2SD|CVTSI2SS|CVTSS2SD|CVTSS2SI|CVTTPD2DQ|CVTTPD2PI|CVTTPS2DQ|CVTTPS2PI|CVTTSD2SI|CVTTSS2SI|DIVPD|DIVPS|DIVSD|DIVSS|DPPD|DPPS|EXTRACTPS|HADDPD|HADDPS|HSUBPD|HSUBPS|INSERTPS|LDDQU|LDMXCSR|MASKMOVDQU|MASKMOVQ|MAXPD|MAXPS|MAXSD|MAXSS|MINPD|MINPS|MINSD|MINSS|MOVAPD|MOVAPS|MOVD|MOVDDUP|MOVDQ2Q|MOVDQA|MOVDQU|MOVHLPS|MOVHPD|MOVHPS|MOVLHPS|MOVLPD|MOVLPS|MOVMSKPD|MOVMSKPS|MOVNTDQ|MOVNTDQA|MOVNTI|MOVNTPD|MOVNTPS|MOVNTQ|MOVQ|MOVQ2DQ|MOVSD|MOVSHDUP|MOVSLDUP|MOVSS|MOVUPD|MOVUPS|MPSADBW|MULPD|MULPS|MULSD|MULSS|ORPD|ORPS|PABSB|PABSD|PABSW|PACKSSDW|PACKSSWB|PACKUSDW|PACKUSWB|PADDB|PADDD|PADDQ|PADDSB|PADDSW|PADDUSB|PADDUSW|PADDW|PALIGNR|PAND|PANDN|PAVGB|PAVGW|PBLENDVB|PBLENDW|PCMPEQB|PCMPEQD|PCMPEQQ|PCMPEQW|PCMPESTRI|PCMPESTRM|PCMPGTB|PCMPGTD|PCMPGTQ|PCMPGTW|PCMPISTRI|PCMPISTRM|PEXTRB|PEXTRD|PEXTRQ|PEXTRW|PHADDD|PHADDSW|PHADDW|PHMINPOSUW|PHSUBD|PHSUBSW|PHSUBW|PINSRB|PINSRD|PINSRQ|PINSRW|PMADDUBSW|PMADDWD|PMAXSB|PMAXSD|PMAXSW|PMAXUB|PMAXUD|PMAXUW|PMINSB|PMINSD|PMINSW|PMINUB|PMINUD|PMINUW|PMOVMSKB|PMOVSXBD|PMOVSXBQ|PMOVSXBW|PMOVSXDQ|PMOVSXWD|PMOVSXWQ|PMOVZXBD|PMOVZXBQ|PMOVZXBW|PMOVZXDQ|PMOVZXWD|PMOVZXWQ|PMULDQ|PMULHRSW|PMULHUW|PMULHW|PMULLD|PMULLW|PMULUDQ|POR|PSADBW|PSHUFB|PSHUFD|PSHUFHW|PSHUFLW|PSHUFW|PSIGNB|PSIGND|PSIGNW|PSLLD|PSLLDQ|PSLLQ|PSLLW|PSRAD|PSRAW|PSRLD|PSRLDQ|PSRLQ|PSRLW|PSUBB|PSUBD|PSUBQ|PSUBSB|PSUBSW|PSUBUSB|PSUBUSW|PSUBW|PTEST|PUNPCKHBW|PUNPCKHDQ|PUNPCKHQDQ|PUNPCKHWD|PUNPCKLBW|PUNPCKLDQ|PUNPCKLQDQ|PUNPCKLWD|PXOR|RCPPS|RCPSS|ROUNDPD|ROUNDPS|ROUNDSD|ROUNDSS|RSQRTPS|RSQRTSS|SHUFPD|SHUFPS|SQRTPD|SQRTPS|SQRTSD|SQRTSS|STMXCSR|SUBPD|SUBPS|SUBSD|SUBSS|UCOMISD|UCOMISS|UNPCKHPD|UNPCKHPS|UNPCKLPD|UNPCKLPS|XORPD|XORPS)\\b"
+        },
+        {
+          "name": "keyword.mnemonic.avx.masm",
+          "match": "(?i)\\b(VADD[A-Z]*|VSUB[A-Z]*|VMUL[A-Z]*|VDIV[A-Z]*|VMOV[A-Z]*|VXOR[A-Z]*|VAND[A-Z]*|VOR[A-Z]*|VPAND[A-Z]*|VPOR[A-Z]*|VPXOR[A-Z]*|VCMP[A-Z]*|VTEST[A-Z]*|VBLEND[A-Z]*|VPERM[A-Z]*|VBROADCAST[A-Z]*|VEXTRACT[A-Z]*|VINSERT[A-Z]*|VPACK[A-Z]*|VUNPACK[A-Z]*|VSHUF[A-Z]*|VPSLL[A-Z]*|VPSRL[A-Z]*|VPSRA[A-Z]*|VPCMP[A-Z]*|VPADD[A-Z]*|VPSUB[A-Z]*|VPMUL[A-Z]*|VPMIN[A-Z]*|VPMAX[A-Z]*|VSQRT[A-Z]*|VRCP[A-Z]*|VRSQRT[A-Z]*|VROUND[A-Z]*|VCVT[A-Z]*|VMASKMOV[A-Z]*|VZERO[A-Z]*|VLDMXCSR|VSTMXCSR)\\b"
+        }
+      ]
+    },
+    "registers": {
+      "patterns": [
+        {
+          "name": "variable.language.register.general.masm",
+          "match": "(?i)\\b(RAX|RBX|RCX|RDX|RSI|RDI|RBP|RSP|R8|R9|R10|R11|R12|R13|R14|R15|EAX|EBX|ECX|EDX|ESI|EDI|EBP|ESP|R8D|R9D|R10D|R11D|R12D|R13D|R14D|R15D|AX|BX|CX|DX|SI|DI|BP|SP|R8W|R9W|R10W|R11W|R12W|R13W|R14W|R15W|AL|AH|BL|BH|CL|CH|DL|DH|SIL|DIL|BPL|SPL|R8B|R9B|R10B|R11B|R12B|R13B|R14B|R15B)\\b"
+        },
+        {
+          "name": "variable.language.register.segment.masm",
+          "match": "(?i)\\b(CS|DS|ES|FS|GS|SS)\\b"
+        },
+        {
+          "name": "variable.language.register.fpu.masm",
+          "match": "(?i)\\bST\\(\\d\\)|\\bST\\b"
+        },
+        {
+          "name": "variable.language.register.simd.masm",
+          "match": "(?i)\\b(MM[0-7]|XMM([0-9]|1[0-5])|YMM([0-9]|1[0-5])|ZMM([0-9]|1[0-5]|2[0-9]|3[01]))\\b"
+        },
+        {
+          "name": "variable.language.register.control.masm",
+          "match": "(?i)\\b(CR[0-48]|DR[0-367]|TR[3-7])\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.type.masm",
+          "match": "(?i)\\b(OFFSET|SEG|TYPE|SIZE|SIZEOF|LENGTH|LENGTHOF|HIGH|LOW|HIGHWORD|LOWWORD|HIGH32|LOW32|THIS|OPATTR|LROFFSET|IMAGEREL|SECTIONREL|WIDTH|MASK|DUP|ADDR|PTR|SHORT)\\b"
+        },
+        {
+          "name": "keyword.operator.type.masm",
+          "match": "(?i)\\.TYPE\\b"
+        },
+        {
+          "name": "keyword.operator.logical.masm",
+          "match": "(?i)(?<![a-zA-Z0-9_@?$])(AND|OR|XOR|NOT|SHL|SHR|MOD)(?![a-zA-Z0-9_@?$])"
+        },
+        {
+          "name": "keyword.operator.relational.masm",
+          "match": "(?i)\\b(EQ|NE|LT|LE|GT|GE)\\b"
+        },
+        {
+          "name": "keyword.operator.runtime.masm",
+          "match": "(?i)\\b(CARRY\\?|OVERFLOW\\?|PARITY\\?|SIGN\\?|ZERO\\?)\\b"
+        },
+        {
+          "name": "keyword.operator.arithmetic.masm",
+          "match": "[+\\-*/]"
+        },
+        {
+          "name": "keyword.operator.comparison.masm",
+          "match": "(==|!=|<=|>=|<|>|&&|\\|\\||!|&)"
+        }
+      ]
+    },
+    "data-types": {
+      "patterns": [
+        {
+          "name": "storage.type.masm",
+          "match": "(?i)\\b(BYTE|SBYTE|WORD|SWORD|DWORD|SDWORD|FWORD|QWORD|SQWORD|TBYTE|OWORD|REAL4|REAL8|REAL10|MMWORD|XMMWORD|YMMWORD|DB|DW|DD|DF|DQ|DT)\\b"
+        },
+        {
+          "name": "storage.modifier.distance.masm",
+          "match": "(?i)\\b(NEAR|FAR|NEAR16|NEAR32|FAR16|FAR32)\\b"
+        },
+        {
+          "name": "storage.modifier.language.masm",
+          "match": "(?i)(?<!\\w)(PASCAL|FORTRAN|BASIC|SYSCALL|STDCALL|C)(?!\\w)"
+        },
+        {
+          "name": "storage.modifier.model.masm",
+          "match": "(?i)\\b(TINY|SMALL|MEDIUM|COMPACT|LARGE|HUGE|FLAT)\\b"
+        },
+        {
+          "name": "storage.modifier.segment.masm",
+          "match": "(?i)\\b(PARA|PAGE|STACK|COMMON|MEMORY|AT|PRIVATE|PUBLIC|USE16|USE32|USE64|READONLY|INFO|READ|WRITE|EXECUTE|SHARED|NOPAGE|NOCACHE|DISCARD)\\b"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.masm",
+          "match": "[a-zA-Z_@?$][a-zA-Z0-9_@?$]*"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "comments": {
+    "lineComment": ";",
+    "blockComment": ["COMMENT", ""]
+  },
+  "brackets": [
+    ["[", "]"],
+    ["(", ")"],
+    ["{", "}"],
+    ["<", ">"]
+  ],
+  "autoClosingPairs": [
+    { "open": "[", "close": "]" },
+    { "open": "(", "close": ")" },
+    { "open": "{", "close": "}" },
+    { "open": "<", "close": ">" },
+    { "open": "'", "close": "'", "notIn": ["string", "comment"] },
+    { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
+  ],
+  "surroundingPairs": [
+    ["[", "]"],
+    ["(", ")"],
+    ["{", "}"],
+    ["<", ">"],
+    ["'", "'"],
+    ["\"", "\""]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*(PROC|MACRO|SEGMENT|STRUCT|STRUC|UNION|RECORD|IF|IFE|IFB|IFNB|IFDEF|IFNDEF|IFDIF|IFDIFI|IFIDN|IFIDNI|WHILE|REPEAT|FOR|FORC)\\b",
+      "end": "^\\s*(ENDP|ENDM|ENDS|ENDIF|ENDW)\\b"
+    }
+  },
+  "wordPattern": "([a-zA-Z_@?$][a-zA-Z0-9_@?$]*)",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(PROC|MACRO|SEGMENT|STRUCT|STRUC|UNION|IF|IFE|IFB|IFNB|IFDEF|IFNDEF|WHILE|REPEAT|FOR|FORC)\\b",
+    "decreaseIndentPattern": "^\\s*(ENDP|ENDM|ENDS|ENDIF|ENDW|ELSE)\\b"
+  }
+}

@@ -9,5 +9,5 @@
     "strict": true,
     "rootDir": "src"
   },
-  "exclude": ["node_modules", "out", "media", ".vscode-test"]
+  "exclude": ["node_modules", "out", "media", ".vscode-test", "rollup.*.js"]
 }

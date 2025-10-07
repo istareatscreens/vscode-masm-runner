@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.7.4",
+  "version": "0.9.0",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-runner",
   "private": false,
@@ -20,7 +20,7 @@
     "url": "https://github.com/istareatscreens/vscode-masm-runner"
   },
   "engines": {
-    "vscode": "^1.47.0"
+    "vscode": "^1.80.0"
   },
   "galleryBanner": {
     "color": "#000000",
@@ -36,6 +36,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:MASM",
     "onCommand:masmRunner.start",
     "onCommand:masmRunner.runCode",
     "onWebviewPanel:masmRunner"
@@ -102,7 +103,25 @@
         "extensions": [
           ".asm",
           ".ASM"
-        ]
+        ],
+        "configuration": "./syntax/language-configuration.json"
+      },
+      {
+        "id": "masm-plain",
+        "aliases": [
+          "MASM (No Highlighting)"
+        ],
+        "configuration": "./syntax/language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "MASM",
+        "scopeName": "source.asm.masm",
+        "path": "./syntax/masm.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.comment": "comment"
+        }
       }
     ],
     "configuration": {
@@ -143,6 +162,11 @@
           "type": "string",
           "default": "",
           "markdownDescription": "Adds custom JWLINK compiler arguments at end of command (native only)"
+        },
+        "masmRunner.enableSyntaxHighlighting": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable or disable syntax highlighting for MASM (.asm/.ASM) files. When disabled, files will appear as plain text."
         }
       }
     },
@@ -186,7 +210,7 @@
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
-    "@types/vscode": "^1.47.0",
+    "@types/vscode": "^1.80.0",
     "@types/vscode-webview": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",

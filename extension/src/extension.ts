@@ -5,7 +5,78 @@ import fs = require("fs");
 import { isBinaryFile } from "isbinaryfile";
 import { FileData, FileProfile, Merge, WorkspaceFileList } from "./types";
 
+/**
+ * Sets up syntax highlighting control for MASM files
+ * Switches between "MASM" (with highlighting) and "masm-plain" (without) based on settings
+ */
+function setupSyntaxHighlightingControl(context: vscode.ExtensionContext) {
+  const isAsmFile = (document: vscode.TextDocument): boolean => {
+    const ext = extname(document.fileName).toLowerCase();
+    return ext === ".asm";
+  };
+
+  const applyLanguageMode = async (document: vscode.TextDocument) => {
+    if (!isAsmFile(document)) {
+      return;
+    }
+
+    const config = vscode.workspace.getConfiguration("masmRunner");
+    const highlightingEnabled = config.get<boolean>(
+      "enableSyntaxHighlighting",
+      true
+    );
+
+    const targetLanguage = highlightingEnabled ? "MASM" : "masm-plain";
+
+    if (document.languageId !== targetLanguage) {
+      if (
+        document.languageId === "MASM" ||
+        document.languageId === "masm-plain"
+      ) {
+        try {
+          await vscode.languages.setTextDocumentLanguage(
+            document,
+            targetLanguage
+          );
+        } catch (error) {
+          console.error(
+            `Failed to set language mode for ${document.fileName}:`,
+            error
+          );
+        }
+      }
+    }
+  };
+
+  context.subscriptions.push(
+    vscode.workspace.onDidOpenTextDocument(async (document) => {
+      await applyLanguageMode(document);
+    })
+  );
+
+  // Apply language mode to already open documents when configuration changes
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(async (event) => {
+      if (event.affectsConfiguration("masmRunner.enableSyntaxHighlighting")) {
+        // Update all currently open .asm files
+        for (const document of vscode.workspace.textDocuments) {
+          await applyLanguageMode(document);
+        }
+      }
+    })
+  );
+
+  // Apply language mode to all currently open documents on activation
+  (async () => {
+    for (const document of vscode.workspace.textDocuments) {
+      await applyLanguageMode(document);
+    }
+  })();
+}
+
 export function activate(context: vscode.ExtensionContext) {
+  setupSyntaxHighlightingControl(context);
+
   context.subscriptions.push(
     vscode.commands.registerCommand("masmRunner.start", () => {
       MasmRunnerPanel.createOrShow(context.extensionUri);
@@ -76,7 +147,7 @@ function getWebviewOptions(
     // Restrict the webview to only loading content from our extension's `media` and `assets` directories
     localResourceRoots: [
       vscode.Uri.joinPath(extensionUri, "media"),
-      vscode.Uri.joinPath(extensionUri, "..", "src", "assets")  // Add the assets directory
+      vscode.Uri.joinPath(extensionUri, "..", "src", "assets"), // Add the assets directory
     ],
   };
 }
@@ -685,7 +756,7 @@ class MasmRunnerPanel {
             style="margin-top: 0.5em; margin-left: auto; margin-right: auto"
           ></div>
         </figure>
-        <div class="emscripten" id="status">Downloading...</div>
+        <div class="emscripten" id="status">Loading...</div>
         <div class="emscripten">
           <progress value="0" max="100" id="progress"></progress>
         </div>

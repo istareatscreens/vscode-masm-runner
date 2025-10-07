@@ -14,7 +14,7 @@ Please note that this extension is far from perfect, contributions are appreciat
 # Preview version outside vscode:
 
 **WARNING the web version is ~50mb in size**.  
-The web version can be viewed [masm.isas.dev](https://masm.isas.dev) or see repo for the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor)
+The web version can be viewed [masm.isas.dev](https://masm.isas.dev) or see repo for the web version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor)
 
 # How To Use
 
@@ -91,10 +91,33 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 
 Current snippets include:
 
+- i-irvine32 - Inserts `INCLUDE Irvine32.inc` directive from irvine library
+- i-macros - Inserts `INCLUDE Macros.inc` directive from irvine library
+- i-smallwin - Inserts `INCLUDE SmallWin.inc` directive from irvine library
+- i-virtualkeys - Inserts `INCLUDE VirtualKeys.inc` directive from irvine library
+- i-graphwin - Inserts `INCLUDE GraphWin.inc` directive from irvine library
 - masm-template - Generates standard template to write MASM x86 using Irvine32 library
 
 <figure><figcaption align = "center"><b>masm-template Snippet Preview</b></figcaption><img src="https://raw.githubusercontent.com/istareatscreens/vscode-masm-runner/master/docs/snippet.gif"></figure>
 &nbsp;
+
+### Syntax Highlighting
+
+This extension includes semantic syntax highlighting for MASM (.asm/.ASM) files powered by a TextMate grammar. This is a very rough implementation there are likely bugs if you would like to contribute to fixing this please visit here and put in a PR/Issue [masm-grammar](https://github.com/istareatscreens/masm-grammar).
+
+#### Disabling Syntax Highlighting
+
+If you prefer to disable the semantic syntax highlighting, you can do so through VSCode settings:
+
+1. Open VSCode Settings (File > Preferences > Settings or `Ctrl+,` / `Cmd+,`)
+2. Search for "MASM Runner"
+3. Uncheck the option: **"Masm Runner: Enable Syntax Highlighting"**
+
+Or add the following to your user settings.json file:
+
+```json
+"masmRunner.enableSyntaxHighlighting": false
+```
 
 # Contributing
 

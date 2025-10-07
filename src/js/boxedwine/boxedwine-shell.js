@@ -18,10 +18,14 @@ function perfLog(label) {
   const delta = PERF_CHECKPOINTS.last ? now - PERF_CHECKPOINTS.last : 0;
   PERF_CHECKPOINTS[label] = now;
   PERF_CHECKPOINTS.last = now;
-  console.log(`[PERF] ${label}: ${elapsed.toFixed(0)}ms total (${delta.toFixed(0)}ms since last)`);
+  console.log(
+    `[PERF] ${label}: ${elapsed.toFixed(0)}ms total (${delta.toFixed(
+      0
+    )}ms since last)`
+  );
 }
 // Expose perfLog globally for use in boxedwine.js
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.perfLog = perfLog;
 }
 
@@ -107,16 +111,16 @@ function setConfiguration() {
   Config.appPayload = getPayload("app-payload");
   Config.extraPayload = "";
   Config.Program = "cmd.bat";
-  
+
   Config.WorkingDir = getWorkingDirectory();
   Config.isSoundEnabled = getSound();
   Config.bpp = getBitsPerPixel();
   Config.useRangeRequests = getUseRangeRequests();
   Config.glext = getGLExtensions();
   Config.cpu = getCPU();
-  
-  console.log('Using baseUri:', baseUri);
-  console.log('appZipFile path:', Config.appZipFile);
+
+  console.log("Using baseUri:", baseUri);
+  console.log("appZipFile path:", Config.appZipFile);
 }
 function allowParameterOverride() {
   if (Config.urlParams.length > 0) {
@@ -509,7 +513,9 @@ function buildFileSystem(writableStorage, isDropBox) {
                     if (e3) {
                       console.log(e3);
                     }
-                    perfLog("Root ZipFS.Create (" + Config.rootZipFile + ") - DONE");
+                    perfLog(
+                      "Root ZipFS.Create (" + Config.rootZipFile + ") - DONE"
+                    );
                     buildBrowserFileSystem(
                       writableStorage,
                       isDropBox,
@@ -751,7 +757,9 @@ function postBuildFileSystem(rootFS, homeFS, extraFSs) {
   FS.mount(BFS, { root: "/root" }, "/root");
 
   if (extraFSs.length > 0) {
-    perfLog("Starting recursive copy of " + extraFSs.length + " extra filesystems");
+    perfLog(
+      "Starting recursive copy of " + extraFSs.length + " extra filesystems"
+    );
   }
   for (let i = 0; i < extraFSs.length; i++) {
     recursiveCopy(extraFSs[i], Config.extraZipFiles[i], "/");
@@ -846,21 +854,21 @@ function createFileIfNecessary(fs, fullPath, prefix) {
         } catch (ef) {
           console.log(
             "file replace error:" +
-            ef.message +
-            " for: " +
-            parent +
-            "/" +
-            filename
+              ef.message +
+              " for: " +
+              parent +
+              "/" +
+              filename
           );
         }
       } else {
         console.log(
           "file creation error:" +
-          ef.message +
-          " for: " +
-          parent +
-          "/" +
-          filename
+            ef.message +
+            " for: " +
+            parent +
+            "/" +
+            filename
         );
       }
     }
@@ -886,21 +894,21 @@ function createFolderIfNecessary(fullPath, prefix) {
         } catch (cef) {
           console.log(
             "Directory creation error:" +
-            cef.message +
-            " for: " +
-            parent +
-            "/" +
-            dir
+              cef.message +
+              " for: " +
+              parent +
+              "/" +
+              dir
           );
         }
       } else if (ef.message != "File exists") {
         console.log(
           "Directory creation error:" +
-          ef.message +
-          " for: " +
-          parent +
-          "/" +
-          dir
+            ef.message +
+            " for: " +
+            parent +
+            "/" +
+            dir
         );
       }
     }
@@ -1179,15 +1187,25 @@ var Module = {
     //  if (element) element.value = ""; // clear browser cache
     return function (text) {
       text = Array.prototype.slice.call(arguments).join(" ");
-      
+
       // Detect Wine initialization output
-      if (!wineInitDetected && typeof window !== 'undefined' && window.perfLog) {
-        if (text.includes("wine") || text.includes("Wine") || text.includes("cmd")) {
+      if (
+        !wineInitDetected &&
+        typeof window !== "undefined" &&
+        window.perfLog
+      ) {
+        if (
+          text.includes("wine") ||
+          text.includes("Wine") ||
+          text.includes("cmd")
+        ) {
           wineInitDetected = true;
-          window.perfLog("Wine output detected - Wine has started initializing");
+          window.perfLog(
+            "Wine output detected - Wine has started initializing"
+          );
         }
       }
-      
+
       // These replacements are necessary if you render to raw HTML
       //text = text.replace(/&/g, "&amp;");
       //text = text.replace(/</g, "&lt;");
@@ -1260,17 +1278,21 @@ var Module = {
       if (!text) spinnerElement.hidden = true;
     }
     statusElement.innerHTML = text;
-    
+
     // When status is cleared (empty string), Wine has finished loading
-    if (!text && Module.setStatus.last.text && typeof window !== 'undefined') {
-      if (typeof window.perfLog !== 'undefined') {
-        window.perfLog("setStatus('') called - Status cleared, Wine initialization complete");
+    if (!text && Module.setStatus.last.text && typeof window !== "undefined") {
+      if (typeof window.perfLog !== "undefined") {
+        window.perfLog(
+          "setStatus('') called - Status cleared, Wine initialization complete"
+        );
       }
       if (!window._boxedwineFullyLoadedFired) {
         window._boxedwineFullyLoadedFired = true;
-        window.dispatchEvent(new CustomEvent('boxedwine-fully-loaded', {
-          detail: { timestamp: performance.now() }
-        }));
+        window.dispatchEvent(
+          new CustomEvent("boxedwine-fully-loaded", {
+            detail: { timestamp: performance.now() },
+          })
+        );
       }
     }
   },
@@ -1280,15 +1302,15 @@ var Module = {
     Module.setStatus(
       left
         ? "Preparing... (" +
-        (this.totalDependencies - left) +
-        "/" +
-        this.totalDependencies +
-        ")"
+            (this.totalDependencies - left) +
+            "/" +
+            this.totalDependencies +
+            ")"
         : ""
     );
   },
 };
-Module.setStatus("Downloading...");
+Module.setStatus("Loading...");
 window.onerror = function () {
   Module.setStatus("Exception thrown, see JavaScript console");
   spinnerElement.style.display = "none";

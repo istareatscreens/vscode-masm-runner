@@ -21,8 +21,11 @@ const wasmPath = "src/wasm/*.wasm";
 const imagePath = "src/images/*";
 const jsBoxedPath = "src/js/boxedwine/**/*.js";
 const fontPath = "src/fonts/*";
+const syntaxPath = "src/syntax/**/*.js";
+const syntaxExtensionPath = "extension/src/syntax/**/*.js";
 
 const output = "extension/media/";
+const syntaxOutput = "extension/src/syntax/";
 
 function iconTask() {
   return src(["src//*.ico", "src//*.icns"], "src//*.png").pipe(
@@ -31,7 +34,7 @@ function iconTask() {
 }
 
 function jsTask() {
-  return src([jsPath, "!" + jsBoxedPath, "!node_modules"])
+  return src([jsPath, "!" + jsBoxedPath, "!" + syntaxOutput, "!node_modules"])
     .pipe(webpack(require("./webpack.prod.js")))
     .on("data", function (file) {
       console.log(file.path); // Log each processed file
@@ -40,7 +43,7 @@ function jsTask() {
 }
 
 function jsTaskDev() {
-  return src([jsPath, "!" + jsBoxedPath, "!node_modules"])
+  return src([jsPath, "!" + jsBoxedPath, "!" + syntaxOutput, "!node_modules"])
     .pipe(webpack(require("./webpack.dev.js")))
     .on("data", function (file) {
       console.log(file.path); // Log each processed file
@@ -53,7 +56,7 @@ function cleanTask() {
 }
 
 function jsBoxedTask() {
-  return src(["!" + jsPath, jsBoxedPath])
+  return src(["!" + jsPath, "!" + syntaxOutput, jsBoxedPath])
     .pipe(concat("boxedwine.js"))
     .pipe(terser())
     .pipe(dest(output));
@@ -92,9 +95,17 @@ function fontTask() {
   return src(fontPath).pipe(browserSync.stream()).pipe(dest(output));
 }
 
+function syntaxTask() {
+  return src(syntaxPath).pipe(gulp.dest(syntaxOutput));
+}
+
+function syntaxExtensionTask() {
+  return src(syntaxExtensionPath).pipe(gulp.dest("extension/out/syntax/"));
+}
+
 function watchTask() {
   gulp.watch(
-    [cssPath, jsPath, jsBoxedPath, assetsPath],
+    [cssPath, jsPath, jsBoxedPath, assetsPath, syntaxPath, syntaxExtensionPath],
     { interval: 1000 },
     parallel(
       iconTask,
@@ -105,7 +116,9 @@ function watchTask() {
       readmeTask,
       wasmTask,
       assetsTask,
-      imgTask
+      imgTask,
+      syntaxTask,
+      syntaxExtensionTask
     )
   );
   gulp.watch(jsPath).on("change", browserSync.reload);
@@ -126,6 +139,8 @@ exports.build = series(
     cssTask,
     wasmTask,
     assetsTask,
-    imgTask
+    imgTask,
+    syntaxTask,
+    syntaxExtensionTask
   )
 );
