@@ -73,8 +73,11 @@ function getWebviewOptions(
     // Enable javascript in the webview
     enableScripts: true,
     retainContextWhenHidden: true,
-    // And restrict the webview to only loading content from our extension's `media` directory.
-    localResourceRoots: [vscode.Uri.joinPath(extensionUri, "media")],
+    // Restrict the webview to only loading content from our extension's `media` and `assets` directories
+    localResourceRoots: [
+      vscode.Uri.joinPath(extensionUri, "media"),
+      vscode.Uri.joinPath(extensionUri, "..", "src", "assets")  // Add the assets directory
+    ],
   };
 }
 
@@ -243,9 +246,9 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   const irvine32Inc = getPath(["irvine", "Irvine32.inc"]);
 
-  const kernel32Path = getPath(["irvine", "Kernel32.Lib"]);
+  const kernel32Path = getPath(["irvine", "Kernel32.lib"]);
 
-  const user32Path = getPath(["irvine", "User32.Lib"]);
+  const user32Path = getPath(["irvine", "User32.lib"]);
 
   //creates a new file based on the document the user is working on
   const tempFile = document;
@@ -682,7 +685,7 @@ class MasmRunnerPanel {
             style="margin-top: 0.5em; margin-left: auto; margin-right: auto"
           ></div>
         </figure>
-        <div class="emscripten" id="status">Loading...</div>
+        <div class="emscripten" id="status">Downloading...</div>
         <div class="emscripten">
           <progress value="0" max="100" id="progress"></progress>
         </div>
@@ -691,6 +694,21 @@ class MasmRunnerPanel {
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <script>
       window.vscode = acquireVsCodeApi();
+      
+      // Initialize Module - boxedwine-shell.js will populate it further
+      window.Module = window.Module || {};
+      window.boxedwineLoaded = false;
+      
+      // Load boxedwine.js after React renders the canvas
+      window.loadBoxedwine = function(canvasElement) {
+        if (window.boxedwineLoaded) return;
+        window.boxedwineLoaded = true;
+        
+        // Set canvas on Module before boxedwine.js initializes
+        if (canvasElement && window.Module) {
+          window.Module.canvas = canvasElement;
+        }
+      };
     </script>
     <script nounce="${getNonce()}" defer src="${indexBoxedWineUri}"></script>
     <script nounce="${getNonce()}" defer src="${boxedwineUri}"></script>

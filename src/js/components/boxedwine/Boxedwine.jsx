@@ -21,6 +21,13 @@ function Boxedwine() {
     };
   }, []);
 
+  // Load boxedwine after canvas is mounted
+  useEffect(() => {
+    if (canvas.current && typeof window.loadBoxedwine === 'function') {
+      window.loadBoxedwine(canvas.current);
+    }
+  }, [canvas]);
+
   const createEventListeners = () => {
     createZipListener();
     //creates message listener to intercept messages from parent document and rethrow messages as events
@@ -28,6 +35,7 @@ function Boxedwine() {
     //creates a click listener to allow selection and operator of terminal when clicked on
     createClickListener();
     createErrorBoxedWineListener();
+    createBoxedwineLoadedListener();
     createClearCacheListener();
     pushMessageToVSCodeListener();
     createCommandWriteListener();
@@ -35,7 +43,6 @@ function Boxedwine() {
     createResetListener();
     compileAndRun();
     sendFiles();
-    boxwineLoaded();
   };
 
   const removeEventListeners = () => {
@@ -50,12 +57,22 @@ function Boxedwine() {
     window.removeEventListener("zip-files");
     window.removeEventListener("compile-and-run");
     window.removeEventListener("send-files");
-    window.removeEventListener("boxwine-loaded");
+    window.removeEventListener("boxedwine-fully-loaded");
   };
 
-  const boxwineLoaded = () => {
-    window.addEventListener("boxwine-loaded", (e) => {
+  const createBoxedwineLoadedListener = () => {
+    window.addEventListener("boxedwine-fully-loaded", (event) => {
+      console.log("🎉 Boxedwine fully loaded!", event.detail);
+
+      // Hide loading screen - Wine is ready!
       setLoading(false);
+
+      // Dispatch a custom event that other parts of your app can listen to
+      window.dispatchEvent(
+        new CustomEvent("emulator-ready", {
+          detail: { timestamp: event.detail.timestamp },
+        })
+      );
     });
   };
 
@@ -167,7 +184,16 @@ function Boxedwine() {
 
   const convertIrvineImports = (text) => {
     const irvineLib32Match = /include.+irvine32(\.inc|)/im;
-    return text.replace(irvineLib32Match, "INCLUDE D:/irvine/Irvine32.inc");
+    const macroLib32Match = /include.+macros(\.inc|)/im;
+    const smallWinMatch = /include.+smallwin(\.inc|)/im;
+    const virtualKeysMatch = /include.+virtualkeys(\.inc|)/im;
+    const graphWinMatch = /include.+graphwin(\.inc|)/im;
+    text = text.replace(irvineLib32Match, "INCLUDE Irvine32.inc");
+    text = text.replace(macroLib32Match, "INCLUDE Macros.inc");
+    text = text.replace(smallWinMatch, "INCLUDE SmallWin.inc");
+    text = text.replace(virtualKeysMatch, "INCLUDE VirtualKeys.inc");
+    text = text.replace(graphWinMatch, "INCLUDE GraphWin.inc");
+    return text;
   };
 
   const removeUnicode = (text) =>
