@@ -1,0 +1,4 @@
+[submodule "masm-lezer-grammar"]
+	path = masm-lezer-grammar
+	url = https://github.com/istareatscreens/masm-lezer-grammar
+	branch = master
