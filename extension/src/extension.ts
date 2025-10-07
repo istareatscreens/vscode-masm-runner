@@ -277,7 +277,7 @@ async function runCodeNatively(document: vscode.TextDocument) {
 
   // constructing terminal commands
   const commandDelimiter = getTerminalDelimiter(currentTerminalType ?? "");
-  const masmCompilerFlags = `/Zd /coff /I "${libPath}" `.replaceAll(
+  const masmCompilerFlags = `/Zd /coff /I"${libPath}" `.replaceAll(
     "/",
     `${isGitBash ? "//" : "/"}`
   );
