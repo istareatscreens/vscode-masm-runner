@@ -11,6 +11,11 @@ This will also compile/link and execute MASM code (x86/x64) natively on windows 
 
 Please note that this extension is far from perfect, contributions are appreciated.
 
+# Preview version outside vscode:
+
+**WARNING the web version is ~50mb in size**.  
+The web version can be viewed [masm.isas.dev](https://masm.isas.dev) or see repo for the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor)
+
 # How To Use
 
 Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command ⌘+shift+p on mac
@@ -94,11 +99,6 @@ Current snippets include:
 # Contributing
 
 For development and contributing see [HERE](https://github.com/istareatscreens/vscode-masm-runner/blob/master/docs/CONTRIBUTING.md)
-
-# Preview outside vscode:
-
-**WARNING the web version is ~50mb in size**.  
-The web version can be viewed [masm.isas.dev](https://masm.isas.dev) or see the repo to download the client version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor/releases)
 
 # Troubleshooting
 

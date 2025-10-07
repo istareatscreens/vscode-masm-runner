@@ -26,6 +26,7 @@ report*
 coverage
 .nyc_output
 nyc
+.token
 *.lcov
 Mac
 .DS_Store
