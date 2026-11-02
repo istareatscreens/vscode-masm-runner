@@ -7,5 +7,34 @@
 		"path": "extension"
 	}
 ],
-  "settings": {}
+  "settings": {},
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        // build the webview first: `npm run build` (or `npm run watch`) in the repo root
+        "name": "Run Extension",
+        "type": "extensionHost",
+        "request": "launch",
+        "args": [
+          "--extensionDevelopmentPath=${workspaceFolder:extension}",
+          "--disable-extensions"
+        ],
+        "outFiles": ["${workspaceFolder:extension}/out/**/*.js"],
+        "preLaunchTask": "Compile extension"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Compile extension",
+        "type": "shell",
+        "command": "npm run compile",
+        "options": { "cwd": "${workspaceFolder:extension}" },
+        "problemMatcher": "$tsc"
+      }
+    ]
+  }
 }

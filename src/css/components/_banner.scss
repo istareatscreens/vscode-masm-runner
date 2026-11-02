@@ -1,3 +1,4 @@
+@use "../abstracts/variables" as *;
 .banner {
   box-shadow: $border-window-outer, $border-window-inner;
   background: $surface;

@@ -1,7 +1,4 @@
-# MASM Runner
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/istareatscreens)
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/istareatscreens/5CAD)
+# MASM Runner ([Donate](https://isas.dev/donate) · [Portfolio](https://isas.dev))
 
 MASM Runner is x86/x64 MASM (Microsoft Macro Assembly Language) code compiler, linker, runner extension for vscode that comes packaged with the [Irvine Library](http://asmirvine.com/) and runs on all OS.
 
@@ -9,12 +6,12 @@ This app is made possible through the use of [JWlink and JWasm](https://github.c
 
 This will also compile/link and execute MASM code (x86/x64) natively on windows through the vscode terminal (powershell/cmd) out of the box when the webview is not open on all windows systems.
 
-Please note that this extension is far from perfect, contributions are appreciated.
+Contributions and bug/issues reports are appreciated.
 
-# Preview version outside vscode:
+# Web Version:
 
-**WARNING the web version is ~50mb in size**.  
-The web version can be viewed [masm.isas.dev](https://masm.isas.dev) or see repo for the web version [HERE](https://github.com/istareatscreens/wasm-masm-x86-editor)
+**WARNING the web version is ~60mb in size**.  
+The web version can be viewed [masm.isas.dev](https://masm.isas.dev)
 
 # How To Use
 
@@ -39,13 +36,13 @@ Current commands can be accessed by pressing Ctrl+Shift+p on windows or Command 
 ### Compile and Run
 
 - Command: masm runner compile
-- Description: Runs code in current file and exports .obj and .exe files to file or workspace directory. Runs code in current file and exports .obj and .exe files to file or workspace directory. When executed this command will either compile/link and run the code:
+- Description: Compiles, links and runs the current `.asm` file (any letter case, such as `.ASM`) and puts the `.obj` and `.exe` files in `bin\` beside it. Depending on whether the webview is open, this happens in one of two places:
   - In the native vscode terminal (Windows Only) running PowerShell, Command Prompt or Git Bash. Note if the webview is open native compiling will NOT occur - supports running x86/x64 (32-bit and 64-bit) MASM.
   - In the webview - supports running x86 (32-bit) MASM.
     Please note if the webview is running (you ran masm runner start) it will compile/link and run in the webview.
 - Settings (via vscode options):
   - masmRunner.exportBinaries
-    - Description: Export .exe and .obj from boxedwine webview on compile?
+    - Description: Export the `.exe` and `.obj` of each webview build into `bin\` beside the source.
     - Default Value: True
 - Running Code via Hotkey:
   - Windows/Linux: `Ctrl + alt + n`

@@ -18,10 +18,6 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.node$/,
-        loader: "node-loader",
-      },
-      {
         test: /\.(png|jpe?g|svg|gif)$/i,
         use: [
           {

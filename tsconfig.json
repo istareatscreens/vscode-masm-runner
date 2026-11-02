@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
     "outDir": "./public/",
+    "rootDir": "./src",
+    "strict": false,
     "noImplicitAny": true,
     "module": "es6",
+    "moduleResolution": "bundler",
     "target": "es6",
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "allowJs": true,
-    "lib": ["ES6", "dom", "dom.iterable", "esnext"],
-    "downlevelIteration": true
+    "skipLibCheck": true,
+    "lib": ["ES6", "dom", "dom.iterable", "esnext"]
   },
   "exclude": ["node_modules", "src/js/boxedwine"],
   "include": ["src/js", "src/main/index-main.jsx", "src/main/App.jsx"]

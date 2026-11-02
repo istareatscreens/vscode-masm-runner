@@ -1,19 +1,17 @@
 {
   "comments": {
     "lineComment": ";",
-    "blockComment": ["COMMENT", ""]
+    "blockComment": ["COMMENT ~", "~"]
   },
   "brackets": [
     ["[", "]"],
     ["(", ")"],
-    ["{", "}"],
-    ["<", ">"]
+    ["{", "}"]
   ],
   "autoClosingPairs": [
     { "open": "[", "close": "]" },
     { "open": "(", "close": ")" },
     { "open": "{", "close": "}" },
-    { "open": "<", "close": ">" },
     { "open": "'", "close": "'", "notIn": ["string", "comment"] },
     { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
   ],
@@ -27,13 +25,25 @@
   ],
   "folding": {
     "markers": {
-      "start": "^\\s*(PROC|MACRO|SEGMENT|STRUCT|STRUC|UNION|RECORD|IF|IFE|IFB|IFNB|IFDEF|IFNDEF|IFDIF|IFDIFI|IFIDN|IFIDNI|WHILE|REPEAT|FOR|FORC)\\b",
-      "end": "^\\s*(ENDP|ENDM|ENDS|ENDIF|ENDW)\\b"
+      "start": {
+        "pattern": "^\\s*(?:[\\w@$?]+\\s+)?(?:PROC|MACRO|STRUCT|STRUC|UNION|SEGMENT)\\b|^\\s*\\.(?:IF|WHILE|REPEAT)\\b|^\\s*(?:IF(?:E|B|NB|DEF|NDEF|DIF|DIFI|IDN|IDNI|1|2)?|REPEAT|REPT|WHILE|FOR|FORC|IRP|IRPC)\\b",
+        "flags": "i"
+      },
+      "end": {
+        "pattern": "^\\s*(?:[\\w@$?]+\\s+)?(?:ENDP|ENDS)\\b|^\\s*(?:ENDM|ENDIF)\\b|^\\s*\\.(?:ENDIF|ENDW|UNTIL|UNTILCXZ)\\b",
+        "flags": "i"
+      }
     }
   },
   "wordPattern": "([a-zA-Z_@?$][a-zA-Z0-9_@?$]*)",
   "indentationRules": {
-    "increaseIndentPattern": "^\\s*(PROC|MACRO|SEGMENT|STRUCT|STRUC|UNION|IF|IFE|IFB|IFNB|IFDEF|IFNDEF|WHILE|REPEAT|FOR|FORC)\\b",
-    "decreaseIndentPattern": "^\\s*(ENDP|ENDM|ENDS|ENDIF|ENDW|ELSE)\\b"
+    "increaseIndentPattern": {
+      "pattern": "^\\s*(?:[\\w@$?]+\\s+)?(?:PROC|MACRO|STRUCT|STRUC|UNION|SEGMENT)\\b|^\\s*\\.(?:IF|ELSEIF|ELSE|WHILE|REPEAT)\\b|^\\s*(?:IF(?:E|B|NB|DEF|NDEF|DIF|DIFI|IDN|IDNI|1|2)?|ELSE|ELSEIF(?:E|B|NB|DEF|NDEF|DIF|DIFI|IDN|IDNI|1|2)?|REPEAT|REPT|WHILE|FOR|FORC|IRP|IRPC)\\b",
+      "flags": "i"
+    },
+    "decreaseIndentPattern": {
+      "pattern": "^\\s*(?:[\\w@$?]+\\s+)?(?:ENDP|ENDS)\\b|^\\s*(?:ENDM|ENDIF|ELSE|ELSEIF(?:E|B|NB|DEF|NDEF|DIF|DIFI|IDN|IDNI|1|2)?)\\b|^\\s*\\.(?:ENDIF|ENDW|UNTIL|UNTILCXZ|ELSE|ELSEIF)\\b",
+      "flags": "i"
+    }
   }
 }

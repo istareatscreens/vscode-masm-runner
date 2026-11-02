@@ -1,6 +1,7 @@
 #Ignore node modules folder
 node_modules
 #Ignore compiled JavaScript/cpp folder
+openspec
 lib
 public
 build
@@ -11,6 +12,8 @@ out
 !legacy/*.vsix
 #Ignore Ide files
 .vscode
+.claude
+scripts
 debug.log
 .vs
 compilation-stats.json
@@ -37,4 +40,8 @@ electron-builder.yaml
 
 #Extension files
 extension/README.md
+extension/CHANGELOG.md
 media
+
+#Grammar library clone
+/masm-lezer-grammar/

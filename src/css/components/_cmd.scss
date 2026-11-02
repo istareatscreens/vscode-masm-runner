@@ -1,5 +1,5 @@
 .bw-root,
-canvas,
+#canvas,
 .emscripten-overlay {
   width: 100vw;
   height: 100vh;
@@ -7,6 +7,12 @@ canvas,
   top: 0;
   left: 0;
   position: absolute;
+}
+
+#canvas {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .emscripten-overlay {

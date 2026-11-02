@@ -1,3 +1,4 @@
+@use "../abstracts/mixins" as *;
 .window {
   @include centered-axis-xy;
 }

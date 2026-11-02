@@ -48,6 +48,16 @@
       animation-timing-function: linear;
     }
   }
+
+  &__stage {
+    margin: 1rem 0 0;
+    padding: 0 1rem;
+    font-size: 0.6rem;
+    line-height: 1rem;
+    color: #b2b2b2;
+    text-align: center;
+    max-width: 90vw;
+  }
 }
 
 .logo {

@@ -1,10 +1,8 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import Boxedwine from "./Boxedwine.jsx";
+import { startHostLayer } from "./host/controller";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Boxedwine />
-  </React.StrictMode>,
-  document.getElementById("bw-root")
-);
+startHostLayer();
+const root = createRoot(document.getElementById("bw-root"));
+root.render(<Boxedwine />);
