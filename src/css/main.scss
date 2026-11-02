@@ -1,31 +1,31 @@
 //Themeing comes from https://github.com/jdan/98.css
-@import "abstracts/functions";
-@import "abstracts/mixins";
-@import "abstracts/variables";
+@use "abstracts/functions";
+@use "abstracts/mixins";
+@use "abstracts/variables";
 
-@import "vendors/reactdragable";
+@use "vendors/reactdragable";
 
-@import "base/base";
-@import "base/typography";
-@import "base/utilities";
-@import "base/animations";
+@use "base/base";
+@use "base/typography";
+@use "base/utilities";
+@use "base/animations";
 
-@import "components/button";
-@import "components/loadingScreen";
-@import "components/cmd";
-@import "components/banner";
-@import "components/list";
-@import "components/checkbox";
-@import "components/switch";
-@import "components/scrollbar";
-@import "components/textinput";
-@import "components/window";
-@import "components/file-upload-input";
-@import "components/editor";
-@import "components/dropdown";
-@import "components/image";
+@use "components/button";
+@use "components/loadingScreen";
+@use "components/cmd";
+@use "components/banner";
+@use "components/list";
+@use "components/checkbox";
+@use "components/switch";
+@use "components/scrollbar";
+@use "components/textinput";
+@use "components/window";
+@use "components/file-upload-input";
+@use "components/editor";
+@use "components/dropdown";
+@use "components/image";
 
-@import "layout/layout";
-@import "layout/banner";
-@import "layout/button";
-@import "layout/window";
+@use "layout/layout";
+@use "layout/banner" as layout-banner;
+@use "layout/button" as layout-button;
+@use "layout/window" as layout-window;

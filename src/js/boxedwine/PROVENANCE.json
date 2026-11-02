@@ -1,0 +1,2800 @@
+{
+  "source": "https://github.com/istareatscreens/wasm-masm-x86-editor",
+  "commit": "2905a233a5c29f80ce5c3d447fc12fe3415417ee",
+  "generated": "2026-11-01",
+  "files": [
+    {
+      "vendored": "src/js/boxedwine/boxedwine.js",
+      "source": "src/js/boxedwine/boxedwine.js",
+      "originalSha256": "1e805a2fadb56466095d753d5b80712cb7460e45eeea880211a889f40432e1a1",
+      "vendoredSha256": "1e805a2fadb56466095d753d5b80712cb7460e45eeea880211a889f40432e1a1",
+      "adapted": false
+    },
+    {
+      "vendored": "src/js/boxedwine/jszip.min.js",
+      "source": "src/js/boxedwine/jszip.min.js",
+      "originalSha256": "70d5d1830ad4ef84d08930ec7a9dd3a8d13564e04face9985585a2f9f33c733c",
+      "vendoredSha256": "70d5d1830ad4ef84d08930ec7a9dd3a8d13564e04face9985585a2f9f33c733c",
+      "adapted": false
+    },
+    {
+      "vendored": "src/wasm/boxedwine.wasm",
+      "source": "src/wasm/boxedwine.wasm",
+      "originalSha256": "545edecbbd08514e0bac16cd17c3a01eb3b7463a40f73ab7ec88478456e56009",
+      "vendoredSha256": "545edecbbd08514e0bac16cd17c3a01eb3b7463a40f73ab7ec88478456e56009",
+      "adapted": false
+    },
+    {
+      "vendored": "src/assets/TinyCore15Wine6.0-preboot-fw-trim.zip",
+      "source": "src/bw-assets/TinyCore15Wine6.0-preboot-fw-trim.zip",
+      "originalSha256": "e7a8ce40616531b2ccfd25082c687bc326599b69a12c8aad69cadb81d09e9b4f",
+      "vendoredSha256": "e7a8ce40616531b2ccfd25082c687bc326599b69a12c8aad69cadb81d09e9b4f",
+      "adapted": false
+    },
+    {
+      "vendored": "src/assets/assembler-dp0.zip",
+      "source": "src/bw-assets/assembler-dp0.zip",
+      "originalSha256": "364f257092cc90d0648c94a4300fe69ab0ff9f16c2e9f0cd2c9f40f13afa8a9a",
+      "vendoredSha256": "480f0f87be58755b861c8aa796c5bdc4bdeaa4d878e48f01f77470560efcb0b9",
+      "adapted": "zip",
+      "entries": [
+        {
+          "name": "assemble.bat",
+          "size": 428,
+          "crc32": "1f787936",
+          "originalSize": 417,
+          "originalCrc32": "2eafaf0b",
+          "hunks": [
+            {
+              "adaptedStart": 1,
+              "adaptedLines": [
+                "%~dp0JWASM\\JWASM.EXE /Zd /coff /Zne /Zg /I %~dp0irvine /Fo\"bin\\%~1.obj\" /Fw\"bin\\%~1.err\" \"%~1.asm\"\r",
+                "@if %ERRORLEVEL% GEQ 1 goto :eof\r"
+              ],
+              "originalLines": [
+                "%~dp0JWASM\\JWASM.EXE /Zd /coff /Zne /Zg /I %~dp0irvine /Fo\"bin\\%~1.obj\" \"%~1.asm\"\r",
+                "@echo Off\r",
+                "if %ERRORLEVEL% GEQ 1 goto :eof\r",
+                "@echo on\r"
+              ]
+            },
+            {
+              "adaptedStart": 4,
+              "adaptedLines": [
+                "@if %ERRORLEVEL% GEQ 1 goto :eof\r",
+                "@%~dp0FL.exe \"bin\\%~1.exe\"\r"
+              ],
+              "originalLines": [
+                "@echo Off\r",
+                "%~dp0FL.exe \"bin\\%~1.exe\"\r",
+                "@echo on\r"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cmd.bat",
+          "size": 67,
+          "crc32": "01a065ff",
+          "originalSize": 67,
+          "originalCrc32": "01a065ff"
+        },
+        {
+          "name": "FL.exe",
+          "size": 179200,
+          "crc32": "d9741ffc",
+          "originalSize": 179200,
+          "originalCrc32": "d9741ffc"
+        },
+        {
+          "name": "irvine/",
+          "size": 0,
+          "crc32": "00000000",
+          "originalSize": 0,
+          "originalCrc32": "00000000"
+        },
+        {
+          "name": "irvine/GraphWin.inc",
+          "size": 4530,
+          "crc32": "61178723",
+          "originalSize": 4530,
+          "originalCrc32": "61178723"
+        },
+        {
+          "name": "irvine/Irvine16.inc",
+          "size": 5583,
+          "crc32": "b15f5d60",
+          "originalSize": 5583,
+          "originalCrc32": "b15f5d60"
+        },
+        {
+          "name": "irvine/Irvine16.lib",
+          "size": 8727,
+          "crc32": "0f5a48b9",
+          "originalSize": 8727,
+          "originalCrc32": "0f5a48b9"
+        },
+        {
+          "name": "irvine/Irvine32.inc",
+          "size": 5162,
+          "crc32": "45138972",
+          "originalSize": 5162,
+          "originalCrc32": "45138972"
+        },
+        {
+          "name": "irvine/Irvine32.lib",
+          "size": 20336,
+          "crc32": "a423687d",
+          "originalSize": 20336,
+          "originalCrc32": "a423687d"
+        },
+        {
+          "name": "irvine/Kernel32.lib",
+          "size": 276794,
+          "crc32": "33403b39",
+          "originalSize": 276794,
+          "originalCrc32": "33403b39"
+        },
+        {
+          "name": "irvine/Macros.inc",
+          "size": 9325,
+          "crc32": "003c03b5",
+          "originalSize": 9325,
+          "originalCrc32": "003c03b5"
+        },
+        {
+          "name": "irvine/SmallWin.inc",
+          "size": 16039,
+          "crc32": "f176bce9",
+          "originalSize": 16039,
+          "originalCrc32": "f176bce9"
+        },
+        {
+          "name": "irvine/User32.lib",
+          "size": 152726,
+          "crc32": "4275d021",
+          "originalSize": 152726,
+          "originalCrc32": "4275d021"
+        },
+        {
+          "name": "irvine/VirtualKeys.inc",
+          "size": 2040,
+          "crc32": "388d762f",
+          "originalSize": 2040,
+          "originalCrc32": "388d762f"
+        },
+        {
+          "name": "JWASM/",
+          "size": 0,
+          "crc32": "00000000",
+          "originalSize": 0,
+          "originalCrc32": "00000000"
+        },
+        {
+          "name": "JWASM/JWasm.chi",
+          "size": 16307,
+          "crc32": "bbb0e354",
+          "originalSize": 16307,
+          "originalCrc32": "bbb0e354"
+        },
+        {
+          "name": "JWASM/JWASM.EXE",
+          "size": 325120,
+          "crc32": "835a57fb",
+          "originalSize": 325120,
+          "originalCrc32": "835a57fb"
+        },
+        {
+          "name": "JWASM/JWasm.map",
+          "size": 51370,
+          "crc32": "8e834767",
+          "originalSize": 51370,
+          "originalCrc32": "8e834767"
+        },
+        {
+          "name": "JWASM/jwasm.rules",
+          "size": 11819,
+          "crc32": "b8103488",
+          "originalSize": 11819,
+          "originalCrc32": "b8103488"
+        },
+        {
+          "name": "JWASM/res2inc.exe",
+          "size": 6144,
+          "crc32": "4caeb0c2",
+          "originalSize": 6144,
+          "originalCrc32": "4caeb0c2"
+        },
+        {
+          "name": "JWLINK/",
+          "size": 0,
+          "crc32": "00000000",
+          "originalSize": 0,
+          "originalCrc32": "00000000"
+        },
+        {
+          "name": "JWLINK/cvpack.exe",
+          "size": 203776,
+          "crc32": "e9520a5c",
+          "originalSize": 203776,
+          "originalCrc32": "e9520a5c"
+        },
+        {
+          "name": "JWLINK/JWasm.exe",
+          "size": 304640,
+          "crc32": "f179c717",
+          "originalSize": 304640,
+          "originalCrc32": "f179c717"
+        },
+        {
+          "name": "JWLINK/JWlib.exe",
+          "size": 139264,
+          "crc32": "4be76dce",
+          "originalSize": 139264,
+          "originalCrc32": "4be76dce"
+        },
+        {
+          "name": "JWLINK/JWlink.chi",
+          "size": 33811,
+          "crc32": "a124d09c",
+          "originalSize": 33811,
+          "originalCrc32": "a124d09c"
+        },
+        {
+          "name": "JWLINK/JWlink.exe",
+          "size": 308224,
+          "crc32": "4c9ce93c",
+          "originalSize": 308224,
+          "originalCrc32": "4c9ce93c"
+        },
+        {
+          "name": "bwres.exe",
+          "size": 2560,
+          "crc32": "79d4fcfa",
+          "originalSize": 2560,
+          "originalCrc32": "79d4fcfa"
+        },
+        {
+          "name": "snake/",
+          "size": 0,
+          "crc32": "00000000",
+          "originalSize": 0,
+          "originalCrc32": "00000000"
+        },
+        {
+          "name": "snake/snake.asm",
+          "size": 14820,
+          "crc32": "968ab556",
+          "originalSize": 14820,
+          "originalCrc32": "968ab556"
+        },
+        {
+          "name": "snake/LICENSE",
+          "size": 1088,
+          "crc32": "cca070db",
+          "originalSize": 1088,
+          "originalCrc32": "cca070db"
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/boxedwine/boxedwine-shell.js",
+      "source": "src/js/boxedwine/boxedwine-shell.js",
+      "originalSha256": "c160465dbcba548de9be3dfffa23540544b163d84a568a9822a7a237ef9eb7a0",
+      "vendoredSha256": "d51926617f8f0c94431965208f337579e5c4ec8de96f419b61a200862824881f",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [
+            "        // the webview URL is VS Code's host page, never configuration\r",
+            "        let ALLOW_PARAM_OVERRIDE_FROM_URL = false;\r"
+          ],
+          "originalLines": [
+            "        let ALLOW_PARAM_OVERRIDE_FROM_URL = true;\r"
+          ]
+        },
+        {
+          "adaptedStart": 51,
+          "adaptedLines": [
+            "\t\t\tConfig.d_drive_guest = \"/home/username/.wine/drive_d\";\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 366,
+          "adaptedLines": [
+            "                stage(\"Loading \" + filename + \" failed (\" + why + \") - use Reset terminal in the notification\");\r",
+            "                try { window.bwHost.post(\"emulator-slow\", { runtime: window.BW_USE_MT ? \"mt\" : \"st\", reason: \"could not load \" + filename + \": \" + why }); } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "                stage(\"Download of \" + filename + \" failed (\" + why + \") - check your connection and reload\");\r",
+            "                try { window.parent.postMessage(JSON.stringify({ eventName: \"emulator-slow\", data: { data: { runtime: window.BW_USE_MT ? \"mt\" : \"st\", reason: \"could not download \" + filename + \": \" + why } } }), \"/\"); } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 375,
+          "adaptedLines": [
+            "                    stage(\"Loading \" + filename + \" failed (\" + why + \"), retrying \" + attempt + \"/\" + RETRY_MS.length);\r"
+          ],
+          "originalLines": [
+            "                    stage(\"Download of \" + filename + \" failed (\" + why + \"), retrying \" + attempt + \"/\" + RETRY_MS.length);\r"
+          ]
+        },
+        {
+          "adaptedStart": 443,
+          "adaptedLines": [
+            "\t\t\t// D: is a dosdevices link to Config.d_drive_guest, as the image's c: is to ../drive_c\r",
+            "\t\t\tFS.mkdirTree(ROOT + \"/home/username/.wine/dosdevices\");\r",
+            "\t\t\tFS.writeFile(ROOT + \"/home/username/.wine/dosdevices/d(_colon_).link\", Config.d_drive_guest);\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 549,
+          "adaptedLines": [
+            "                                    try { window.bwHost.reload(\"stale-snapshot-marker\"); } catch (_) {}\r"
+          ],
+          "originalLines": [
+            "                                    try { location.reload(); } catch (_) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 617,
+          "adaptedLines": [
+            "            // every guest program runs as root: Boxedwine lets other users write only under /tmp, /var and /home\r",
+            "            params.push(\"-uid\");\r",
+            "            params.push(\"0\");\r",
+            "            params.push(\"-euid\");\r",
+            "            params.push(\"0\");\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 646,
+          "adaptedLines": [
+            "            params.push(\"-mount\"); // -mount \"/d_drive\" \"/home/username/.wine/drive_d\"\r"
+          ],
+          "originalLines": [
+            "            params.push(\"-mount_drive\"); // -mount_drive \"/d_drive\" d\r"
+          ]
+        },
+        {
+          "adaptedStart": 648,
+          "adaptedLines": [
+            "            params.push(Config.d_drive_guest);\r"
+          ],
+          "originalLines": [
+            "            params.push(\"d\");\r"
+          ]
+        },
+        {
+          "adaptedStart": 745,
+          "adaptedLines": [
+            "        try { window.bwHost.post(\"program-crashed\", detail); } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "        try { window.parent.postMessage(JSON.stringify({ eventName: \"program-crashed\", data: { data: detail } }), \"/\"); } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 794,
+          "adaptedLines": [
+            "        try { window.bwHost.post(\"emulator-crashed\", detail); } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "        try { window.parent.postMessage(JSON.stringify({ eventName: \"emulator-crashed\", data: { data: detail } }), \"/\"); } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 829,
+          "adaptedLines": [
+            "          // alert() is blocked in the sandboxed webview: the extension shows a notification\r",
+            "          canvas.addEventListener(\"webglcontextlost\", function(e) { try { window.bwHost.post(\"webgl-context-lost\", {}); } catch (_) {} e.preventDefault(); }, false);\r"
+          ],
+          "originalLines": [
+            "          canvas.addEventListener(\"webglcontextlost\", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/boxedwine/bw-snapshot.js",
+      "source": "src/js/boxedwine/bw-snapshot.js",
+      "originalSha256": "ca84eb0e883e77a8545fcb59cdbed714a2ad392bf7d726ac067e471e321f9a39",
+      "vendoredSha256": "c4fec60aab119cd9a01139cc790f5727ddc0ac16b16ad8815c6eadc331952af7",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [],
+          "originalLines": [
+            "/*\r",
+            " * bw-snapshot.js — instant startup for BoxedWine via a WASM linear-memory snapshot.\r",
+            " * The whole guest lives in the 512MB linear memory, so a cold boot's end state is\r",
+            " * captured once and restored on later loads instead of booting Wine again.\r",
+            " *\r",
+            " * Fallback-safe: every failure (unsupported browser, missing/corrupt snapshot, quota,\r",
+            " * restore error) falls through to a normal cold boot.\r",
+            " *\r",
+            " * The snapshot is keyed by BW_BUILD_ID + SCHEMA + the boot configuration; any change\r",
+            " * ignores the old snapshot and the next cold boot captures a new one.\r",
+            " *\r",
+            " * Record (IndexedDB store \"snap\", written in one transaction):\r",
+            " *   meta     {version, schema, heapLen, pageSize, pages, bitmap (1 bit per 4KB page,\r",
+            " *             set = non-zero), segments [{pages, bytes}], ...}\r",
+            " *   seg0..7  the non-zero pages in address order, each segment zlib-compressed\r",
+            " *   overlay  the guest's /root tree, gzip\r",
+            " * Restore: begin() starts decoding the segments in Web Workers while the wasm and zips\r",
+            " * load; doRestore() copies them into the heap and resumes. Capture: an atomic page\r",
+            " * pack, then compression in Workers and the IndexedDB write in the background.\r",
+            " * Watchdog: a restore without a usable console within 8s of visible time is discarded\r",
+            " * and the page cold-boots.\r",
+            " */\r"
+          ]
+        },
+        {
+          "adaptedStart": 22,
+          "adaptedLines": [
+            "  var LATE_TICK_MS = 250;\r",
+            "  var NO_FRAME_MS = 500;\r",
+            "  function captureLock() {\r",
+            "    if (typeof navigator === \"undefined\" || !navigator.locks || typeof navigator.locks.request !== \"function\") {\r",
+            "      return Promise.resolve(function () {});\r",
+            "    }\r",
+            "    return new Promise(function (resolve) {\r",
+            "      navigator.locks.request(\"bw-snapshot-capture\", { ifAvailable: true }, function (lock) {\r",
+            "        if (!lock) { resolve(null); return undefined; }\r",
+            "        return new Promise(function (release) { resolve(release); });\r",
+            "      }).catch(function () { resolve(function () {}); });\r",
+            "    });\r",
+            "  }\r",
+            "\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 541,
+          "adaptedLines": [
+            "        try { window.bwHost.post(\"restore-fallback\", { count: n }); } catch (_) {}\r"
+          ],
+          "originalLines": [
+            "        try { window.parent.postMessage(JSON.stringify({ eventName: \"restore-fallback\", data: { data: { count: n } } }), \"/\"); } catch (_) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 545,
+          "adaptedLines": [
+            "          try { window.bwHost.reload(\"restore-failed\"); } catch (_) {}\r"
+          ],
+          "originalLines": [
+            "          try { location.reload(); } catch (_) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 624,
+          "adaptedLines": [
+            "      // one capture at a time across VS Code windows (they share the database), held until the record is stored\r",
+            "      var releaseCaptureLock = await captureLock();\r",
+            "      if (!releaseCaptureLock) {\r",
+            "        console.log(\"[bw-snapshot] another window is capturing the instant-start state — skipping\");\r",
+            "        return { copied: false, reason: \"capture-locked\" };\r",
+            "      }\r",
+            "      var copiedForPersist = false;\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 659,
+          "adaptedLines": [
+            "        copiedForPersist = true;\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 665,
+          "adaptedLines": [
+            "        if (!copiedForPersist) releaseCaptureLock();\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 707,
+          "adaptedLines": [
+            "          try { window.bwHost.post(\"snapshot-not-saved\", { reason: String((e && e.message) || e) }); } catch (_) {}\r"
+          ],
+          "originalLines": [
+            "          try { window.parent.postMessage(JSON.stringify({ eventName: \"snapshot-not-saved\", data: { data: { reason: String((e && e.message) || e) } } }), \"/\"); } catch (_) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 711,
+          "adaptedLines": [
+            "          releaseCaptureLock();\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 773,
+          "adaptedLines": [
+            "        var t0 = performance.now(), last = t0, hiddenMs = 0, blockedMs = 0, litHits = 0, firstP = null;\r"
+          ],
+          "originalLines": [
+            "        var t0 = performance.now(), last = t0, hiddenMs = 0, litHits = 0, firstP = null;\r"
+          ]
+        },
+        {
+          "adaptedStart": 775,
+          "adaptedLines": [
+            "        // a background VS Code tab gets no animation frames while visibilityState stays \"visible\": hidden time too\r",
+            "        var lastFrame = t0;\r",
+            "        var onFrame = function () { lastFrame = performance.now(); if (!settled) requestAnimationFrame(onFrame); };\r",
+            "        requestAnimationFrame(onFrame);\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 781,
+          "adaptedLines": [
+            "          if (document.visibilityState === \"hidden\" || now - lastFrame > NO_FRAME_MS) { hiddenMs += now - last; t0 += now - last; last = now; return; }\r",
+            "          // a tick held up by another window's terminal (one shared thread) counts at most LATE_TICK_MS\r",
+            "          var gap = now - last;\r",
+            "          if (gap > LATE_TICK_MS) { blockedMs += gap - LATE_TICK_MS; t0 += gap - LATE_TICK_MS; }\r"
+          ],
+          "originalLines": [
+            "          if (document.visibilityState === \"hidden\") { hiddenMs += now - last; t0 += now - last; last = now; return; }\r"
+          ]
+        },
+        {
+          "adaptedStart": 795,
+          "adaptedLines": [
+            "            if (blockedMs > 0) console.log(\"[bw-watchdog] \" + Math.round(blockedMs) + \"ms of blocked main-thread time were not counted\");\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 819,
+          "adaptedLines": [],
+          "originalLines": [
+            "    // reload without a ?bw= override, so a forced runtime that cannot boot never loops\r"
+          ]
+        },
+        {
+          "adaptedStart": 820,
+          "adaptedLines": [
+            "      try { window.bwHost.reload(\"runtime-fallback\"); } catch (_) {}\r"
+          ],
+          "originalLines": [
+            "      try {\r",
+            "        var u = new URL(location.href);\r",
+            "        if (u.searchParams.has(\"bw\")) { u.searchParams.delete(\"bw\"); location.replace(u.href); return; }\r",
+            "      } catch (e) {}\r",
+            "      try { location.reload(); } catch (_) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 832,
+          "adaptedLines": [
+            "        try { window.bwHost.post(\"emulator-slow\", { runtime: \"st\", reason: reason }); } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "        try { window.parent.postMessage(JSON.stringify({ eventName: \"emulator-slow\", data: { data: { runtime: \"st\", reason: reason } } }), \"/\"); } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 853,
+          "adaptedLines": [
+            "        try { window.bwHost.post(\"restore-fallback\", { count: n }); } catch (e) {}\r",
+            "        self.discard().then(function () { try { window.bwHost.reload(\"restore-unusable\"); } catch (_) {} });\r"
+          ],
+          "originalLines": [
+            "        try { window.parent.postMessage(JSON.stringify({ eventName: \"restore-fallback\", data: { data: { count: n } } }), \"/\"); } catch (e) {}\r",
+            "        self.discard().then(function () { try { location.reload(); } catch (_) {} });\r"
+          ]
+        },
+        {
+          "adaptedStart": 879,
+          "adaptedLines": [
+            "              try { window.bwHost.post(\"emulator-slow\", { runtime: \"st\", reason: \"the Windows console did not start within 4 minutes\" }); } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "              try { window.parent.postMessage(JSON.stringify({ eventName: \"emulator-slow\", data: { data: { runtime: \"st\", reason: \"the Windows console did not start within 4 minutes\" } } }), \"/\"); } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 898,
+          "adaptedLines": [
+            "\r",
+            "    // a restored terminal froze or crashed before any input: handled as a failed restore (see watchRestore)\r",
+            "    restoreUnhealthy: function (reason) {\r",
+            "      if (this._unhealthyHandled) return;\r",
+            "      this._unhealthyHandled = true;\r",
+            "      var n = this._bumpFailCount(\"bw-snapshot-fail\");\r",
+            "      console.error(\"[bw-snapshot] restored terminal unhealthy before any input (\" + reason + \") — discarding snapshot and cold-booting (failure \" + n + \" for this build)\");\r",
+            "      try { window.bwHost.post(\"restore-fallback\", { count: n, reason: String(reason) }); } catch (e) {}\r",
+            "      this.discard().then(function () { try { window.bwHost.reload(\"restore-unhealthy\"); } catch (_) {} });\r",
+            "    },\r"
+          ],
+          "originalLines": []
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/boxedwine/page/bw-page-input.js",
+      "source": "src/html/boxedwine.html",
+      "lines": [
+        99,
+        385
+      ],
+      "originalSha256": "b35540b16e008ba34d17c6ae0694e22254cf38e722a0659f28f67fbba884ea64",
+      "vendoredSha256": "efae6054ec9833c7735fcc49c6d7df889ef170e1600901a0b0d4a896c9bfe011",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [
+            "window.bwBootStage = function (text) {\r",
+            "  window.BW_BOOT_STAGE = text;\r",
+            "  try {\r",
+            "    window.dispatchEvent(new CustomEvent(\"bw-boot-stage\", { detail: text }));\r",
+            "  } catch (e) {}\r",
+            "};\r",
+            "window.bwBootStage(\"Loading emulator\");\r"
+          ],
+          "originalLines": [
+            "      // Boot-stage label for the loading screen (LoadingScreen.jsx reads BW_BOOT_STAGE at mount).\r",
+            "      window.bwBootStage = function (text) {\r",
+            "        window.BW_BOOT_STAGE = text;\r",
+            "        try {\r",
+            "          window.dispatchEvent(\r",
+            "            new CustomEvent(\"bw-boot-stage\", { detail: text }),\r",
+            "          );\r",
+            "        } catch (e) {}\r",
+            "      };\r",
+            "      window.bwBootStage(\"Loading emulator\");\r"
+          ]
+        },
+        {
+          "adaptedStart": 8,
+          "adaptedLines": [
+            "// Input gate: keyboard events are dropped until the environment is ready. These capture\r",
+            "// listeners on window are registered before the glue loads, so they run ahead of SDL's.\r",
+            "// Direct-API input (bwApp.*) is queued by Boxedwine.jsx until the gate opens.\r",
+            "window.BW_INPUT_OPEN = false;\r",
+            "(function () {\r",
+            "  var block = function (e) {\r",
+            "    if (window.BW_INPUT_OPEN) return;\r",
+            "    e.stopImmediatePropagation();\r",
+            "    e.preventDefault();\r",
+            "  };\r",
+            "  [\"keydown\", \"keypress\", \"keyup\"].forEach(function (t) {\r",
+            "    window.addEventListener(t, block, true);\r",
+            "  });\r",
+            "})();\r",
+            "(function () {\r",
+            "  var pendingImport = null,\r",
+            "    lastExported = null,\r",
+            "    lastExportAt = 0,\r",
+            "    lastPasteAt = 0;\r",
+            "  function pasteText(text, how) {\r",
+            "    if (!text) return;\r",
+            "    lastPasteAt = performance.now();\r",
+            "    pendingImport = text;\r",
+            "    var typed = text.replace(/\\r\\n?/g, \"\\r\").replace(/\\n/g, \"\\r\"); // a line end is one Enter for the console\r",
+            "    try {\r",
+            "      Module.bwSetClipboardText(typed);\r",
+            "    } catch (e) {}\r",
+            "    try {\r",
+            "      (Module.bwPasteText || Module.sendText)(typed);\r",
+            "    } catch (e) {} // bwPasteText releases the chord's modifiers in the guest first\r",
+            "    console.log(\r",
+            "      \"[bw] pasted \" +\r",
+            "        text.length +\r",
+            "        \" chars into the console (\" +\r",
+            "        how +\r",
+            "        \"): \" +\r",
+            "        JSON.stringify(text.slice(0, 24)),\r",
+            "    );\r",
+            "  }\r",
+            "  var isPasteKey = function (e) {\r",
+            "    var mod = e.ctrlKey || e.metaKey;\r",
+            "    return mod && !e.altKey && !e.shiftKey && e.code === \"KeyV\";\r",
+            "  };\r",
+            "  // chords whose paste command not every browser runs on a non-editable page: the paste\r",
+            "  // event is used when it comes, else the clipboard is read directly\r",
+            "  var isPasteReadKey = function (e) {\r",
+            "    var mod = e.ctrlKey || e.metaKey;\r",
+            "    return (\r",
+            "      (mod && e.shiftKey && !e.altKey && e.code === \"KeyV\") ||\r",
+            "      (e.shiftKey && !mod && !e.altKey && e.code === \"Insert\")\r",
+            "    );\r",
+            "  };\r",
+            "  var isCmdCopyKey = function (e) {\r",
+            "    return (\r",
+            "      e.metaKey && !e.ctrlKey && e.shiftKey && !e.altKey && e.code === \"KeyC\"\r",
+            "    );\r",
+            "  };\r",
+            "  // VS Code's webview passes unhandled keys to the workbench, whose Ctrl+Shift+C opens an external terminal\r",
+            "  var isCtrlCopyKey = function (e) {\r",
+            "    return (\r",
+            "      e.ctrlKey && !e.metaKey && e.shiftKey && !e.altKey && e.code === \"KeyC\"\r",
+            "    );\r",
+            "  };\r",
+            "  // the whole chord through direct input: a C sent alone could arrive after the modifiers' releases\r",
+            "  var typeCopyChord = function () {\r",
+            "    try {\r",
+            "      Module.sendKey(0xffe3, true); // Control_L\r",
+            "      Module.sendKey(0xffe1, true); // Shift_L\r",
+            "      Module.sendKey(0x63, true); // c\r",
+            "      Module.sendKey(0x63, false);\r",
+            "      Module.sendKey(0xffe1, false);\r",
+            "      Module.sendKey(0xffe3, false);\r",
+            "    } catch (err) {}\r",
+            "  };\r",
+            "  window.addEventListener(\r",
+            "    \"keydown\",\r",
+            "    function (e) {\r",
+            "      if (!window.BW_INPUT_OPEN) return;\r",
+            "      if (isPasteKey(e)) {\r",
+            "        e.stopImmediatePropagation();\r",
+            "        return;\r",
+            "      } // the browser's paste command still runs -> \"paste\"\r",
+            "      if (isPasteReadKey(e)) {\r",
+            "        // Ctrl/Cmd+Shift+V, Shift+Insert: the browser's paste command fires \"paste\" where it\r",
+            "        // runs for this chord; otherwise read the clipboard directly (a user activation is current)\r",
+            "        e.stopImmediatePropagation();\r",
+            "        var at = performance.now();\r",
+            "        setTimeout(function () {\r",
+            "          if (lastPasteAt >= at) return;\r",
+            "          if (!(navigator.clipboard && navigator.clipboard.readText)) return;\r",
+            "          navigator.clipboard.readText().then(\r",
+            "            function (t) {\r",
+            "              if (lastPasteAt < at) pasteText(t, \"readText\");\r"
+          ],
+          "originalLines": [
+            "      // Input gate: keyboard events are dropped until the environment is ready. These capture\r",
+            "      // listeners on window are registered before the glue loads, so they run ahead of SDL's.\r",
+            "      // Direct-API input (bwApp.*) is queued by Boxedwine.jsx until the gate opens.\r",
+            "      window.BW_INPUT_OPEN = false;\r",
+            "      (function () {\r",
+            "        var block = function (e) {\r",
+            "          if (window.BW_INPUT_OPEN) return;\r",
+            "          e.stopImmediatePropagation();\r",
+            "          e.preventDefault();\r",
+            "        };\r",
+            "        [\"keydown\", \"keypress\", \"keyup\"].forEach(function (t) {\r",
+            "          window.addEventListener(t, block, true);\r",
+            "        });\r",
+            "      })();\r",
+            "      (function () {\r",
+            "        var pendingImport = null,\r",
+            "          lastExported = null,\r",
+            "          lastExportAt = 0,\r",
+            "          lastPasteAt = 0;\r",
+            "        function pasteText(text, how) {\r",
+            "          if (!text) return;\r",
+            "          lastPasteAt = performance.now();\r",
+            "          pendingImport = text;\r",
+            "          var typed = text.replace(/\\r\\n?/g, \"\\r\").replace(/\\n/g, \"\\r\"); // a line end is one Enter for the console\r",
+            "          try {\r",
+            "            Module.bwSetClipboardText(typed);\r",
+            "          } catch (e) {}\r",
+            "          try {\r",
+            "            (Module.bwPasteText || Module.sendText)(typed);\r",
+            "          } catch (e) {} // bwPasteText releases the chord's modifiers in the guest first\r",
+            "          console.log(\r",
+            "            \"[bw] pasted \" +\r",
+            "              text.length +\r",
+            "              \" chars into the console (\" +\r",
+            "              how +\r",
+            "              \"): \" +\r",
+            "              JSON.stringify(text.slice(0, 24)),\r",
+            "          );\r",
+            "        }\r",
+            "        var isPasteKey = function (e) {\r",
+            "          var mod = e.ctrlKey || e.metaKey;\r",
+            "          return mod && !e.altKey && !e.shiftKey && e.code === \"KeyV\";\r",
+            "        };\r",
+            "        // chords whose paste command not every browser runs on a non-editable page: the paste\r",
+            "        // event is used when it comes, else the clipboard is read directly\r",
+            "        var isPasteReadKey = function (e) {\r",
+            "          var mod = e.ctrlKey || e.metaKey;\r",
+            "          return (\r",
+            "            (mod && e.shiftKey && !e.altKey && e.code === \"KeyV\") ||\r",
+            "            (e.shiftKey && !mod && !e.altKey && e.code === \"Insert\")\r",
+            "          );\r",
+            "        };\r",
+            "        var isCmdCopyKey = function (e) {\r",
+            "          return (\r",
+            "            e.metaKey &&\r",
+            "            !e.ctrlKey &&\r",
+            "            e.shiftKey &&\r",
+            "            !e.altKey &&\r",
+            "            e.code === \"KeyC\"\r",
+            "          );\r",
+            "        };\r",
+            "        window.addEventListener(\r",
+            "          \"keydown\",\r",
+            "          function (e) {\r",
+            "            if (!window.BW_INPUT_OPEN) return;\r",
+            "            if (isPasteKey(e)) {\r",
+            "              e.stopImmediatePropagation();\r",
+            "              return;\r",
+            "            } // the browser's paste command still runs -> \"paste\"\r",
+            "            if (isPasteReadKey(e)) {\r",
+            "              // Ctrl/Cmd+Shift+V, Shift+Insert: the browser's paste command fires \"paste\" where it\r",
+            "              // runs for this chord; otherwise read the clipboard directly (a user activation is current)\r",
+            "              e.stopImmediatePropagation();\r",
+            "              var at = performance.now();\r",
+            "              setTimeout(function () {\r",
+            "                if (lastPasteAt >= at) return;\r",
+            "                if (!(navigator.clipboard && navigator.clipboard.readText))\r",
+            "                  return;\r",
+            "                navigator.clipboard.readText().then(\r",
+            "                  function (t) {\r",
+            "                    if (lastPasteAt < at) pasteText(t, \"readText\");\r",
+            "                  },\r",
+            "                  function (err) {\r",
+            "                    console.log(\r",
+            "                      \"[bw] clipboard read refused: \" + (err && err.message),\r",
+            "                    );\r",
+            "                  },\r",
+            "                );\r",
+            "              }, 150);\r",
+            "              return;\r",
+            "            }\r",
+            "            if (isCmdCopyKey(e)) {\r",
+            "              e.stopImmediatePropagation();\r",
+            "              e.preventDefault();\r",
+            "              try {\r",
+            "                Module.sendKey(0xffe3, true);\r",
+            "                Module.sendKey(0x63, true);\r",
+            "                Module.sendKey(0x63, false);\r",
+            "                Module.sendKey(0xffe3, false);\r",
+            "              } catch (err) {} // Control_L + c, Shift is already down in the guest\r",
+            "            }\r",
+            "          },\r",
+            "          true,\r",
+            "        );\r",
+            "        window.addEventListener(\r",
+            "          \"keyup\",\r",
+            "          function (e) {\r",
+            "            if (!window.BW_INPUT_OPEN) return;\r",
+            "            if (isPasteKey(e) || isPasteReadKey(e) || isCmdCopyKey(e))\r",
+            "              e.stopImmediatePropagation();\r",
+            "          },\r",
+            "          true,\r",
+            "        );\r",
+            "        window.addEventListener(\"paste\", function (e) {\r",
+            "          if (!window.BW_INPUT_OPEN) return;\r",
+            "          var text = e.clipboardData && e.clipboardData.getData(\"text/plain\");\r",
+            "          if (!text) return;\r",
+            "          e.preventDefault();\r",
+            "          pasteText(text, \"paste event\");\r",
+            "        });\r",
+            "        Module.bwOnClipboardText = function () {\r",
+            "          var text = \"\";\r",
+            "          try {\r",
+            "            text = String(Module.bwGetClipboardText() || \"\");\r",
+            "          } catch (e) {\r",
+            "            return;\r",
+            "          }\r",
+            "          if (!text) return;\r",
+            "          if (text === pendingImport) {\r",
+            "            pendingImport = null;\r",
+            "            return;\r",
+            "          } // the emulator reporting the page's own import\r",
+            "          if (text === lastExported && performance.now() - lastExportAt < 2000)\r",
+            "            return; // one copy reported twice (focus loss)\r",
+            "          lastExported = text;\r",
+            "          lastExportAt = performance.now();\r",
+            "          if (!(navigator.clipboard && navigator.clipboard.writeText)) return;\r",
+            "          navigator.clipboard.writeText(text).then(\r",
+            "            function () {\r",
+            "              console.log(\r",
+            "                \"[bw] console selection copied (\" + text.length + \" chars)\",\r",
+            "              );\r"
+          ]
+        },
+        {
+          "adaptedStart": 104,
+          "adaptedLines": [
+            "                \"[bw] clipboard read refused: \" + (err && err.message),\r"
+          ],
+          "originalLines": [
+            "                \"[bw] clipboard write refused: \" + (err && err.message),\r"
+          ]
+        },
+        {
+          "adaptedStart": 108,
+          "adaptedLines": [
+            "        }, 150);\r",
+            "        return;\r",
+            "      }\r",
+            "      if (isCmdCopyKey(e) || isCtrlCopyKey(e)) {\r",
+            "        e.stopImmediatePropagation();\r",
+            "        e.preventDefault();\r",
+            "        typeCopyChord();\r",
+            "      }\r",
+            "    },\r",
+            "    true,\r",
+            "  );\r",
+            "  window.addEventListener(\r",
+            "    \"keyup\",\r",
+            "    function (e) {\r",
+            "      if (!window.BW_INPUT_OPEN) return;\r",
+            "      if (\r",
+            "        isPasteKey(e) ||\r",
+            "        isPasteReadKey(e) ||\r",
+            "        isCmdCopyKey(e) ||\r",
+            "        isCtrlCopyKey(e)\r",
+            "      )\r",
+            "        e.stopImmediatePropagation();\r",
+            "    },\r",
+            "    true,\r",
+            "  );\r",
+            "  window.addEventListener(\"paste\", function (e) {\r",
+            "    if (!window.BW_INPUT_OPEN) return;\r",
+            "    var text = e.clipboardData && e.clipboardData.getData(\"text/plain\");\r",
+            "    if (!text) return;\r",
+            "    e.preventDefault();\r",
+            "    pasteText(text, \"paste event\");\r",
+            "  });\r",
+            "  Module.bwOnClipboardText = function () {\r",
+            "    var text = \"\";\r",
+            "    try {\r",
+            "      text = String(Module.bwGetClipboardText() || \"\");\r",
+            "    } catch (e) {\r",
+            "      return;\r",
+            "    }\r",
+            "    if (!text) return;\r",
+            "    if (text === pendingImport) {\r",
+            "      pendingImport = null;\r",
+            "      return;\r",
+            "    } // the emulator reporting the page's own import\r",
+            "    if (text === lastExported && performance.now() - lastExportAt < 2000)\r",
+            "      return; // one copy reported twice (focus loss)\r",
+            "    lastExported = text;\r",
+            "    lastExportAt = performance.now();\r",
+            "    if (!(navigator.clipboard && navigator.clipboard.writeText)) return;\r",
+            "    navigator.clipboard.writeText(text).then(\r",
+            "      function () {\r",
+            "        console.log(\r",
+            "          \"[bw] console selection copied (\" + text.length + \" chars)\",\r"
+          ],
+          "originalLines": [
+            "        };\r",
+            "      })();\r",
+            "      // Text in any language: a key that types a character the US keymap does not give for that\r",
+            "      // key (another keyboard layout, AltGr, Caps Lock, a dead-key composition) is typed as text\r",
+            "      // through the console's text channel (Module.bwTypeText); every other key reaches SDL\r",
+            "      // unchanged. US maps each key code to its unshifted and shifted US characters.\r",
+            "      (function () {\r",
+            "        var US = {\r",
+            "          Backquote: \"`~\", Digit1: \"1!\", Digit2: \"2@\", Digit3: \"3#\", Digit4: \"4$\", Digit5: \"5%\",\r",
+            "          Digit6: \"6^\", Digit7: \"7&\", Digit8: \"8*\", Digit9: \"9(\", Digit0: \"0)\", Minus: \"-_\",\r",
+            "          Equal: \"=+\", BracketLeft: \"[{\", BracketRight: \"]}\", Backslash: \"\\\\|\", IntlBackslash: \"\\\\|\",\r",
+            "          Semicolon: \";:\", Quote: \"'\\\"\", Comma: \",<\", Period: \".>\", Slash: \"/?\", Space: \"  \",\r",
+            "        };\r",
+            "        for (var c = 65; c <= 90; c++) {\r",
+            "          var letter = String.fromCharCode(c);\r",
+            "          US[\"Key\" + letter] = letter.toLowerCase() + letter;\r",
+            "        }\r",
+            "        var typed = {}; // keys whose keydown was typed as text: their keyup is not SDL's either\r",
+            "        window.addEventListener(\r",
+            "          \"keydown\",\r",
+            "          function (e) {\r",
+            "            if (!window.BW_INPUT_OPEN || e.isComposing) return;\r",
+            "            if (typeof Module === \"undefined\" || typeof Module.bwTypeText !== \"function\") return;\r",
+            "            var altGr = e.getModifierState && e.getModifierState(\"AltGraph\");\r",
+            "            if ((e.ctrlKey || e.altKey || e.metaKey) && !altGr) return;\r",
+            "            if (e.key === \"Dead\") {\r",
+            "              // the next key brings the composed character\r",
+            "              e.preventDefault();\r",
+            "              e.stopImmediatePropagation();\r",
+            "              typed[e.code] = true;\r",
+            "              return;\r",
+            "            }\r",
+            "            var chars = Array.from(e.key || \"\");\r",
+            "            if (chars.length !== 1) return; // a named key: Enter, F1, ArrowUp, ...\r",
+            "            var us = US[e.code];\r",
+            "            if (chars[0].charCodeAt(0) < 0x7f && (!us || us.charAt(e.shiftKey ? 1 : 0) === e.key)) return;\r",
+            "            e.preventDefault();\r",
+            "            e.stopImmediatePropagation();\r",
+            "            typed[e.code] = true;\r",
+            "            Module.bwTypeText(e.key);\r",
+            "          },\r",
+            "          true,\r"
+          ]
+        },
+        {
+          "adaptedStart": 162,
+          "adaptedLines": [
+            "      },\r",
+            "      function (err) {\r",
+            "        console.log(\"[bw] clipboard write refused: \" + (err && err.message));\r",
+            "      },\r",
+            "    );\r",
+            "  };\r",
+            "})();\r",
+            "// Text in any language: a key that types a character the US keymap does not give for that\r",
+            "// key (another keyboard layout, AltGr, Caps Lock, a dead-key composition) is typed as text\r",
+            "// through the console's text channel (Module.bwTypeText); every other key reaches SDL\r",
+            "// unchanged. US maps each key code to its unshifted and shifted US characters.\r",
+            "(function () {\r",
+            "  var US = {\r",
+            "    Backquote: \"`~\",\r",
+            "    Digit1: \"1!\",\r",
+            "    Digit2: \"2@\",\r",
+            "    Digit3: \"3#\",\r",
+            "    Digit4: \"4$\",\r",
+            "    Digit5: \"5%\",\r",
+            "    Digit6: \"6^\",\r",
+            "    Digit7: \"7&\",\r",
+            "    Digit8: \"8*\",\r",
+            "    Digit9: \"9(\",\r",
+            "    Digit0: \"0)\",\r",
+            "    Minus: \"-_\",\r",
+            "    Equal: \"=+\",\r",
+            "    BracketLeft: \"[{\",\r",
+            "    BracketRight: \"]}\",\r",
+            "    Backslash: \"\\\\|\",\r",
+            "    IntlBackslash: \"\\\\|\",\r",
+            "    Semicolon: \";:\",\r",
+            "    Quote: \"'\\\"\",\r",
+            "    Comma: \",<\",\r",
+            "    Period: \".>\",\r",
+            "    Slash: \"/?\",\r",
+            "    Space: \"  \",\r",
+            "  };\r",
+            "  for (var c = 65; c <= 90; c++) {\r",
+            "    var letter = String.fromCharCode(c);\r",
+            "    US[\"Key\" + letter] = letter.toLowerCase() + letter;\r",
+            "  }\r",
+            "  var typed = {}; // keys whose keydown was typed as text: their keyup is not SDL's either\r",
+            "  window.addEventListener(\r",
+            "    \"keydown\",\r",
+            "    function (e) {\r",
+            "      if (!window.BW_INPUT_OPEN || e.isComposing) return;\r",
+            "      if (\r",
+            "        typeof Module === \"undefined\" ||\r",
+            "        typeof Module.bwTypeText !== \"function\"\r",
+            "      )\r",
+            "        return;\r",
+            "      var altGr = e.getModifierState && e.getModifierState(\"AltGraph\");\r",
+            "      if ((e.ctrlKey || e.altKey || e.metaKey) && !altGr) return;\r",
+            "      if (e.key === \"Dead\") {\r",
+            "        // the next key brings the composed character\r",
+            "        e.preventDefault();\r",
+            "        e.stopImmediatePropagation();\r",
+            "        typed[e.code] = true;\r",
+            "        return;\r",
+            "      }\r",
+            "      var chars = Array.from(e.key || \"\");\r",
+            "      if (chars.length !== 1) return; // a named key: Enter, F1, ArrowUp, ...\r",
+            "      var us = US[e.code];\r",
+            "      if (\r",
+            "        chars[0].charCodeAt(0) < 0x7f &&\r",
+            "        (!us || us.charAt(e.shiftKey ? 1 : 0) === e.key)\r",
+            "      )\r",
+            "        return;\r",
+            "      e.preventDefault();\r",
+            "      e.stopImmediatePropagation();\r",
+            "      typed[e.code] = true;\r",
+            "      Module.bwTypeText(e.key);\r",
+            "    },\r",
+            "    true,\r",
+            "  );\r",
+            "  window.addEventListener(\r",
+            "    \"keyup\",\r",
+            "    function (e) {\r",
+            "      if (!typed[e.code]) return;\r",
+            "      delete typed[e.code];\r",
+            "      e.preventDefault();\r",
+            "      e.stopImmediatePropagation();\r",
+            "    },\r",
+            "    true,\r",
+            "  );\r",
+            "})();\r",
+            "(function () {\r",
+            "  var canvas = document.getElementById(\"canvas\");\r",
+            "  if (canvas)\r",
+            "    canvas.addEventListener(\"contextmenu\", function (e) {\r",
+            "      e.preventDefault();\r",
+            "    });\r",
+            "})();\r",
+            "// Drag selection beyond the console: the canvas takes pointer capture for a primary-button\r",
+            "// drag, so the drag's mouse events keep reaching SDL (and conhost, which scrolls the window\r",
+            "// to the selection) after the pointer leaves the canvas, the iframe or the browser window.\r",
+            "(function () {\r",
+            "  var canvas = document.getElementById(\"canvas\");\r",
+            "  if (!canvas || !canvas.setPointerCapture) return;\r",
+            "  // the console window's caption and borders take no press: a drag there would move or resize the console\r",
+            "  var onConsoleFrame = function (e) {\r",
+            "    var o = window.BW_CLIENT_ORIGIN;\r",
+            "    if (!o) return false;\r",
+            "    var r = canvas.getBoundingClientRect(),\r",
+            "      x = e.clientX - r.left,\r",
+            "      y = e.clientY - r.top;\r",
+            "    return y < o.y || x < o.x || x >= r.width - o.x || y >= r.height - o.x;\r",
+            "  };\r",
+            "  // a drag released outside the panel ends at the next move without the button, or when the capture is lost\r",
+            "  var drag = null; // the primary-button drag in progress: { id, x, y } (its last position)\r",
+            "  canvas.addEventListener(\"pointerdown\", function (e) {\r",
+            "    // a click on the terminal gives it the keyboard: SDL cancels the mouse-down's default\r",
+            "    // action, which is also the focus change, so keys typed after a click on the terminal\r",
+            "    // kept going to whatever had the focus in the page\r",
+            "    try {\r",
+            "      window.focus();\r",
+            "    } catch (err) {}\r",
+            "    if (onConsoleFrame(e)) {\r",
+            "      // a canceled pointerdown gets no mouse events for SDL until the button is released\r",
+            "      e.preventDefault();\r",
+            "      e.stopImmediatePropagation();\r",
+            "      return;\r",
+            "    }\r",
+            "    if (\r",
+            "      e.button !== 0 ||\r",
+            "      (e.pointerType !== \"mouse\" && e.pointerType !== \"pen\")\r",
+            "    )\r",
+            "      return;\r",
+            "    try {\r",
+            "      canvas.setPointerCapture(e.pointerId);\r",
+            "    } catch (err) {}\r",
+            "    drag = { id: e.pointerId, x: e.clientX, y: e.clientY };\r",
+            "  });\r",
+            "  var endDrag = function (how) {\r",
+            "    var d = drag;\r",
+            "    drag = null;\r",
+            "    if (!d || how === \"released\") return;\r",
+            "    try {\r",
+            "      canvas.dispatchEvent(\r",
+            "        new MouseEvent(\"mouseup\", {\r",
+            "          bubbles: true,\r",
+            "          cancelable: true,\r",
+            "          view: window,\r",
+            "          clientX: d.x,\r",
+            "          clientY: d.y,\r",
+            "          button: 0,\r",
+            "          buttons: 0,\r",
+            "        }),\r",
+            "      );\r",
+            "    } catch (err) {}\r",
+            "  };\r",
+            "  window.addEventListener(\r",
+            "    \"pointermove\",\r",
+            "    function (e) {\r",
+            "      if (!drag || e.pointerId !== drag.id) return;\r",
+            "      if (e.buttons & 1) {\r",
+            "        drag.x = e.clientX;\r",
+            "        drag.y = e.clientY;\r",
+            "      } else endDrag(\"lost\");\r",
+            "    },\r",
+            "    true,\r",
+            "  );\r",
+            "  window.addEventListener(\r",
+            "    \"pointerup\",\r",
+            "    function (e) {\r",
+            "      if (drag && e.pointerId === drag.id) endDrag(\"released\");\r",
+            "    },\r",
+            "    true,\r",
+            "  );\r",
+            "  canvas.addEventListener(\"lostpointercapture\", function (e) {\r",
+            "    if (drag && e.pointerId === drag.id) endDrag(\"lost\");\r",
+            "  });\r",
+            "})();\r",
+            "window.bwOpenInput = function (why) {\r",
+            "  if (window.BW_INPUT_OPEN) return;\r",
+            "  window.BW_INPUT_OPEN = true;\r",
+            "  window.BW_INPUT_OPEN_AT = performance.now();\r",
+            "  console.log(\"[bw] terminal ready for input (\" + why + \")\"); // boot milestone\r",
+            "  try {\r",
+            "    window.dispatchEvent(\r",
+            "      new CustomEvent(\"boxedwine-input-open\", { detail: { why: why } }),\r",
+            "    );\r",
+            "  } catch (e) {}\r",
+            "};\r",
+            "// \"boxedwine-fully-loaded\": the environment is ready (fired by the shell after the\r",
+            "// factory capture on a cold boot, or after the verified restore).\r",
+            "window.bwFireReady = function (how, info) {\r",
+            "  if (window.BW_READY_AT) return;\r",
+            "  var t = performance.now();\r",
+            "  window.BW_READY_AT = t;\r",
+            "  window.BW_READY_HOW = how;\r",
+            "  console.log(\r",
+            "    \"[bw] environment ready (\" + how + \") after \" + Math.round(t) + \"ms\",\r",
+            "  ); // boot milestone\r",
+            "  try {\r",
+            "    window.dispatchEvent(\r",
+            "      new CustomEvent(\"boxedwine-fully-loaded\", {\r",
+            "        detail: {\r",
+            "          timestamp: t,\r",
+            "          totalLoadTime: t,\r",
+            "          how: how,\r",
+            "          info: info || null,\r",
+            "        },\r",
+            "      }),\r",
+            "    );\r",
+            "  } catch (e) {}\r",
+            "};\r"
+          ],
+          "originalLines": [
+            "        window.addEventListener(\r",
+            "          \"keyup\",\r",
+            "          function (e) {\r",
+            "            if (!typed[e.code]) return;\r",
+            "            delete typed[e.code];\r",
+            "            e.preventDefault();\r",
+            "            e.stopImmediatePropagation();\r",
+            "          },\r",
+            "          true,\r",
+            "        );\r",
+            "      })();\r",
+            "      // Drag selection beyond the console: the canvas takes pointer capture for a primary-button\r",
+            "      // drag, so the drag's mouse events keep reaching SDL (and conhost, which scrolls the window\r",
+            "      // to the selection) after the pointer leaves the canvas, the iframe or the browser window.\r",
+            "      (function () {\r",
+            "        var canvas = document.getElementById(\"canvas\");\r",
+            "        if (!canvas || !canvas.setPointerCapture) return;\r",
+            "        canvas.addEventListener(\"pointerdown\", function (e) {\r",
+            "          // a click on the terminal gives it the keyboard: SDL cancels the mouse-down's default\r",
+            "          // action, which is also the focus change, so keys typed after a click on the terminal\r",
+            "          // kept going to whatever had the focus in the page\r",
+            "          try {\r",
+            "            window.focus();\r",
+            "          } catch (err) {}\r",
+            "          if (\r",
+            "            e.button !== 0 ||\r",
+            "            (e.pointerType !== \"mouse\" && e.pointerType !== \"pen\")\r",
+            "          )\r",
+            "            return;\r",
+            "          try {\r",
+            "            canvas.setPointerCapture(e.pointerId);\r",
+            "          } catch (err) {}\r",
+            "        });\r",
+            "      })();\r",
+            "      window.bwOpenInput = function (why) {\r",
+            "        if (window.BW_INPUT_OPEN) return;\r",
+            "        window.BW_INPUT_OPEN = true;\r",
+            "        window.BW_INPUT_OPEN_AT = performance.now();\r",
+            "        console.log(\"[bw] terminal ready for input (\" + why + \")\"); // boot milestone\r",
+            "        try {\r",
+            "          window.dispatchEvent(\r",
+            "            new CustomEvent(\"boxedwine-input-open\", { detail: { why: why } }),\r",
+            "          );\r",
+            "        } catch (e) {}\r",
+            "      };\r",
+            "      // \"boxedwine-fully-loaded\": the environment is ready (fired by the shell after the\r",
+            "      // factory capture on a cold boot, or after the verified restore).\r",
+            "      window.bwFireReady = function (how, info) {\r",
+            "        if (window.BW_READY_AT) return;\r",
+            "        var t = performance.now();\r",
+            "        window.BW_READY_AT = t;\r",
+            "        window.BW_READY_HOW = how;\r",
+            "        console.log(\r",
+            "          \"[bw] environment ready (\" + how + \") after \" + Math.round(t) + \"ms\",\r",
+            "        ); // boot milestone\r",
+            "        try {\r",
+            "          window.dispatchEvent(\r",
+            "            new CustomEvent(\"boxedwine-fully-loaded\", {\r",
+            "              detail: {\r",
+            "                timestamp: t,\r",
+            "                totalLoadTime: t,\r",
+            "                how: how,\r",
+            "                info: info || null,\r",
+            "              },\r",
+            "            }),\r",
+            "          );\r",
+            "        } catch (e) {}\r",
+            "      };\r"
+          ]
+        },
+        {
+          "adaptedStart": 370,
+          "adaptedLines": [
+            "// Without ?bwlog=1, drop the stock shell's config-echo lines from the console.\r",
+            "if (!window.BW_DEBUG_LOG) {\r",
+            "  var _bwRawLog = console.log.bind(console);\r",
+            "  var _bwNoisy =\r",
+            "    /^(not )?setting |must be in quoted string|^setting EMSCRIPTEN|ENV propert|ddrawOverride|^Pointer lock|^Unable to lock pointer|^Use Storage mode|unable to sync folder/;\r",
+            "  console.log = function () {\r",
+            "    if (\r",
+            "      arguments.length &&\r",
+            "      typeof arguments[0] === \"string\" &&\r",
+            "      _bwNoisy.test(arguments[0])\r",
+            "    )\r",
+            "      return;\r",
+            "    return _bwRawLog.apply(null, arguments);\r",
+            "  };\r",
+            "}\r"
+          ],
+          "originalLines": [
+            "      // Without ?bwlog=1, drop the stock shell's config-echo lines from the console.\r",
+            "      if (!window.BW_DEBUG_LOG) {\r",
+            "        var _bwRawLog = console.log.bind(console);\r",
+            "        var _bwNoisy =\r",
+            "          /^(not )?setting |must be in quoted string|^setting EMSCRIPTEN|ENV propert|ddrawOverride|^Pointer lock|^Unable to lock pointer|^Use Storage mode|unable to sync folder/;\r",
+            "        console.log = function () {\r",
+            "          if (\r",
+            "            arguments.length &&\r",
+            "            typeof arguments[0] === \"string\" &&\r",
+            "            _bwNoisy.test(arguments[0])\r",
+            "          )\r",
+            "            return;\r",
+            "          return _bwRawLog.apply(null, arguments);\r",
+            "        };\r",
+            "      }\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/boxedwine/page/bw-page-boot.js",
+      "source": "src/html/boxedwine.html",
+      "lines": [
+        387,
+        908
+      ],
+      "originalSha256": "35cfd46f1e65b3d6bfe06b4d73aaf1afa9f7b2178ece7e532044ff9d83fd53a7",
+      "vendoredSha256": "5b78859333798a8644c45d909934cd7527e95a782c43c732d66731195d2765df",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [
+            "      if (window.BW_CONFIG && window.BW_CONFIG.debugTrace === true) {\r",
+            "        (Module.preRun = Module.preRun || []).push(function () {\r",
+            "          (Module.postRun = Module.postRun || []).unshift(function () {\r",
+            "            try {\r",
+            "              Module.bwSetPresentTrace(true);\r",
+            "            } catch (e) {}\r",
+            "          });\r",
+            "        });\r",
+            "      }\r",
+            "      // stays null: only bw-cache.js reads it, and it is not shipped\r"
+          ],
+          "originalLines": [
+            "      // Build identity (gulp: hash of the emulator stack); keys the snapshot, the caches and\r",
+            "      // the runtime-failure record.\r",
+            "      window.BW_BUILD_ID = \"__BW_BUILD_ID__\";\r",
+            "      // {\"<guest zip>\": \"<chunk manifest version>\"} injected by gulp; null in a raw src/ copy.\r"
+          ]
+        },
+        {
+          "adaptedStart": 17,
+          "adaptedLines": [
+            "        // VS Code webviews are not cross-origin isolated, so pthreads (MT) cannot start\r",
+            "        var canMT = false;\r",
+            "        var m = null;\r"
+          ],
+          "originalLines": [
+            "        var canMT =\r",
+            "          self.crossOriginIsolated === true &&\r",
+            "          typeof SharedArrayBuffer !== \"undefined\";\r",
+            "        var m = /[?&]bw=(mt|st)/.exec(location.search);\r"
+          ]
+        },
+        {
+          "adaptedStart": 63,
+          "adaptedLines": [
+            "      // no ?v= query: VS Code's webview service worker revalidates every resource request\r",
+            "      window.BW_GLUE_V = \"\";\r"
+          ],
+          "originalLines": [
+            "      // The glue and wasm URLs carry the build id: they must always be a matching pair, and\r",
+            "      // the CDN lets browsers cache .js for hours but not .wasm.\r",
+            "      window.BW_GLUE_V = \"?v=\" + window.BW_BUILD_ID;\r"
+          ]
+        },
+        {
+          "adaptedStart": 66,
+          "adaptedLines": [
+            "        window.BW_ASSET_BASE +\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 70,
+          "adaptedLines": [
+            "        window.BW_ASSET_BASE +\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 81,
+          "adaptedLines": [
+            "      Config.locateRootBaseUrl = window.BW_ZIP_BASE;\r",
+            "      Config.locateAppBaseUrl = window.BW_ZIP_BASE;\r",
+            "      Config.locateOverlayBaseUrl = window.BW_ZIP_BASE;\r"
+          ],
+          "originalLines": [
+            "      Config.locateRootBaseUrl = \"latest26/\";\r",
+            "      Config.locateAppBaseUrl = \"latest26/\";\r",
+            "      Config.locateOverlayBaseUrl = \"latest26/\";\r"
+          ]
+        },
+        {
+          "adaptedStart": 103,
+          "adaptedLines": [
+            "      // so `assemble <name>` works from any prompt\r",
+            "      window.BW_EXTRA_ENV.push(\"WINEPATH=C:\\\\files\");\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 106,
+          "adaptedLines": [
+            "        var channels = window.BW_CONFIG && window.BW_CONFIG.wineDebug;\r",
+            "        if (channels) window.BW_EXTRA_ENV.push(\"WINEDEBUG=\" + String(channels));\r"
+          ],
+          "originalLines": [
+            "        var m = /[?&]bwwinedebug=([^&]+)/.exec(location.search);\r",
+            "        if (m) window.BW_EXTRA_ENV.push(\"WINEDEBUG=\" + decodeURIComponent(m[1]));\r"
+          ]
+        },
+        {
+          "adaptedStart": 121,
+          "adaptedLines": [
+            "      // the largest screen Module.bwResizeScreen takes; a larger panel shows it stretched\r",
+            "      var BW_MAX_SCREEN = 8000;\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 126,
+          "adaptedLines": [
+            "        var w = Math.min(BW_MAX_SCREEN, Math.max(1, Math.round(panelW))),\r",
+            "          h = Math.min(BW_MAX_SCREEN, Math.max(1, Math.round(panelH)));\r"
+          ],
+          "originalLines": [
+            "        var w = Math.max(1, Math.round(panelW)),\r",
+            "          h = Math.max(1, Math.round(panelH));\r"
+          ]
+        },
+        {
+          "adaptedStart": 174,
+          "adaptedLines": [
+            "      // SDL's desktop mode comes from screen.width x screen.height, and Boxedwine scales a screen\r",
+            "      // that does not fit inside it: report a display larger than any screen the page asks for\r",
+            "      (function () {\r",
+            "        var desktop = BW_MAX_SCREEN + 192;\r",
+            "        try {\r",
+            "          Object.defineProperty(window.screen, \"width\", {\r",
+            "            configurable: true,\r",
+            "            get: function () {\r",
+            "              return desktop;\r",
+            "            },\r",
+            "          });\r",
+            "          Object.defineProperty(window.screen, \"height\", {\r",
+            "            configurable: true,\r",
+            "            get: function () {\r",
+            "              return desktop;\r",
+            "            },\r",
+            "          });\r",
+            "        } catch (e) {\r",
+            "          console.warn(\"[bw] the display size for SDL could not be set: \" + e);\r",
+            "        }\r",
+            "      })();\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 198,
+          "adaptedLines": [
+            "      // measured on an animation frame: a background VS Code tab is 300x150 and gets none\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 200,
+          "adaptedLines": [
+            "        requestAnimationFrame(function () {\r",
+            "          patchGuestConsole(zipBytes, done);\r",
+            "        });\r",
+            "      };\r",
+            "      var patchGuestConsole = function (zipBytes, done) {\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 428,
+          "adaptedLines": [
+            "        // measured on an animation frame: a background VS Code tab reads as 300x150\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 430,
+          "adaptedLines": [
+            "          requestAnimationFrame(syncScreenToPanel);\r",
+            "        };\r",
+            "        var syncScreenToPanel = function () {\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 498,
+          "adaptedLines": [
+            "      // bw-cache.js is not shipped: this block does nothing\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 517,
+          "adaptedLines": [
+            "      window.BW_MT_SNAPSHOT_ENABLED = true;\r"
+          ],
+          "originalLines": [
+            "      window.BW_MT_SNAPSHOT_ENABLED = !/[?&]bwmtsnap=0/.test(location.search);\r"
+          ]
+        },
+        {
+          "adaptedStart": 522,
+          "adaptedLines": [
+            "      if (window.BWSnapshot && !(window.BW_CONFIG && window.BW_CONFIG.noSnapshot === true)) {\r"
+          ],
+          "originalLines": [
+            "      if (window.BWSnapshot && !/[?&]bwnosnap=1/.test(location.search)) {\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/boxedwine/page/bw-page-frame.js",
+      "source": "src/html/boxedwine.html",
+      "lines": [
+        911,
+        1015
+      ],
+      "originalSha256": "108f409ff6fd22af03649b95b442b1d6827d84325021c83044abf629b717b5c3",
+      "vendoredSha256": "72c52d5a3c3e5ae2b43b2d281b2ae4eb46913c943d7a1b438a57c9b08b7ef97a",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [
+            "(function () {\r",
+            "  window.bwConsoleFrame = function () {\r",
+            "    try {\r",
+            "      var c = document.getElementById(\"canvas\");\r",
+            "      var sdl = typeof Module !== \"undefined\" && Module.SDL2,\r",
+            "        frame = sdl && sdl.image;\r",
+            "      if (\r",
+            "        c &&\r",
+            "        sdl.ctxCanvas === c &&\r",
+            "        frame &&\r",
+            "        frame.width > 0 &&\r",
+            "        frame.height > 0 &&\r",
+            "        frame.width === c.width &&\r",
+            "        frame.height === c.height &&\r",
+            "        frame.data &&\r",
+            "        frame.data.length === frame.width * frame.height * 4\r",
+            "      )\r",
+            "        return frame;\r",
+            "    } catch (e) {}\r",
+            "    return null;\r",
+            "  };\r",
+            "  window.bwConsoleFillsScreen = function () {\r",
+            "    var frame = window.bwConsoleFrame();\r",
+            "    if (!frame || frame.width < 2 || frame.height < 2) return false;\r",
+            "    var d = frame.data;\r",
+            "    var isFrame = function (x, y) {\r",
+            "      var i = (y * frame.width + x) * 4;\r",
+            "      return (\r",
+            "        d[i + 3] === 255 &&\r",
+            "        ((d[i] === 212 && d[i + 1] === 208 && d[i + 2] === 200) ||\r",
+            "          (d[i] === 128 && d[i + 1] === 128 && d[i + 2] === 128) ||\r",
+            "          (d[i] === 64 && d[i + 1] === 64 && d[i + 2] === 64))\r",
+            "      );\r",
+            "    };\r",
+            "    return (\r",
+            "      isFrame(frame.width - 2, (frame.height / 2) | 0) &&\r",
+            "      isFrame((frame.width / 2) | 0, frame.height - 2)\r",
+            "    );\r",
+            "  };\r",
+            "  // Shared by the console-lit milestone and boot/restore watchdog. Require\r",
+            "  // the console border first: Wine's startup dialog is lit but not ready.\r",
+            "  window.bwConsoleLit = function () {\r",
+            "    var frame = window.bwConsoleFrame();\r",
+            "    if (!frame) return -1;\r",
+            "    if (!window.bwConsoleFillsScreen()) return 0;\r",
+            "    var d = frame.data,\r",
+            "      lit = 0;\r",
+            "    for (var y = 0; y < 48; y++) {\r",
+            "      for (var x = 0; x < 64; x++) {\r",
+            "        var i =\r",
+            "          (Math.floor((y * frame.height) / 48) * frame.width +\r",
+            "            Math.floor((x * frame.width) / 64)) *\r",
+            "          4;\r",
+            "        if (d[i + 3] && d[i] + d[i + 1] + d[i + 2] > 20) lit++;\r",
+            "      }\r",
+            "    }\r",
+            "    return lit;\r",
+            "  };\r",
+            "})();\r",
+            "// Presentation: the canvas fills the iframe (1:1, the screen is the panel's size). Inline\r",
+            "// !important styles win over anything SDL sets; SDL maps the pointer through the CSS box.\r",
+            "(function () {\r",
+            "  var canvas = document.getElementById(\"canvas\");\r",
+            "  window.bwFitCanvas = function () {\r",
+            "    canvas.style.setProperty(\"width\", \"100vw\", \"important\");\r",
+            "    canvas.style.setProperty(\"height\", \"100vh\", \"important\");\r",
+            "    canvas.style.setProperty(\"left\", \"0px\", \"important\");\r",
+            "    canvas.style.setProperty(\"top\", \"0px\", \"important\");\r",
+            "  };\r",
+            "  window.addEventListener(\"resize\", window.bwFitCanvas);\r",
+            "  // the emulator sets canvas.width/height when SDL creates its window\r",
+            "  if (typeof MutationObserver !== \"undefined\") {\r",
+            "    new MutationObserver(function () {\r",
+            "      window.bwFitCanvas();\r",
+            "    }).observe(canvas, {\r",
+            "      attributes: true,\r",
+            "      attributeFilter: [\"width\", \"height\", \"style\"],\r",
+            "    });\r",
+            "  }\r",
+            "  window.bwFitCanvas();\r",
+            "})();\r",
+            "// \"boxedwine-console-lit\": the console first renders (2 consecutive lit samples).\r",
+            "(function () {\r",
+            "  var t0 = performance.now(),\r",
+            "    hits = 0;\r",
+            "  var timer = setInterval(function () {\r",
+            "    if (window.bwConsoleLit() > 20) {\r",
+            "      if (++hits >= 2) {\r",
+            "        clearInterval(timer);\r",
+            "        var t = performance.now();\r",
+            "        window.BW_CONSOLE_VISIBLE_AT = t;\r",
+            "        window.dispatchEvent(\r",
+            "          new CustomEvent(\"boxedwine-console-lit\", {\r",
+            "            detail: { timestamp: t, totalLoadTime: t - t0 },\r",
+            "          }),\r",
+            "        );\r",
+            "      }\r",
+            "    } else hits = 0;\r",
+            "  }, 400);\r",
+            "})();\r"
+          ],
+          "originalLines": [
+            "      // SDL exposes the ImageData it has just presented in BOTH shipped runtimes.\r",
+            "      // Inspect these app-owned bytes, never a canvas extraction: Firefox privacy\r",
+            "      // protection can deny/randomize getImageData and toDataURL. That noise used\r",
+            "      // to pass the boot gate on blank/Wine-loading frames and became colored\r",
+            "      // stripes in the resize hold. No canvas permission is needed here.\r",
+            "      (function () {\r",
+            "        window.bwConsoleFrame = function () {\r",
+            "          try {\r",
+            "            var c = document.getElementById(\"canvas\");\r",
+            "            var sdl = typeof Module !== \"undefined\" && Module.SDL2,\r",
+            "              frame = sdl && sdl.image;\r",
+            "            if (\r",
+            "              c &&\r",
+            "              sdl.ctxCanvas === c &&\r",
+            "              frame &&\r",
+            "              frame.width > 0 &&\r",
+            "              frame.height > 0 &&\r",
+            "              frame.width === c.width &&\r",
+            "              frame.height === c.height &&\r",
+            "              frame.data &&\r",
+            "              frame.data.length === frame.width * frame.height * 4\r",
+            "            )\r",
+            "              return frame;\r",
+            "          } catch (e) {}\r",
+            "          return null;\r",
+            "        };\r",
+            "        window.bwConsoleFillsScreen = function () {\r",
+            "          var frame = window.bwConsoleFrame();\r",
+            "          if (!frame || frame.width < 2 || frame.height < 2) return false;\r",
+            "          var d = frame.data;\r",
+            "          var isFrame = function (x, y) {\r",
+            "            var i = (y * frame.width + x) * 4;\r",
+            "            return (\r",
+            "              d[i + 3] === 255 &&\r",
+            "              ((d[i] === 212 && d[i + 1] === 208 && d[i + 2] === 200) ||\r",
+            "                (d[i] === 128 && d[i + 1] === 128 && d[i + 2] === 128) ||\r",
+            "                (d[i] === 64 && d[i + 1] === 64 && d[i + 2] === 64))\r",
+            "            );\r",
+            "          };\r",
+            "          return (\r",
+            "            isFrame(frame.width - 2, (frame.height / 2) | 0) &&\r",
+            "            isFrame((frame.width / 2) | 0, frame.height - 2)\r",
+            "          );\r",
+            "        };\r",
+            "        // Shared by the console-lit milestone and boot/restore watchdog. Require\r",
+            "        // the console border first: Wine's startup dialog is lit but not ready.\r",
+            "        window.bwConsoleLit = function () {\r",
+            "          var frame = window.bwConsoleFrame();\r",
+            "          if (!frame) return -1;\r",
+            "          if (!window.bwConsoleFillsScreen()) return 0;\r",
+            "          var d = frame.data,\r",
+            "            lit = 0;\r",
+            "          for (var y = 0; y < 48; y++) {\r",
+            "            for (var x = 0; x < 64; x++) {\r",
+            "              var i =\r",
+            "                (Math.floor((y * frame.height) / 48) * frame.width +\r",
+            "                  Math.floor((x * frame.width) / 64)) *\r",
+            "                4;\r",
+            "              if (d[i + 3] && d[i] + d[i + 1] + d[i + 2] > 20) lit++;\r",
+            "            }\r",
+            "          }\r",
+            "          return lit;\r",
+            "        };\r",
+            "      })();\r",
+            "      // Presentation: the canvas fills the iframe (1:1, the screen is the panel's size). Inline\r",
+            "      // !important styles win over anything SDL sets; SDL maps the pointer through the CSS box.\r",
+            "      (function () {\r",
+            "        var canvas = document.getElementById(\"canvas\");\r",
+            "        window.bwFitCanvas = function () {\r",
+            "          canvas.style.setProperty(\"width\", \"100vw\", \"important\");\r",
+            "          canvas.style.setProperty(\"height\", \"100vh\", \"important\");\r",
+            "          canvas.style.setProperty(\"left\", \"0px\", \"important\");\r",
+            "          canvas.style.setProperty(\"top\", \"0px\", \"important\");\r",
+            "        };\r",
+            "        window.addEventListener(\"resize\", window.bwFitCanvas);\r",
+            "        // the emulator sets canvas.width/height when SDL creates its window\r",
+            "        if (typeof MutationObserver !== \"undefined\") {\r",
+            "          new MutationObserver(function () {\r",
+            "            window.bwFitCanvas();\r",
+            "          }).observe(canvas, {\r",
+            "            attributes: true,\r",
+            "            attributeFilter: [\"width\", \"height\", \"style\"],\r",
+            "          });\r",
+            "        }\r",
+            "        window.bwFitCanvas();\r",
+            "      })();\r",
+            "      // \"boxedwine-console-lit\": the console first renders (2 consecutive lit samples).\r",
+            "      (function () {\r",
+            "        var t0 = performance.now(),\r",
+            "          hits = 0;\r",
+            "        var timer = setInterval(function () {\r",
+            "          if (window.bwConsoleLit() > 20) {\r",
+            "            if (++hits >= 2) {\r",
+            "              clearInterval(timer);\r",
+            "              var t = performance.now();\r",
+            "              window.BW_CONSOLE_VISIBLE_AT = t;\r",
+            "              window.dispatchEvent(\r",
+            "                new CustomEvent(\"boxedwine-console-lit\", {\r",
+            "                  detail: { timestamp: t, totalLoadTime: t - t0 },\r",
+            "                }),\r",
+            "              );\r",
+            "            }\r",
+            "          } else hits = 0;\r",
+            "        }, 400);\r",
+            "      })();\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/boxedwine/page/bw-page-loader.js",
+      "source": "src/html/boxedwine.html",
+      "lines": [
+        1019,
+        1151
+      ],
+      "originalSha256": "b1e1138e4c401c68bfa6f39933ed7c0149e163a1b15c070a51f11179302c96e1",
+      "vendoredSha256": "6a847422607e4ca6b611d1756975d352bfd15e58143a5e17679beef6f7103ba5",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [
+            "(function () {\r",
+            "  var mt = window.BW_USE_MT === true;\r",
+            "  var GLUE_V = window.BW_GLUE_V;\r",
+            "  var wasmUrl = window.BW_WASM_URL;\r",
+            "  var glueUrl = window.BW_GLUE_URL;\r",
+            "  var cf = function (u) {\r",
+            "    return window.BWCache\r",
+            "      ? window.BWCache.fetch(u, { credentials: \"same-origin\" })\r",
+            "      : fetch(u, { credentials: \"same-origin\" });\r",
+            "  };\r",
+            "  try {\r",
+            "    var prev = Module.locateFile;\r",
+            "    Module.locateFile = function (path, prefix) {\r",
+            "      if (/boxedwine\\.wasm$/.test(path)) return wasmUrl;\r",
+            "      return prev ? prev(path, prefix) : (prefix || \"\") + path;\r",
+            "    };\r",
+            "    // main-thread instantiation (MT workers use the module posted by this thread)\r",
+            "    Module.instantiateWasm = function (imports, receiveInstance) {\r",
+            "      window.bwBootStage(\"Compiling emulator\");\r",
+            "      var done = function (r) {\r",
+            "        window.BW_WASM_INSTANTIATED = true;\r",
+            "        receiveInstance(r.instance, r.module);\r",
+            "      };\r",
+            "      var viaBuffer = function (resp) {\r",
+            "        return resp.arrayBuffer().then(function (b) {\r",
+            "          return WebAssembly.instantiate(b, imports);\r",
+            "        });\r",
+            "      };\r",
+            "      cf(wasmUrl)\r",
+            "        .then(function (resp) {\r",
+            "          if (typeof WebAssembly.instantiateStreaming === \"function\") {\r",
+            "            return WebAssembly.instantiateStreaming(\r",
+            "              resp.clone(),\r",
+            "              imports,\r",
+            "            ).catch(function (e) {\r"
+          ],
+          "originalLines": [
+            "      // Load the selected runtime through BWCache: the wasm via instantiateWasm, the glue from\r",
+            "      // a Blob (MT also hands it to its pthread workers). Any failure falls back to a plain\r",
+            "      // <script src>, and MT to ST.\r",
+            "      (function () {\r",
+            "        var mt = window.BW_USE_MT === true;\r",
+            "        var GLUE_V = window.BW_GLUE_V;\r",
+            "        var wasmUrl = window.BW_WASM_URL;\r",
+            "        var glueUrl = window.BW_GLUE_URL;\r",
+            "        var cf = function (u) {\r",
+            "          return window.BWCache\r",
+            "            ? window.BWCache.fetch(u, { credentials: \"same-origin\" })\r",
+            "            : fetch(u, { credentials: \"same-origin\" });\r",
+            "        };\r",
+            "        try {\r",
+            "          var prev = Module.locateFile;\r",
+            "          Module.locateFile = function (path, prefix) {\r",
+            "            if (/boxedwine\\.wasm$/.test(path)) return wasmUrl;\r",
+            "            return prev ? prev(path, prefix) : (prefix || \"\") + path;\r",
+            "          };\r",
+            "          // main-thread instantiation (MT workers use the module posted by this thread)\r",
+            "          Module.instantiateWasm = function (imports, receiveInstance) {\r",
+            "            window.bwBootStage(\"Compiling emulator\");\r",
+            "            var done = function (r) {\r",
+            "              window.BW_WASM_INSTANTIATED = true;\r",
+            "              receiveInstance(r.instance, r.module);\r",
+            "            };\r",
+            "            var viaBuffer = function (resp) {\r",
+            "              return resp.arrayBuffer().then(function (b) {\r",
+            "                return WebAssembly.instantiate(b, imports);\r",
+            "              });\r",
+            "            };\r",
+            "            cf(wasmUrl)\r",
+            "              .then(function (resp) {\r",
+            "                if (typeof WebAssembly.instantiateStreaming === \"function\") {\r",
+            "                  return WebAssembly.instantiateStreaming(\r",
+            "                    resp.clone(),\r",
+            "                    imports,\r",
+            "                  ).catch(function (e) {\r",
+            "                    console.warn(\r",
+            "                      \"[bw] streaming wasm compile failed (\" +\r",
+            "                        e +\r",
+            "                        \"); using ArrayBuffer\",\r",
+            "                    );\r",
+            "                    return viaBuffer(resp);\r",
+            "                  });\r",
+            "                }\r",
+            "                return viaBuffer(resp);\r",
+            "              })\r",
+            "              .then(done)\r",
+            "              .catch(function (e) {\r",
+            "                console.error(\"[bw] wasm instantiation failed\", e);\r",
+            "                window.BW_WASM_FAILED = String(e);\r",
+            "                // fail over now: MT reloads into ST, ST tells the parent\r",
+            "                if (window.BWSnapshot)\r",
+            "                  window.BWSnapshot.onWasmFailed(String(e));\r",
+            "              });\r",
+            "            return {}; // exports arrive via receiveInstance\r",
+            "          };\r",
+            "        } catch (e) {\r",
+            "          mt = false;\r",
+            "        }\r",
+            "\r",
+            "        var loadViaScriptTag = function (src) {\r",
+            "          var s = document.createElement(\"script\");\r",
+            "          s.async = true;\r",
+            "          s.src = src;\r",
+            "          s.onerror = function () {\r",
+            "            if (mt) {\r",
+            "              // MT glue failed -> fall back to ST so the app still runs\r",
+            "              mt = false;\r",
+            "              wasmUrl = \"boxedwine.wasm\" + GLUE_V;\r",
+            "              var f = document.createElement(\"script\");\r",
+            "              f.async = true;\r",
+            "              f.src = \"boxedwine.js\" + GLUE_V;\r",
+            "              document.body.appendChild(f);\r",
+            "            }\r",
+            "          };\r",
+            "          document.body.appendChild(s);\r",
+            "        };\r",
+            "        cf(glueUrl)\r",
+            "          .then(function (resp) {\r",
+            "            if (!resp.ok) throw new Error(\"glue HTTP \" + resp.status);\r",
+            "            return resp.blob();\r",
+            "          })\r",
+            "          .then(function (blob) {\r",
+            "            var jsBlob =\r",
+            "              blob.type === \"text/javascript\"\r",
+            "                ? blob\r",
+            "                : new Blob([blob], { type: \"text/javascript\" });\r",
+            "            if (mt) {\r",
+            "              try {\r",
+            "                Module.mainScriptUrlOrBlob = jsBlob;\r",
+            "              } catch (e) {}\r",
+            "            }\r",
+            "            var s = document.createElement(\"script\");\r",
+            "            s.async = true;\r",
+            "            s.src = URL.createObjectURL(jsBlob);\r",
+            "            s.onerror = function () {\r"
+          ]
+        },
+        {
+          "adaptedStart": 36,
+          "adaptedLines": [
+            "                \"[bw] streaming wasm compile failed (\" +\r",
+            "                  e +\r",
+            "                  \"); using ArrayBuffer\",\r"
+          ],
+          "originalLines": [
+            "                \"[bw] blob glue failed; falling back to <script src>\",\r"
+          ]
+        },
+        {
+          "adaptedStart": 40,
+          "adaptedLines": [
+            "              return viaBuffer(resp);\r",
+            "            });\r",
+            "          }\r",
+            "          return viaBuffer(resp);\r",
+            "        })\r",
+            "        .then(done)\r",
+            "        .catch(function (e) {\r",
+            "          console.error(\"[bw] wasm instantiation failed\", e);\r",
+            "          window.BW_WASM_FAILED = String(e);\r",
+            "          // fail over now: MT reloads into ST, ST tells the parent\r",
+            "          if (window.BWSnapshot) window.BWSnapshot.onWasmFailed(String(e));\r",
+            "        });\r",
+            "      return {}; // exports arrive via receiveInstance\r",
+            "    };\r",
+            "  } catch (e) {\r",
+            "    mt = false;\r",
+            "  }\r",
+            "\r",
+            "  var loadViaScriptTag = function (src) {\r",
+            "    var s = document.createElement(\"script\");\r",
+            "    s.async = true;\r",
+            "    s.src = src;\r",
+            "    s.onerror = function () {\r",
+            "      if (mt) {\r",
+            "        // MT glue failed -> fall back to ST so the app still runs\r",
+            "        mt = false;\r",
+            "        wasmUrl = window.BW_ASSET_BASE + \"boxedwine.wasm\" + GLUE_V;\r",
+            "        var f = document.createElement(\"script\");\r",
+            "        f.async = true;\r",
+            "        f.src = window.BW_ASSET_BASE + \"boxedwine.js\" + GLUE_V;\r",
+            "        document.body.appendChild(f);\r",
+            "      }\r",
+            "    };\r",
+            "    document.body.appendChild(s);\r",
+            "  };\r",
+            "  cf(glueUrl)\r",
+            "    .then(function (resp) {\r",
+            "      if (!resp.ok) throw new Error(\"glue HTTP \" + resp.status);\r",
+            "      return resp.blob();\r",
+            "    })\r",
+            "    .then(function (blob) {\r",
+            "      var jsBlob =\r",
+            "        blob.type === \"text/javascript\"\r",
+            "          ? blob\r",
+            "          : new Blob([blob], { type: \"text/javascript\" });\r",
+            "      if (mt) {\r",
+            "        try {\r",
+            "          Module.mainScriptUrlOrBlob = jsBlob;\r",
+            "        } catch (e) {}\r",
+            "      }\r",
+            "      var s = document.createElement(\"script\");\r",
+            "      s.async = true;\r",
+            "      s.src = URL.createObjectURL(jsBlob);\r",
+            "      s.onerror = function () {\r",
+            "        console.warn(\"[bw] blob glue failed; falling back to <script src>\");\r",
+            "        loadViaScriptTag(glueUrl);\r",
+            "      };\r",
+            "      document.body.appendChild(s);\r",
+            "    })\r",
+            "    .catch(function (e) {\r",
+            "      console.warn(\r",
+            "        \"[bw] glue fetch failed (\" + e + \"); falling back to <script src>\",\r",
+            "      );\r",
+            "      if (mt) {\r",
+            "        try {\r",
+            "          Module.mainScriptUrlOrBlob = glueUrl;\r",
+            "        } catch (_) {}\r",
+            "      }\r",
+            "      loadViaScriptTag(glueUrl);\r",
+            "    });\r",
+            "  // tell the parent when MT failed under this build and this load fell back to ST\r",
+            "  if (window.BW_RUNTIME_DOWNGRADED) {\r",
+            "    window.addEventListener(\"load\", function () {\r",
+            "      try {\r",
+            "        window.bwHost.post(\"runtime-downgraded\", window.BW_RUNTIME_DOWNGRADED);\r",
+            "      } catch (e) {}\r",
+            "    });\r",
+            "  }\r",
+            "})();\r"
+          ],
+          "originalLines": [
+            "              loadViaScriptTag(glueUrl);\r",
+            "            };\r",
+            "            document.body.appendChild(s);\r",
+            "          })\r",
+            "          .catch(function (e) {\r",
+            "            console.warn(\r",
+            "              \"[bw] glue fetch failed (\" +\r",
+            "                e +\r",
+            "                \"); falling back to <script src>\",\r",
+            "            );\r",
+            "            if (mt) {\r",
+            "              try {\r",
+            "                Module.mainScriptUrlOrBlob = glueUrl;\r",
+            "              } catch (_) {}\r",
+            "            }\r",
+            "            loadViaScriptTag(glueUrl);\r",
+            "          });\r",
+            "        // tell the parent when MT failed under this build and this load fell back to ST\r",
+            "        if (window.BW_RUNTIME_DOWNGRADED) {\r",
+            "          window.addEventListener(\"load\", function () {\r",
+            "            try {\r",
+            "              window.parent.postMessage(\r",
+            "                JSON.stringify({\r",
+            "                  eventName: \"runtime-downgraded\",\r",
+            "                  data: { data: window.BW_RUNTIME_DOWNGRADED },\r",
+            "                }),\r",
+            "                \"/\",\r",
+            "              );\r",
+            "            } catch (e) {}\r",
+            "          });\r",
+            "        }\r",
+            "      })();\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/components/boxedwine/Boxedwine.jsx",
+      "source": "src/js/components/boxedwine/Boxedwine.jsx",
+      "originalSha256": "400c58fef170fba2e7ff39f7772d9f09edd04a08b8c4758f873f98062f3d58fe",
+      "vendoredSha256": "b131cce9a4b4b9ad081b212dded3fd54a7e648715306e55068542f440d0b33fd",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 1,
+          "adaptedLines": [
+            "import { outputPath } from \"./outputPath.js\";\r",
+            "import { peLooksComplete } from \"./peImage.js\";\r",
+            "import { readbackStep } from \"./readback.js\";\r"
+          ],
+          "originalLines": [
+            "import { createMessageListner } from \"../../utility/utilityFunctions.ts\";\r",
+            "import { outputPath } from \"../main/utility/filesystem/paths\";\r"
+          ]
+        },
+        {
+          "adaptedStart": 6,
+          "adaptedLines": [
+            "const D_DRIVE = \"/home/username/.wine/drive_d/\"; // guest D:\\  (writable workspace, write path via bwWriteFile)\r"
+          ],
+          "originalLines": [
+            "// The emulator canvas is a static element in boxedwine.html (the stock 26R1\r",
+            "// shell captures #canvas at script load). This component owns the app-side\r",
+            "// event wiring (all terminal I/O goes through direct BoxedWine embind calls —\r",
+            "// no synthetic KeyboardEvents, no echo file hacks) and the click overlay.\r",
+            "const D_DRIVE = \"/mnt/drive_d/\"; // guest D:\\  (writable workspace, write path via bwWriteFile)\r"
+          ]
+        },
+        {
+          "adaptedStart": 13,
+          "adaptedLines": [
+            "// from this size on, files are written into MEMFS directly (writeLargeGuestFile)\r",
+            "const LARGE_FILE_BYTES = 4 * 1024 * 1024;\r"
+          ],
+          "originalLines": [
+            "// Guest -> drawer import: files and folders the guest creates on D: that the drawer\r",
+            "// does not have are offered to the parent every IMPORT_EVERY_MS (and after each build\r",
+            "// readback); larger files are reported once and left in the session. The walk is\r",
+            "// bounded (IMPORT_MAX_DEPTH levels, IMPORT_MAX_ENTRIES entries per scan).\r",
+            "const IMPORT_EVERY_MS = 5000;\r",
+            "const IMPORT_MAX_BYTES = 4 * 1024 * 1024;\r",
+            "const IMPORT_MAX_DEPTH = 16;\r",
+            "const IMPORT_MAX_ENTRIES = 4096;\r",
+            "// Harness sentinel files (`__bw_*`) are never imported.\r",
+            "const isSentinel = (name) => /^__bw_/i.test(name);\r",
+            "// Files the parent treats as text (same rule as its reconciliation).\r",
+            "const isTextName = (name) => /\\.(asm|inc|txt|text|bat|lst|map)$/i.test(name);\r"
+          ]
+        },
+        {
+          "adaptedStart": 31,
+          "adaptedLines": [
+            "// dispatched synchronously: the host layer's handler runs before the code that follows\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 34,
+          "adaptedLines": [
+            "    window.dispatchEvent(\r",
+            "      new CustomEvent(\"bw-adapter-event\", { detail: { eventName, data: payload } }),\r"
+          ],
+          "originalLines": [
+            "    window.parent.postMessage(\r",
+            "      JSON.stringify({ eventName, data: { data: payload } }),\r",
+            "      \"/\",\r"
+          ]
+        },
+        {
+          "adaptedStart": 47,
+          "adaptedLines": [
+            "// doneSentinel: the D:\\ file the build's command line creates when it has finished, or null\r",
+            "const readBackBuildOutputs = (name, requestId, onDone, doneSentinel) => {\r"
+          ],
+          "originalLines": [
+            "const readBackBuildOutputs = (name, onDone) => {\r"
+          ]
+        },
+        {
+          "adaptedStart": 51,
+          "adaptedLines": [
+            "  // a 60 s ceiling: terminals in other VS Code windows share this renderer thread\r",
+            "  const READBACK_POLL_MS = 100;\r",
+            "  const maxTries = 600;\r"
+          ],
+          "originalLines": [
+            "  const maxTries = 44; // ~22s ceiling (assemble+link is typically < 12s)\r"
+          ]
+        },
+        {
+          "adaptedStart": 59,
+          "adaptedLines": [
+            "    // Its PE image must be complete too; once the build's line has finished, the result is final (readback.js).\r",
+            "    let exeSize = -1;\r",
+            "    try {\r",
+            "      exeSize = Module.FS.stat(NATIVE_D + name + \".exe\").size;\r",
+            "    } catch (e) {}\r",
+            "    let lineDone = false;\r"
+          ],
+          "originalLines": [
+            "    let exeReady = false;\r"
+          ]
+        },
+        {
+          "adaptedStart": 66,
+          "adaptedLines": [
+            "      lineDone = !!doneSentinel && !Module.FS.isDir(Module.FS.stat(NATIVE_D + doneSentinel).mode);\r",
+            "    } catch (e) {}\r",
+            "    const exeStable = exeSize > 0 && exeSize === lastSize;\r",
+            "    let exeComplete = false;\r",
+            "    if (exeSize > 0 && (exeStable || lineDone)) {\r",
+            "      try {\r",
+            "        exeComplete = peLooksComplete(Module.FS.readFile(NATIVE_D + name + \".exe\"));\r",
+            "      } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "      const sz = Module.FS.stat(NATIVE_D + name + \".exe\").size;\r",
+            "      exeReady = sz > 0 && sz === lastSize;\r",
+            "      lastSize = sz;\r",
+            "    } catch (e) {\r",
+            "      lastSize = -1;\r"
+          ]
+        },
+        {
+          "adaptedStart": 75,
+          "adaptedLines": [
+            "    lastSize = exeSize;\r",
+            "    const step = readbackStep({ exeSize, exeStable, exeComplete, lineDone, tries, maxTries });\r",
+            "    if (!step.finished) return;\r",
+            "    const exeReady = step.ok;\r"
+          ],
+          "originalLines": [
+            "    if (!exeReady && tries < maxTries) return;\r"
+          ]
+        },
+        {
+          "adaptedStart": 95,
+          "adaptedLines": [
+            "    postToParent(\"build-outputs\", { name, outputs, ok: exeReady, requestId });\r"
+          ],
+          "originalLines": [
+            "    postToParent(\"build-outputs\", { name, outputs, ok: exeReady });\r"
+          ]
+        },
+        {
+          "adaptedStart": 97,
+          "adaptedLines": [
+            "  }, READBACK_POLL_MS);\r"
+          ],
+          "originalLines": [
+            "  }, 500);\r"
+          ]
+        },
+        {
+          "adaptedStart": 109,
+          "adaptedLines": [],
+          "originalLines": [
+            "    createMessageListner(); // parent -> iframe postMessage bridge -> re-dispatched events (FALLBACK)\r"
+          ]
+        },
+        {
+          "adaptedStart": 154,
+          "adaptedLines": [],
+          "originalLines": [
+            "    stopImportScan();\r"
+          ]
+        },
+        {
+          "adaptedStart": 167,
+          "adaptedLines": [
+            "  // hostAttached: the host layer will reconcile, so the no-parent fallback must not open input\r",
+            "  const gateState = { queue: [], reconciled: false, fallbackTimer: null, hostAttached: false };\r"
+          ],
+          "originalLines": [
+            "  const gateState = { queue: [], reconciled: false, fallbackTimer: null };\r"
+          ]
+        },
+        {
+          "adaptedStart": 195,
+          "adaptedLines": [],
+          "originalLines": [
+            "    startImportScan();\r"
+          ]
+        },
+        {
+          "adaptedStart": 237,
+          "adaptedLines": [
+            "  const XK_Home = 0xff50,\r",
+            "    XK_End = 0xff57;\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 288,
+          "adaptedLines": [
+            "    postToParent(\"file-synced\", result);\r"
+          ],
+          "originalLines": [
+            "    try {\r",
+            "      window.parent.postMessage(\r",
+            "        JSON.stringify({ eventName: \"file-synced\", data: { data: result } }),\r",
+            "        \"/\",\r",
+            "      );\r",
+            "    } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 303,
+          "adaptedLines": [
+            "  // bwWriteFileBytes copies the file into the emulator's fixed 512 MB heap: a large one goes into MEMFS\r",
+            "  // directly, after an empty write that creates the guest's entry. MEMFS adopts the bytes (canOwn).\r",
+            "  const writeLargeGuestFile = (filename, u8) => {\r",
+            "    const rc = Module.bwWriteFileBytes(D_DRIVE + filename, new Uint8Array(0));\r",
+            "    if (rc === 0) Module.FS.writeFile(NATIVE_D + filename, u8, { canOwn: true });\r",
+            "    return { rc, size: u8.length };\r",
+            "  };\r",
+            "  const writeBytes = (filename, u8) =>\r",
+            "    u8.length >= LARGE_FILE_BYTES\r",
+            "      ? writeLargeGuestFile(filename, u8)\r",
+            "      : { rc: Module.bwWriteFileBytes(D_DRIVE + filename, u8), size: u8.length };\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 317,
+          "adaptedLines": [
+            "    if (content instanceof Uint8Array && typeof Module.bwWriteFileBytes === \"function\")\r",
+            "      return writeBytes(filename, content);\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 323,
+          "adaptedLines": [
+            "      return writeBytes(filename, u8);\r"
+          ],
+          "originalLines": [
+            "      return {\r",
+            "        rc: Module.bwWriteFileBytes(D_DRIVE + filename, u8),\r",
+            "        size: u8.length,\r",
+            "      };\r"
+          ]
+        },
+        {
+          "adaptedStart": 341,
+          "adaptedLines": [],
+          "originalLines": [
+            "        importState.drawer.add(filename);\r"
+          ]
+        },
+        {
+          "adaptedStart": 367,
+          "adaptedLines": [],
+          "originalLines": [
+            "        importState.drawer.delete(oldName);\r",
+            "        importState.drawer.add(newName);\r"
+          ]
+        },
+        {
+          "adaptedStart": 400,
+          "adaptedLines": [
+            "  const doBuild = (filename, content, isBase64, opts) => {\r"
+          ],
+          "originalLines": [
+            "  const doBuild = (filename, content, isBase64) => {\r"
+          ]
+        },
+        {
+          "adaptedStart": 402,
+          "adaptedLines": [
+            "    const requestId = opts && opts.requestId ? String(opts.requestId) : null;\r",
+            "    const doneSentinel = opts && opts.doneSentinel ? String(opts.doneSentinel) : null;\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 405,
+          "adaptedLines": [
+            "      whenModuleReady([\"bwWriteFile\", \"sendText\", \"sendKey\"], () => {\r"
+          ],
+          "originalLines": [
+            "      whenModuleReady([\"bwWriteFile\", \"sendText\"], () => {\r"
+          ]
+        },
+        {
+          "adaptedStart": 410,
+          "adaptedLines": [],
+          "originalLines": [
+            "        importState.drawer.add(filename);\r"
+          ]
+        },
+        {
+          "adaptedStart": 411,
+          "adaptedLines": [
+            "        const rc = isBase64 || content instanceof Uint8Array\r"
+          ],
+          "originalLines": [
+            "        const rc = isBase64\r"
+          ]
+        },
+        {
+          "adaptedStart": 431,
+          "adaptedLines": [
+            "        // afterwards; `call` returns control to this line when the batch ends).\r"
+          ],
+          "originalLines": [
+            "        // afterwards; `call` returns control to this line when the batch ends). Without\r",
+            "        // this, a prompt that had left D:\\ got `Cannot open file \"<name>.asm\" [ENOENT]`.\r"
+          ]
+        },
+        {
+          "adaptedStart": 434,
+          "adaptedLines": [
+            "        // JWasm, JWlink, FL and cmd all take as one name.\r"
+          ],
+          "originalLines": [
+            "        // JWasm, JWlink, FL and cmd all take as one name (harness scenario `spaces`).\r",
+            "        // A root source with an ASCII name gets exactly the command it always got.\r"
+          ]
+        },
+        {
+          "adaptedStart": 436,
+          "adaptedLines": [
+            "        const done = doneSentinel ? \" & type nul>D:\\\\\" + doneSentinel : \"\";\r",
+            "        // End, Ctrl+Home empties the input line (Escape would type ^[): leftover text would break \"pushd\"\r",
+            "        Module.sendKey(XK_End, true);\r",
+            "        Module.sendKey(XK_End, false);\r",
+            "        Module.sendKey(XK_Control_L, true);\r",
+            "        Module.sendKey(XK_Home, true);\r",
+            "        Module.sendKey(XK_Home, false);\r",
+            "        Module.sendKey(XK_Control_L, false);\r",
+            "        Module.sendText(\"pushd \" + dir + \" & call C:\\\\files\\\\assemble \" + quoteForCmd(base) + \" & popd\" + done + \"\\r\");\r",
+            "        readBackBuildOutputs(name, requestId, () => {\r"
+          ],
+          "originalLines": [
+            "        Module.sendText(\"pushd \" + dir + \" & call C:\\\\files\\\\assemble \" + quoteForCmd(base) + \" & popd\\r\");\r",
+            "        readBackBuildOutputs(name, () => {\r"
+          ]
+        },
+        {
+          "adaptedStart": 447,
+          "adaptedLines": [
+            "        }, doneSentinel);\r"
+          ],
+          "originalLines": [
+            "          importScan();\r",
+            "        });\r"
+          ]
+        },
+        {
+          "adaptedStart": 481,
+          "adaptedLines": [],
+          "originalLines": [
+            "      importState.folders.add(path);\r"
+          ]
+        },
+        {
+          "adaptedStart": 491,
+          "adaptedLines": [],
+          "originalLines": [
+            "      importState.folders.delete(path);\r"
+          ]
+        },
+        {
+          "adaptedStart": 504,
+          "adaptedLines": [],
+          "originalLines": [
+            "        importState.drawer.delete(filename);\r",
+            "        importState.posted.delete(filename);\r"
+          ]
+        },
+        {
+          "adaptedStart": 528,
+          "adaptedLines": [],
+          "originalLines": [
+            "      importState.drawer = new Set();\r",
+            "      importState.folders = new Set();\r"
+          ]
+        },
+        {
+          "adaptedStart": 529,
+          "adaptedLines": [],
+          "originalLines": [
+            "        importState.folders.add(d);\r"
+          ]
+        },
+        {
+          "adaptedStart": 540,
+          "adaptedLines": [],
+          "originalLines": [
+            "        importState.drawer.add(f.filename);\r"
+          ]
+        },
+        {
+          "adaptedStart": 587,
+          "adaptedLines": [],
+          "originalLines": [
+            "      offerLegacyGuestFiles();\r"
+          ]
+        },
+        {
+          "adaptedStart": 590,
+          "adaptedLines": [
+            "  // --- Guest D: for the host layer ---------------------------------------\r",
+            "  // paths are \"/\"-separated and relative to D:\\ (\"\" is D:\\ itself); remove() skips the verification report\r",
+            "  const guestFs = {\r",
+            "    readdir: (path) =>\r",
+            "      Module.FS.readdir(NATIVE_D + path).filter((n) => n !== \".\" && n !== \"..\"),\r",
+            "    stat: (path) => {\r"
+          ],
+          "originalLines": [
+            "  // --- Guest -> drawer import -------------------------------------------\r",
+            "  // D: is MEMFS: a file or folder the guest created (program output, `copy con`, a\r",
+            "  // redirected echo, `mkdir`) would vanish at the next reload unless the drawer gets\r",
+            "  // it. Every IMPORT_EVERY_MS (and after a build readback) walk D: and post the files\r",
+            "  // and folders the drawer does not have, under their exact guest names. Nothing is\r",
+            "  // ever deleted from the drawer here.\r",
+            "  const importState = {\r",
+            "    drawer: new Set(),\r",
+            "    folders: new Set(),\r",
+            "    posted: new Map(),\r",
+            "    timer: null,\r",
+            "  };\r",
+            "  const importScan = () => {\r",
+            "    if (!inputOpen() || typeof Module === \"undefined\" || !Module.FS) return;\r",
+            "    if (window.BWSnapshot && window.BWSnapshot.busy) return;\r",
+            "    const found = [],\r",
+            "      folders = [],\r",
+            "      entries = [];\r",
+            "    let seen = 0;\r",
+            "    const walk = (dir, depth) => {\r",
+            "      let names;\r"
+          ]
+        },
+        {
+          "adaptedStart": 597,
+          "adaptedLines": [
+            "        const st = Module.FS.stat(NATIVE_D + path);\r",
+            "        const mtime = st.mtime instanceof Date ? st.mtime.getTime() : Number(st.mtime) || 0;\r",
+            "        return { size: st.size, mtime, dir: Module.FS.isDir(st.mode) };\r"
+          ],
+          "originalLines": [
+            "        names = Module.FS.readdir(NATIVE_D + dir);\r"
+          ]
+        },
+        {
+          "adaptedStart": 601,
+          "adaptedLines": [
+            "        return null;\r"
+          ],
+          "originalLines": [
+            "        return;\r"
+          ]
+        },
+        {
+          "adaptedStart": 603,
+          "adaptedLines": [
+            "    },\r",
+            "    readFile: (path) => {\r",
+            "      try {\r",
+            "        return Module.FS.readFile(NATIVE_D + path);\r",
+            "      } catch (e) {\r",
+            "        return null;\r"
+          ],
+          "originalLines": [
+            "      for (const name of names) {\r",
+            "        if (name === \".\" || name === \"..\" || isSentinel(name)) continue;\r",
+            "        if (++seen > IMPORT_MAX_ENTRIES) return;\r",
+            "        const path = (dir ? dir + \"/\" : \"\") + name;\r",
+            "        let st;\r",
+            "        try {\r",
+            "          st = Module.FS.stat(NATIVE_D + path);\r",
+            "        } catch (e) {\r",
+            "          continue;\r",
+            "        }\r",
+            "        if (Module.FS.isDir(st.mode)) {\r",
+            "          if (!importState.folders.has(path)) folders.push(path);\r",
+            "          if (depth < IMPORT_MAX_DEPTH) walk(path, depth + 1);\r",
+            "        } else if (Module.FS.isFile(st.mode)) entries.push({ n: path, st });\r"
+          ]
+        },
+        {
+          "adaptedStart": 610,
+          "adaptedLines": [
+            "    },\r",
+            "    remove: (path) => {\r",
+            "      if (typeof Module.bwDeleteFile === \"function\") Module.bwDeleteFile(D_DRIVE + path);\r",
+            "    },\r"
+          ],
+          "originalLines": [
+            "    };\r",
+            "    walk(\"\", 0);\r",
+            "    for (const { n, st } of entries) {\r",
+            "      if (importState.drawer.has(n)) continue;\r",
+            "      if (importState.posted.get(n) === st.size) continue; // already offered at this size\r",
+            "      if (st.size > IMPORT_MAX_BYTES) {\r",
+            "        if (!importState.posted.has(n))\r",
+            "          console.warn(\r",
+            "            \"[Boxedwine] \" +\r",
+            "              n +\r",
+            "              \" (\" +\r",
+            "              st.size +\r",
+            "              \" bytes) is larger than the \" +\r",
+            "              IMPORT_MAX_BYTES +\r",
+            "              \"-byte import limit — left on D: for this session only\",\r",
+            "          );\r",
+            "        importState.posted.set(n, st.size);\r",
+            "        continue;\r",
+            "      }\r",
+            "      try {\r",
+            "        const bytes = Module.FS.readFile(NATIVE_D + n);\r",
+            "        if (bytes.length !== st.size) continue; // still being written: next scan\r",
+            "        found.push({\r",
+            "          filename: n,\r",
+            "          base64: uint8ToBase64(bytes),\r",
+            "          size: bytes.length,\r",
+            "          isText: isTextName(n),\r",
+            "        });\r",
+            "        importState.posted.set(n, st.size);\r",
+            "      } catch (e) {}\r",
+            "    }\r",
+            "    for (const path of folders) importState.folders.add(path);\r",
+            "    if (found.length || folders.length)\r",
+            "      postToParent(\"guest-files\", { files: found, folders, source: \"guest\" });\r"
+          ]
+        },
+        {
+          "adaptedStart": 615,
+          "adaptedLines": [],
+          "originalLines": [
+            "  const startImportScan = () => {\r",
+            "    if (!importState.timer)\r",
+            "      importState.timer = setInterval(importScan, IMPORT_EVERY_MS);\r",
+            "  };\r",
+            "  const stopImportScan = () => {\r",
+            "    if (importState.timer) {\r",
+            "      clearInterval(importState.timer);\r",
+            "      importState.timer = null;\r",
+            "    }\r",
+            "  };\r",
+            "  // Files from the legacy IDBFS /d_drive store (boxedwine-shell.js migration) are\r",
+            "  // offered once, right after the first reconcile.\r",
+            "  const offerLegacyGuestFiles = () => {\r",
+            "    const legacy = window.BW_LEGACY_GUEST_FILES;\r",
+            "    if (!Array.isArray(legacy) || !legacy.length) return;\r",
+            "    window.BW_LEGACY_GUEST_FILES = null;\r",
+            "    const files = legacy\r",
+            "      .filter(\r",
+            "        (f) =>\r",
+            "          f && f.filename && f.bytes && !importState.drawer.has(f.filename),\r",
+            "      )\r",
+            "      .map((f) => ({\r",
+            "        filename: f.filename,\r",
+            "        base64: uint8ToBase64(f.bytes),\r",
+            "        size: f.bytes.length,\r",
+            "        isText: isTextName(f.filename),\r",
+            "      }));\r",
+            "    console.log(\r",
+            "      \"[Boxedwine] legacy guest store: \" +\r",
+            "        files.length +\r",
+            "        \" file(s) offered to the drawer\",\r",
+            "    ); // boot milestone\r",
+            "    if (files.length) postToParent(\"guest-files\", { files, source: \"legacy\" });\r",
+            "  };\r"
+          ]
+        },
+        {
+          "adaptedStart": 645,
+          "adaptedLines": [
+            "  // it is data-safe — the user's files live in the PARENT app's IndexedDB.\r"
+          ],
+          "originalLines": [
+            "  // it is data-safe — the user's files live in the PARENT app's IndexedDB. The old\r",
+            "  // Module.restartBW()+callMain() path is gone: callMain deadlocks thread 0 under\r",
+            "  // PROXY_TO_PTHREAD (MT), and restartBW alone left the console unusable.\r"
+          ]
+        },
+        {
+          "adaptedStart": 648,
+          "adaptedLines": [
+            "      window.bwHost.reload(\"adapter-reset\");\r",
+            "    } catch (e) {}\r"
+          ],
+          "originalLines": [
+            "      location.reload();\r",
+            "    } catch (e) {\r",
+            "      try {\r",
+            "        window.location.href = window.location.href;\r",
+            "      } catch (_) {}\r",
+            "    }\r"
+          ]
+        },
+        {
+          "adaptedStart": 701,
+          "adaptedLines": [
+            "      build: (filename, content, isBase64, opts) => doBuild(filename, content, !!isBase64, opts),\r"
+          ],
+          "originalLines": [
+            "      build: (filename, content, isBase64) => doBuild(filename, content, !!isBase64),\r"
+          ]
+        },
+        {
+          "adaptedStart": 717,
+          "adaptedLines": [
+            "      guestFs,\r",
+            "      attachHost: () => {\r",
+            "        gateState.hostAttached = true;\r",
+            "        if (gateState.fallbackTimer) {\r",
+            "          clearTimeout(gateState.fallbackTimer);\r",
+            "          gateState.fallbackTimer = null;\r",
+            "        }\r",
+            "      },\r"
+          ],
+          "originalLines": []
+        },
+        {
+          "adaptedStart": 730,
+          "adaptedLines": [
+            "  // signals, polled once a second, ONLY after the console is usable:\r"
+          ],
+          "originalLines": [
+            "  // signals, polled once a second, ONLY after the console is usable (arming before\r",
+            "  // that fired false \"FROZEN\" banners during every normal MT cold boot):\r"
+          ]
+        },
+        {
+          "adaptedStart": 736,
+          "adaptedLines": [
+            "  //       wedged even though the host loop ticks. A guest program merely spinning\r",
+            "  //       keeps progress advancing and is NOT\r"
+          ],
+          "originalLines": [
+            "  //       wedged even though the host loop ticks (what the blank MT restore looked\r",
+            "  //       like). A guest program merely spinning keeps progress advancing and is NOT\r"
+          ]
+        },
+        {
+          "adaptedStart": 743,
+          "adaptedLines": [
+            "  // a late one):\r"
+          ],
+          "originalLines": [
+            "  // a late one), all measured causes:\r"
+          ]
+        },
+        {
+          "adaptedStart": 815,
+          "adaptedLines": [
+            "    postToParent(name, detail);\r"
+          ],
+          "originalLines": [
+            "    try {\r",
+            "      window.parent.postMessage(\r",
+            "        JSON.stringify({ eventName: name, data: { data: detail } }),\r",
+            "        \"/\",\r",
+            "      );\r",
+            "    } catch (e) {}\r"
+          ]
+        },
+        {
+          "adaptedStart": 945,
+          "adaptedLines": [
+            "      // the \"emulator-ready\" handler above has run: hostAttached is set if the host layer reconciles\r",
+            "      if (!gateState.hostAttached)\r",
+            "        gateState.fallbackTimer = setTimeout(() => {\r",
+            "          if (!inputOpen() && !gateState.hostAttached) openInput(\"no-parent\");\r",
+            "        }, NO_PARENT_MS);\r"
+          ],
+          "originalLines": [
+            "      gateState.fallbackTimer = setTimeout(() => {\r",
+            "        if (!inputOpen()) openInput(\"no-parent\");\r",
+            "      }, NO_PARENT_MS);\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/components/boxedwine/LoadingScreen.jsx",
+      "source": "src/js/components/boxedwine/LoadingScreen.jsx",
+      "originalSha256": "2181f498137d5b670323c0830f28e04d993b1bec3e452f91214d0afd497f8f34",
+      "vendoredSha256": "a5d68ae026ae91bc79feec130eca4050e7383027e4f769cd9e3977a375f0118f",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 7,
+          "adaptedLines": [],
+          "originalLines": [
+            "// Shown over the console canvas until the console is visible (isLoading in\r",
+            "// Boxedwine.jsx). The stage line mirrors window.bwBootStage(...) calls made by\r",
+            "// boxedwine.html / the shell / the snapshot layer (\"Loading emulator\",\r",
+            "// \"Restoring your session\", \"Loading system image\", \"Booting Windows console\").\r",
+            "//\r"
+          ]
+        },
+        {
+          "adaptedStart": 10,
+          "adaptedLines": [
+            "// DESIGN_W/H = the group's visible bounds at 1x, plus room for a second stage-text line.\r"
+          ],
+          "originalLines": [
+            "// DESIGN_W/H = the group's visible bounds at 1x (measured 2026-09-19: 183 x 252 px\r",
+            "// around the centred box, incl. the watch image's overhang above it) plus room for\r",
+            "// a second stage-text line.\r"
+          ]
+        },
+        {
+          "adaptedStart": 62,
+          "adaptedLines": [
+            "                        <p className=\"logo__bottom\">VSCode</p>\r"
+          ],
+          "originalLines": [
+            "                        <p className=\"logo__bottom\">Web</p>\r"
+          ]
+        }
+      ]
+    },
+    {
+      "vendored": "src/js/components/boxedwine/index-bw.jsx",
+      "source": "src/js/components/boxedwine/index-bw.jsx",
+      "originalSha256": "28fa8423cb7bee73c91b1b02e2d4b32a1079c423ddb9c351918a2907e1c5de8a",
+      "vendoredSha256": "ae2f2676054ee162da6ef9148159d42b45efbb74bebcbfdaac0cc375d881adf9",
+      "adapted": true,
+      "hunks": [
+        {
+          "adaptedStart": 0,
+          "adaptedLines": [
+            "import React from \"react\";",
+            "import { createRoot } from \"react-dom/client\";",
+            "import Boxedwine from \"./Boxedwine.jsx\";",
+            "import { startHostLayer } from \"./host/controller\";",
+            "",
+            "startHostLayer();",
+            "const root = createRoot(document.getElementById(\"bw-root\"));",
+            "root.render(<Boxedwine />);"
+          ],
+          "originalLines": [
+            "import React from \"react\";\r",
+            "import { createRoot } from \"react-dom/client\";\r",
+            "import Boxedwine from \"./Boxedwine.jsx\";\r",
+            "\r",
+            "const root = createRoot(document.getElementById(\"bw-root\"));\r",
+            "root.render(<Boxedwine />);\r"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "node16",
+    "moduleResolution": "node16",
     "target": "es2020",
     "lib": ["es2021", "DOM"],
+    "types": ["node"],
     "outDir": "out",
     "sourceMap": true,
     "allowJs": true,
     "strict": true,
     "rootDir": "src"
   },
+  "include": ["src"],
   "exclude": ["node_modules", "out", "media", ".vscode-test", "rollup.*.js"]
 }

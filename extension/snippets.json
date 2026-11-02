@@ -22,31 +22,36 @@
   "Generate Irvine32.inc" : {
     "prefix": "i-irvine32",
     "body": [
-      "INCLUDE Irvine32.inc from irvine library"
-    ]
+      "INCLUDE Irvine32.inc"
+    ],
+    "description": "Include Irvine32.inc from the Irvine library"
   },
   "Generate Include Macros.inc" : {
     "prefix": "i-macros",
     "body": [
-      "INCLUDE Macros.inc from irvine library"
-    ]
+      "INCLUDE Macros.inc"
+    ],
+    "description": "Include Macros.inc from the Irvine library"
   },
   "Generate Include SmallWin.inc" : {
     "prefix": "i-smallwin",
     "body": [
-      "INCLUDE SmallWin.inc from irvine library"
-    ]
+      "INCLUDE SmallWin.inc"
+    ],
+    "description": "Include SmallWin.inc from the Irvine library"
   },
   "Generate Include VirtualKeys.inc" : {
     "prefix": "i-virtualkeys",
     "body": [
-      "INCLUDE VirtualKeys.inc from irvine library"
-    ]
+      "INCLUDE VirtualKeys.inc"
+    ],
+    "description": "Include VirtualKeys.inc from the Irvine library"
   },
   "Generate Include GraphWin.inc" : {
     "prefix": "i-graphwin",
     "body": [
-      "INCLUDE GraphWin.inc from irvine library"
-    ]
+      "INCLUDE GraphWin.inc"
+    ],
+    "description": "Include GraphWin.inc from the Irvine library"
   }
 }

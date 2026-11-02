@@ -1,3 +1,4 @@
+@use "../abstracts/variables" as *;
 .window {
   box-shadow: $border-window-outer, $border-window-inner;
   background: $surface;

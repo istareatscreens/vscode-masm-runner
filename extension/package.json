@@ -3,7 +3,7 @@
   "displayName": "MASM Runner",
   "description": "Extension for compiling and running MASM (Microsoft Macro Assembly Language)",
   "icon": "images/icon.png",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "publisher": "istareatscreens",
   "homepage": "https://github.com/istareatscreens/vscode-masm-runner",
   "private": false,
@@ -20,7 +20,7 @@
     "url": "https://github.com/istareatscreens/vscode-masm-runner"
   },
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.82.0"
   },
   "galleryBanner": {
     "color": "#000000",
@@ -36,9 +36,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:MASM",
-    "onCommand:masmRunner.start",
-    "onCommand:masmRunner.runCode",
     "onWebviewPanel:masmRunner"
   ],
   "main": "./out/extension.js",
@@ -69,7 +66,7 @@
       },
       {
         "command": "masmRunner.resetCMDCache",
-        "title": "Resets local MASM Command Prompt Cache, please fully close WebView after executing",
+        "title": "Factory reset MASM Command Prompt (keep or delete stored files)",
         "category": "Masm Runner"
       }
     ],
@@ -78,7 +75,7 @@
         "command": "masmRunner.runCode",
         "key": "ctrl+alt+n",
         "mac": "cmd+alt+n",
-        "when": "resourceExtname == .asm"
+        "when": "resourceExtname =~ /^[.]asm$/i"
       },
       {
         "command": "masmRunner.start",
@@ -89,6 +86,10 @@
     "snippets": [
       {
         "language": "MASM",
+        "path": "./snippets.json"
+      },
+      {
+        "language": "masm-plain",
         "path": "./snippets.json"
       }
     ],
@@ -102,7 +103,11 @@
         ],
         "extensions": [
           ".asm",
-          ".ASM"
+          ".ASM",
+          ".inc",
+          ".INC",
+          ".mac",
+          ".MAC"
         ],
         "configuration": "./syntax/language-configuration.json"
       },
@@ -118,9 +123,79 @@
       {
         "language": "MASM",
         "scopeName": "source.asm.masm",
-        "path": "./syntax/masm.tmLanguage.json",
-        "embeddedLanguages": {
-          "meta.embedded.block.comment": "comment"
+        "path": "./syntax/masm.tmLanguage.json"
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "masmProcedure",
+        "superType": "function",
+        "description": "A MASM procedure name: PROC, ENDP, PROTO or EXTERN ...:PROC, or a reference to one"
+      },
+      {
+        "id": "masmMacro",
+        "superType": "macro",
+        "description": "A MASM macro name: MACRO, or a macro call"
+      },
+      {
+        "id": "masmLabel",
+        "superType": "label",
+        "description": "A MASM code or macro label, or a jump or GOTO target"
+      },
+      {
+        "id": "masmVariable",
+        "superType": "variable",
+        "description": "A MASM data name, structure or record field, equate or text macro, or a reference to one"
+      },
+      {
+        "id": "masmParameter",
+        "superType": "parameter",
+        "description": "A MASM procedure, prototype, macro or FOR/FORC parameter, or a reference to one"
+      },
+      {
+        "id": "masmLocal",
+        "superType": "variable",
+        "description": "A MASM LOCAL name in a procedure or macro, or a reference to one"
+      },
+      {
+        "id": "masmType",
+        "superType": "type",
+        "description": "A MASM STRUCT, UNION, RECORD, SEGMENT, GROUP or TYPEDEF name, or a reference to one"
+      },
+      {
+        "id": "masmTextLiteral",
+        "superType": "string",
+        "description": "A MASM <text> literal"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "MASM",
+        "scopes": {
+          "masmProcedure": [
+            "entity.name.function.masm"
+          ],
+          "masmMacro": [
+            "entity.name.function.macro.masm"
+          ],
+          "masmLabel": [
+            "entity.name.label.masm"
+          ],
+          "masmVariable": [
+            "variable.other.masm"
+          ],
+          "masmParameter": [
+            "variable.other.masm"
+          ],
+          "masmLocal": [
+            "variable.other.masm"
+          ],
+          "masmType": [
+            "storage.type.masm"
+          ],
+          "masmTextLiteral": [
+            "string.quoted.angle.masm"
+          ]
         }
       }
     ],
@@ -131,7 +206,26 @@
         "masmRunner.exportBinaries": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Export .exe and .obj from boxedwine webview (cmd) on compile?"
+          "markdownDescription": "Export the `.exe` and `.obj` of each webview (cmd) build into `bin\\` beside the source."
+        },
+        "masmRunner.autoSyncProjectFiles": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Keep the terminal's D: drive in sync with the workspace while the terminal is open. MASM sources (`.asm`) and the file types in `#masmRunner.autoSyncFileTypes#` are placed on D: when the terminal starts and whenever they are created or changed. Files you compile, send or `INCLUDE` are kept in sync too: a change saved in VS Code, or made on disk, is copied to D:, and files changed while the terminal was closed are refreshed when it starts."
+        },
+        "masmRunner.autoSyncFileTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^\\.[^\\\\/:*?\"<>|.\\s]+$",
+            "patternErrorMessage": "A file extension with its dot, for example .inc"
+          },
+          "uniqueItems": true,
+          "default": [
+            ".inc",
+            ".mac"
+          ],
+          "markdownDescription": "The file types placed on the terminal's D: drive automatically besides MASM sources (`.asm`, always included), while `#masmRunner.autoSyncProjectFiles#` is on. By default the include and macro files `.inc` and `.mac`. Remove a type to stop syncing it automatically; any file can still be sent with **Send file(s) to MASM Runner Webview**. Files in `bin` folders, hidden folders and `node_modules`, and copies of the bundled Irvine include files, are never synced automatically."
         },
         "masmRunner.enableContextMenus": {
           "type": "boolean",
@@ -166,7 +260,7 @@
         "masmRunner.enableSyntaxHighlighting": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable or disable syntax highlighting for MASM (.asm/.ASM) files. When disabled, files will appear as plain text."
+          "markdownDescription": "Enable or disable syntax highlighting for MASM files: sources (`.asm`), include files (`.inc`) and macro files (`.mac`), in any letter case. When disabled, files will appear as plain text."
         }
       }
     },
@@ -178,7 +272,7 @@
           "group": "4_masmRunner"
         },
         {
-          "when": "resourceExtname == '.asm'",
+          "when": "resourceExtname =~ /^[.]asm$/i",
           "command": "masmRunner.runCode",
           "group": "4_masmRunner"
         }
@@ -186,17 +280,17 @@
       "editor/title": [
         {
           "command": "masmRunner.runCode",
-          "when": "resourceExtname == .asm",
+          "when": "resourceExtname =~ /^[.]asm$/i",
           "group": "navigation@1"
         },
         {
           "command": "masmRunner.start",
-          "when": "resourceExtname == .asm",
+          "when": "resourceExtname =~ /^[.]asm$/i",
           "group": "navigation@2"
         },
         {
           "command": "masmRunner.resetCMD",
-          "when": "resourceExtname == .asm || resourceExtname == .exe || masmRunner.webviewActive",
+          "when": "resourceExtname =~ /^[.]asm$/i || resourceExtname == .exe || masmRunner.webviewActive",
           "group": "navigation@3"
         }
       ]
@@ -205,20 +299,24 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "lint": "eslint . --ext .ts,.tsx",
-    "watch": "tsc -w -p ./"
+    "lint": "eslint .",
+    "watch": "tsc -w -p ./",
+    "package": "vsce package"
   },
   "devDependencies": {
-    "@types/node": "^16.11.7",
-    "@types/vscode": "^1.80.0",
-    "@types/vscode-webview": "^1.57.0",
-    "@typescript-eslint/eslint-plugin": "^5.30.0",
-    "@typescript-eslint/parser": "^5.30.0",
-    "eslint": "^8.13.0",
-    "ovsx": "^0.10.6",
-    "typescript": "^4.7.2"
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^18.19.130",
+    "@types/vscode": "~1.82.0",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@vscode/vsce": "^4.1.0",
+    "eslint": "^10.14.0",
+    "globals": "^17.13.0",
+    "ovsx": "^1.3.0",
+    "typescript": "~6.0.3"
   },
   "dependencies": {
-    "isbinaryfile": "^5.0.0"
+    "isbinaryfile": "^5.0.7"
   }
 }

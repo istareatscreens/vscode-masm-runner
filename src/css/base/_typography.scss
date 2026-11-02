@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
 //fonts
 @include font("Press Start", "./PressStart2P-Regular");
 
